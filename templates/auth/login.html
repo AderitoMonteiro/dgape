@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOGIN</title>
+  {% load static %} 
+  <link rel="stylesheet" href="{%static 'auth/style/style.css'%}">
+</head>
+<body>
+  <div class="wrapper" >
+    {% if erro %}
+      <div class="popup-mensagem" style="color: #f44336 !important;">
+        {{ erro }}
+      </div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <h2>LOGIN</h2>
+        <div class="input-field">
+        <input type="text" id="username" name="username" required>
+        <label>Insira seu e-mail</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="password" name="password" required>
+        <label>Digite sua senha</label>
+      </div>
+      <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>Remember me</p>
+        </label>
+      </div>
+      <button type="submit">Log In</button>
+      <div class="register">
+      </div>
+    </form>
+  </div>
+</body>
+</html> 
