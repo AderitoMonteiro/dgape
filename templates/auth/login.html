@@ -9,14 +9,15 @@
 </head>
 <body>
   <div class="wrapper" >
-    {% if erro %}
-      <div class="popup-mensagem" style="color: #f44336 !important;">
-        {{ erro }}
-      </div>
-    {% endif %}
+   
     <form method="post">
       {% csrf_token %}
       <h2>LOGIN</h2>
+      {% if erro %}
+        <div class="popup-mensagem" style="color: #f44336 !important;">
+          {{ erro }}
+        </div>
+      {% endif %}
         <div class="input-field">
         <input type="text" id="username" name="username" required>
         <label>Insira seu e-mail</label>
