@@ -11,6 +11,9 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{% static 'Departamento/css/style.css' %}">
     {% block extra_styles %}{% endblock %}
+
+    {% csrf_token %}
+      <meta name="csrf-token" content="{{ csrf_token }}">
   </head>
   <body>
 		
@@ -40,5 +43,12 @@
     <script src="{%static 'Departamento/js/popper.js'%}"></script>
     <script src="{%static 'Departamento/js/bootstrap.min.js'%}"></script>
     <script src="{%static 'Departamento/js/main.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      var jqOld = jQuery.noConflict(); // Salva a versão antiga do jQuery
+   </script>
+    <script src="{%static 'jscript/jscript.js'%}"></script>
+    {% block extra_jscript %}
+    {% endblock %}
   </body>
 </html>
