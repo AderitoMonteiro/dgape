@@ -31,7 +31,7 @@
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo equipamento</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
+						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
 				</div>
 			</div>
@@ -44,113 +44,70 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Address</th>
-						<th>Phone</th>
-						<th>Actions</th>
+						<th>Nome</th>
+						<th>Marca</th>
+						<th>Modelo</th>
+						<th>serial Number</th>
+						<th>Mac Address</th>
+						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
+				
+					{% for equipamento_list in equipamento %}
+
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
+								<input type="checkbox" id="checkbox{{ equipamento_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ equipamento_list.id }}">
+								<label for="checkbox{{ equipamento_list.id }}"></label>
 							</span>
 						</td>
-						<td>Thomas Hardy</td>
-						<td>thomashardy@mail.com</td>
-						<td>89 Chiaroscuro Rd, Portland, USA</td>
-						<td>(171) 555-2222</td>
+						<td>{{equipamento_list.descricao}}</td>
+						<td>{{equipamento_list.marca}}</td>
+						<td>{{equipamento_list.modelo}}</td>
+						<td>{{equipamento_list.serial_number}}</td>
+						<td>{{equipamento_list.mac_address}}</td>
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal" class="edit" data-id="{{ equipamento_list.id }}" onclick="get_equipamento(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
+					{% empty %}
 					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-						</td>
-						<td>Dominique Perrier</td>
-						<td>dominiqueperrier@mail.com</td>
-						<td>Obere Str. 57, Berlin, Germany</td>
-						<td>(313) 555-5735</td>
-						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						</td>
+					   <td colspan="4">Nenhum equipamento  encontrado.</td>
 					</tr>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-						</td>
-						<td>Maria Anders</td>
-						<td>mariaanders@mail.com</td>
-						<td>25, rue Lauriston, Paris, France</td>
-						<td>(503) 555-9931</td>
-						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-						</td>
-						<td>Fran Wilson</td>
-						<td>franwilson@mail.com</td>
-						<td>C/ Araquil, 67, Madrid, Spain</td>
-						<td>(204) 619-5731</td>
-						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						</td>
-					</tr>					
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-						</td>
-						<td>Martin Blank</td>
-						<td>martinblank@mail.com</td>
-						<td>Via Monte Bianco 34, Turin, Italy</td>
-						<td>(480) 631-2097</td>
-						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						</td>
-					</tr> 
+				{% endfor %}
+
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+				<div class="hint-text"> <span>Página {{ equipamento.number }} de {{ equipamento.paginator.num_pages }}</span></div>
 				<ul class="pagination">
-					<li class="page-item disabled"><a href="#">Previous</a></li>
-					<li class="page-item"><a href="#" class="page-link">1</a></li>
-					<li class="page-item"><a href="#" class="page-link">2</a></li>
-					<li class="page-item active"><a href="#" class="page-link">3</a></li>
-					<li class="page-item"><a href="#" class="page-link">4</a></li>
-					<li class="page-item"><a href="#" class="page-link">5</a></li>
-					<li class="page-item"><a href="#" class="page-link">Next</a></li>
+
+					{% if equipamento.has_previous %}
+					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
+					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% endif %}
+
+					{% if equipamento.has_next %}
+						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
+					{% endif %}
+					
+					
 				</ul>
 			</div>
 		</div>
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
+
+
+
+<div id="addEmployeeModal" class="modal fade" >
+	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
@@ -192,34 +149,43 @@
 </div>
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
+	<div id="alerta_edit" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Edit Employee</h4>
+					<h4 class="modal-title">Editar Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label>Name</label>
-						<input type="text" class="form-control" required>
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="descricao_edit" class="form-control" required>
+						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="equipamento_id" class="form-control">
 					</div>
 					<div class="form-group">
-						<label>Email</label>
-						<input type="email" class="form-control" required>
+						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="marca_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label>Address</label>
-						<textarea class="form-control" required></textarea>
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="modelo_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label>Phone</label>
-						<input type="text" class="form-control" required>
-					</div>					
+						<label><strong>Serial Number</strong></label></label>
+						<input type="text" id="serial_number_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Mac Address</strong></span></label></label>
+						<input type="text" id="mac_address_edit" class="form-control" required>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-info" value="Save">
+					<input class="btn btn-info" onclick="edit_equipamanto()" value="Alterar">
 				</div>
 			</form>
 		</div>
@@ -227,20 +193,50 @@
 </div>
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
+	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Delete Employee</h4>
+					<h4 class="modal-title">Apagar Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning"><small>This action cannot be undone.</small></p>
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="equipamento_delete" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete">
+					<input  class="btn btn-danger" onclick="delete_equipamanto()" value="Apagar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteEmployeeModalcheekbox" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+		
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  id="id_deleteCk"  class="btn btn-danger" value="Apagar">
 				</div>
 			</form>
 		</div>

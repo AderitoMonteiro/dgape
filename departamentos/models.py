@@ -23,9 +23,9 @@ class equipamento(models.Model):
     mac_address = models.CharField(max_length=100,default=True)    
     status = models.BooleanField(default=1)
     user_create = models.IntegerField()
-    user_update = models.IntegerField(default="")
+    user_update = models.IntegerField(default=0)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField(default="")
+    dateupdate = models.DateTimeField()
 
 class mobiliario(models.Model):
     id = models.AutoField(primary_key=True)
