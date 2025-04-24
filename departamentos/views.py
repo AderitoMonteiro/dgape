@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import equipamento
+from .models import equipamento,mobiliario
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -160,5 +160,144 @@ def delete_equipamento_checkbox(request):
                    return JsonResponse({'status':status, 'message': message })
          
 
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+  
+def gestao_mobiliario(request):
+   
+    mobiliario_list = mobiliario.objects.all().filter(status=1)
+    paginator = Paginator(mobiliario_list, 7)
+    page_number = request.GET.get("page")  
+    paginator_mobiliario = paginator.get_page(page_number)
+
+    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario})
+
+@csrf_exempt
+def add_mobiliario(request):
+  
+  if request.method == "POST":
+            try:
+                    descricao= request.POST.get("descricao")
+                    marca= request.POST.get("marca")
+                    modelo= request.POST.get("modelo")
+                    serial_number= request.POST.get("serial_number")
+                    user_create= request.POST.get("user_create")
+
+                    validate=mobiliario.objects.filter(descricao=descricao).count()
+
+                    if validate==0:
+                          if descricao !="":
+
+                                    mobiliario.objects.create(
+                                                                descricao=descricao,
+                                                                marca=marca,
+                                                                modelo=modelo,
+                                                                serial_number=serial_number,
+                                                                user_create=user_create
+                                                                  )
+                                    message='Mobiliario registado com sucesso!!'
+                                    status= 'success'
+                                    return JsonResponse({'status':status, 'message': message })
+
+                          else:
+                            message='Erro, tem que preencher todos os campos obrigatorios!!'
+                            status= 'error'
+                            return JsonResponse({'status':status, 'message': message })
+                    else:
+                      message='Erro, este mobiliario já está registado!!'
+                      status= 'error'
+                      return JsonResponse({'status':status, 'message': message })
+
+                    
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def get_mobiliario(request):
+
+    if request.method == "POST":
+      try:
+                      mobiliario_id = request.POST.get("mobiliario_id")
+                      mobiliar= mobiliario.objects.filter(id=mobiliario_id)
+                     
+                      return JsonResponse(serialize("json", mobiliar),safe=False)
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def editar_mobiliario(request):
+  
+  if request.method == "POST":
+            try:
+                    mobiliario_id = request.POST.get("mobiliario_id")
+                    descricao= request.POST.get("descricao")
+                    marca= request.POST.get("marca")
+                    modelo= request.POST.get("modelo")
+                    serial_number= request.POST.get("serial_number")
+                    user_update= request.POST.get("user_update")
+
+                    if descricao !="":
+
+                                    mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
+                                    mobiliario_ob.descricao=descricao
+                                    mobiliario_ob.marca=marca
+                                    mobiliario_ob.modelo=modelo
+                                    mobiliario_ob.serial_number=serial_number
+                                    mobiliario_ob.user_update=user_update
+                                    mobiliario_ob.dateupdate=datetime.now()
+                                    mobiliario_ob.save()
+                                                                  
+                                    message='Mobiliario alterado com sucesso!!'
+                                    status= 'success'
+                                    return JsonResponse({'status':status, 'message': message })
+
+                    else:
+                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                        status= 'error'
+                        return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def delete_mobiliario(request):
+  
+  if request.method == "POST":
+            try:
+                    mobiliario_id = request.POST.get("mobiliario_id")
+                    user_update= request.POST.get("user_update")
+
+                    mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
+                    mobiliario_ob.status=0
+                    mobiliario_ob.user_update=user_update
+                    mobiliario_ob.dateupdate=datetime.now()
+                    mobiliario_ob.save()
+                                                                  
+                    message='Mobiliario eleminado com sucesso!!'
+                    status= 'success'
+                    return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def delete_mobiliario_checkbox(request):
+  
+  if request.method == "POST":
+            try:
+                   id_mb= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+
+                   if id_mb:
+                         id_mbs = id_mb.split(",") 
+                         mobiliario.objects.filter(id__in=id_mbs).update(status=0,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                   message='Equipamento eleminado com sucesso!!'
+                   status= 'success'
+                   return JsonResponse({'status':status, 'message': message })
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

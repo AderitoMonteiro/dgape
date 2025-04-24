@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .views import departamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox
-
+from .views import departamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox 
 app_name = "departamento"
 urlpatterns = [
    path('index/', departamento_home, name='departamento'),
@@ -10,5 +9,11 @@ urlpatterns = [
    path('get/equipamento_editar/', get_equipamento, name='get_equipamento'),
    path('equipamento/edit/', editar_equipamento, name='editar_equipamento'),
    path('equipamento/delete/', delete_equipamento, name='delete_equipamento'),
+   path('mobiliario/delete/', delete_mobiliario, name='delete_mobiliario'),
    path('equipamento/checkbox/', delete_equipamento_checkbox, name='delete_equipamento_checkbox'),
+   path('mobiliario/checkbox/', delete_mobiliario_checkbox, name='delete_mobiliario_checkbox'),
+   path('mobiliario/', gestao_mobiliario, name='mobiliario'),
+   path('mobiliario/add/', add_mobiliario, name='add_mobiliario'),
+   path('get/mobiliario_editar/', get_mobiliario, name='get_mobiliario'),
+   path('mobiliario/edit/', editar_mobiliario, name='editar_mobiliario'),
 ]

@@ -8,10 +8,10 @@ class inventario_equipamento(models.Model):
     status = models.BooleanField(default=1)
     localizacao = models.CharField(max_length=100)
     obs = models.CharField(max_length=100)
-    user_create = models.IntegerField()
-    user_update = models.IntegerField(default="")
+    user_create = models.IntegerField(default=0)
+    user_update = models.IntegerField(default=0)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField(default="")
+    dateupdate = models.DateTimeField()
 
 
 class equipamento(models.Model):
@@ -29,9 +29,14 @@ class equipamento(models.Model):
 
 class mobiliario(models.Model):
     id = models.AutoField(primary_key=True)
-    descricao = models.CharField(max_length=100)    
+    descricao = models.CharField(max_length=100,default=True) 
+    marca = models.CharField(max_length=100,default=True)    
+    modelo = models.CharField(max_length=100,default=True) 
+    serial_number = models.CharField(max_length=100,default=True) 
     status = models.BooleanField(default=1)
-    user_create = models.IntegerField()
-    user_update = models.IntegerField(default="")
+    user_create = models.IntegerField(default=0)
+    user_update = models.IntegerField(default=0)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField(default="")
+    dateupdate = models.DateTimeField()
+
+
