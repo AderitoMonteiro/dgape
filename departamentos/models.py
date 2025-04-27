@@ -7,11 +7,12 @@ class inventario_equipamento(models.Model):
     equipamento_id = models.IntegerField()
     status = models.BooleanField(default=1)
     localizacao = models.CharField(max_length=100)
+    provinencia = models.CharField(max_length=100,null=True)
     obs = models.CharField(max_length=100)
     user_create = models.IntegerField(default=0)
-    user_update = models.IntegerField(default=0)
+    user_update = models.IntegerField(null=True)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField()
+    dateupdate = models.DateTimeField(null=True)
 
 
 class equipamento(models.Model):
@@ -23,9 +24,9 @@ class equipamento(models.Model):
     mac_address = models.CharField(max_length=100,default=True)    
     status = models.BooleanField(default=1)
     user_create = models.IntegerField()
-    user_update = models.IntegerField(default=0)
+    user_update = models.IntegerField(null=True)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField()
+    dateupdate = models.DateTimeField(null=True)
 
 class mobiliario(models.Model):
     id = models.AutoField(primary_key=True)
@@ -34,9 +35,9 @@ class mobiliario(models.Model):
     modelo = models.CharField(max_length=100,default=True) 
     serial_number = models.CharField(max_length=100,default=True) 
     status = models.BooleanField(default=1)
-    user_create = models.IntegerField(default=0)
-    user_update = models.IntegerField(default=0)
+    user_create = models.IntegerField()
+    user_update = models.IntegerField(null=True)
     datecreate = models.DateTimeField(auto_now_add=True)
-    dateupdate = models.DateTimeField()
+    dateupdate = models.DateTimeField(null=True)
 
 

@@ -246,14 +246,6 @@
 {% endblock %}
 
 {% block extra_jscript %}
-<script>
-	document.addEventListener("DOMContentLoaded", function() {
-		flatpickr("#data_entrada", {
-			dateFormat: "Y-m-d",
-			locale: "pt"
-		});
-	});
-</script>
 <script src="{%static 'equipamento/equipamento.js'%}"></script>
 {% endblock %}
 
