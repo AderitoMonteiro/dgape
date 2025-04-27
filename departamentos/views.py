@@ -387,9 +387,10 @@ def get_equipamento_inventario(request):
                             FROM 
                             departamentos_inventario_equipamento as die
                             inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                            where die.id=%
                     '''
                   with connection.cursor() as cursor:
-                      cursor.execute(query)
+                      cursor.execute(query,[equipamento_id])
 
                       colunas = [col[0] for col in cursor.description] 
                       resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
