@@ -18,4 +18,5 @@ urlpatterns = [
    path('get/mobiliario_editar/', get_mobiliario, name='get_mobiliario'),
    path('mobiliario/edit/', editar_mobiliario, name='editar_mobiliario'),
    path('index/add/', add_inventario_equipamento, name='add_inventario_equipamento'),
+   
 ]
