@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import equipamento,mobiliario
+from .models import equipamento,mobiliario,inventario_equipamento
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -13,8 +13,34 @@ from django.db import connection
 
 
 def departamento_home(request):
-  
-    return render(request, 'Inventario/index.html')
+
+    equipamento_list = equipamento.objects.all().filter(status=1)
+    equipamento_inventario_list = inventario_equipamento.objects.all().filter(status=1)
+
+    query = '''
+                    SELECT 
+                    die.id,
+                    die.data_entrada,
+                    die.localizacao,
+                    die.obs,
+                    die.provinencia,
+                    de.descricao,
+                    de.modelo,
+                    de.marca,
+                    de.mac_address,
+                    de.serial_number
+                    FROM 
+                    departamentos_inventario_equipamento as die
+                    inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                '''
+    with connection.cursor() as cursor:
+          cursor.execute(query)
+
+          colunas = [col[0] for col in cursor.description] 
+          resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+
+
+    return render(request, 'Inventario/index.html',{"equipamento":equipamento_list,"equipamento_inventario":resultados})
 
 def gestao_equipamento(request):
 
@@ -301,3 +327,75 @@ def delete_mobiliario_checkbox(request):
                    return JsonResponse({'status':status, 'message': message })
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def add_inventario_equipamento(request):
+  
+  if request.method == "POST":
+            try:
+                    data_entrada= request.POST.get("data_entrada")
+                    provinencia= request.POST.get("provinencia")
+                    equipamento= request.POST.get("equipamento")
+                    localizacao= request.POST.get("localizacao")
+                    estado= request.POST.get("estado")
+                    user_create= request.POST.get("user_create")
+
+                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+
+                                    inventario_equipamento.objects.create(
+                                                                data_entrada=data_entrada,
+                                                                equipamento_id=equipamento,
+                                                                localizacao=localizacao,
+                                                                provinencia=provinencia,
+                                                                obs=estado,
+                                                                user_create=user_create
+                                                                  )
+                                    message='Equipamento registado com sucesso!!'
+                                    status= 'success'
+                                    return JsonResponse({'status':status, 'message': message })
+
+                    else:
+                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                        status= 'error'
+                        return JsonResponse({'status':status, 'message': message })
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+@csrf_exempt
+def get_equipamento_inventario(request):
+
+    equipamento_id= request.POST.get("equipamento_id")
+
+    print(equipamento_id)
+
+    if request.method == "POST":
+
+            try:
+                  query = '''
+                            SELECT 
+                            die.id,
+                            die.data_entrada,
+                            die.localizacao,
+                            die.obs,
+                            die.provinencia,
+                            de.descricao,
+                            de.modelo,
+                            de.marca,
+                            de.mac_address,
+                            de.serial_number
+                            FROM 
+                            departamentos_inventario_equipamento as die
+                            inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                            where die.id=%
+                    '''
+                  with connection.cursor() as cursor:
+                      cursor.execute(query,[equipamento_id])
+
+                      colunas = [col[0] for col in cursor.description] 
+                      resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                     
+                  return JsonResponse(serialize("json", resultados),safe=False)
+
+            except Exception as e:
+                  return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
