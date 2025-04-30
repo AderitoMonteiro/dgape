@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -27,11 +28,11 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 style="color: #fff;">GESTÃO DE <b>MOBILIARIO</b></h2>
+						<h2 style="color: #fff;">INVENTARIO DE <b>MOBILIARIO</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo mobiliario</span></a>
-						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo inventario</span></a>
+						<a href="#checkboxdeleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
 				</div>
 			</div>
@@ -44,48 +45,55 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Nome</th>
-						<th>OBS</th>
+						<th>Data Entrada</th>
+						<th>Mobiliario</th>
+						<th>Localização</th>
+						<th>provinçia</th>
+						<th>Obs</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for mobiliario_list in mobiliario %}
+					{% for mobiliario_list in mobiliario_inventario %}
 
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ mobiliario_list.id }}" class="mobiliario-checkbox" name="options[]" value="{{ mobiliario_list.id }}">
+								<input type="checkbox" id="checkbox{{ mobiliario_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ mobiliario_list.id }}">
 								<label for="checkbox{{ mobiliario_list.id }}"></label>
 							</span>
 						</td>
+						<td>{{mobiliario_list.data_entrada}}</td>
 						<td>{{mobiliario_list.descricao}}</td>
+						<td>{{mobiliario_list.localizacao}}</td>
+						<td>{{mobiliario_list.provinencia}}</td>
 						<td>{{mobiliario_list.obs}}</td>
+
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ mobiliario_list.id }}" onclick="get_equipamento_delete_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
 					<tr>
-					   <td colspan="4">Nenhum mobiliario  encontrado.</td>
+					   <td colspan="4">Nenhum equipamento  encontrado.</td>
 					</tr>
 				{% endfor %}
 
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text"> <span>Página {{ mobiliario.number }} de {{ mobiliario.paginator.num_pages }}</span></div>
+				<div class="hint-text"> <span>Página {{ equipamento_inventario.number }} de {{ equipamento_inventario.paginator.num_pages }}</span></div>
 				<ul class="pagination">
 
-					{% if mobiliario.has_previous %}
+					{% if equipamento_inventario.has_previous %}
 					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ mobiliario.previous_page_number }}" class="page-link">Anterior</a></li>
+					<li class="page-item"><a href="?page={{ equipamento_inventario.previous_page_number }}" class="page-link">Anterior</a></li>
 					{% endif %}
 
-					{% if mobiliario.has_next %}
-						<li class="page-item"><a href="?page={{ mobiliario.next_page_number }}" class="page-link">Próxima</a></li>
+					{% if equipamento_inventario.has_next %}
+						<li class="page-item"><a href="?page={{ equipamento_inventario.next_page_number }}" class="page-link">Próxima</a></li>
 					{% endif %}
 					
 					
@@ -95,10 +103,7 @@
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-
-
-
-<div id="addEmployeeModal" class="modal fade" >
+<div id="addEmployeeModal" class="modal fade">
 	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
@@ -106,16 +111,32 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Novo Mobiliario</h4>
+					<h4 class="modal-title">Inventario Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				
-				<div class="modal-body">				
+				<div class="modal-body">					
 					<div class="form-group">
-						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="descricao" class="form-control" required>
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
+					<div class="form-group">
+						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="provinencia" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="mobiliario">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 {% for mobiliario_list in mobiliario %}
+							  <option value="{{mobiliario_list.id}}">{{mobiliario_list.descricao}}</option>
+							  {% endfor %}
+						</select>
+					</div>
+					<div class="form-group">
+						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
+						<input type="text" class="form-control" id="localizacao">
+					</div>		
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
@@ -123,7 +144,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-success" onclick="add_mobiliario()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar">
+					<input  onclick="add_inventario_mobiliario()" class="btn btn-success" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -138,24 +159,41 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Editar mobiliario</h4>
+					<h4 class="modal-title">Editar Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="descricao_edit" class="form-control" required>
-						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="mobiliario_id" class="form-control">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada_edit" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="id_inventario_mobiliario" class="form-control">
 					</div>
-					 <div class="form-group">
+					<div class="form-group">
+						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="provinencia_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="mobiliario_edit">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 {% for mobiliario_list in mobiliario %}
+							  <option value="{{mobiliario_list.id}}">{{mobiliario_list.descricao}}</option>
+							  {% endfor %}
+						</select>
+					</div>
+					<div class="form-group">
+						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
+						<input type="text" class="form-control" id="localizacao_edit">
+					</div>		
+					<div class="form-group">
 						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
-						<textarea id="obs_edit" name="obs_edit" rows="4" cols="40"></textarea>
-					 </div>	
+						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_mobiliario()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_mobiliario_inventario()" value="Alterar">
 				</div>
 			</form>
 		</div>
@@ -170,49 +208,48 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Apagar mobiliario</h4>
+					<h4 class="modal-title">Apagar Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<p>Tem a certeza de que pretende eliminar esses registos?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
-					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="mobiliario_delete" class="form-control">
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="delete_mobiliario()" value="Apagar">
+					<input  class="btn btn-danger" onclick="delete_equipamento_inventario()" value="Apagar">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-
-<div id="deleteEmployeeModalcheekbox" class="modal fade">
+<div id="checkboxdeleteEmployeeModal" class="modal fade">
 	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
-		
+	
     </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Apagar mobiliario</h4>
+					<h4 class="modal-title">Apagar Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<p>Tem a certeza de que pretende eliminar esses registos?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
-					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  id="id_deleteCk"  class="btn btn-danger" value="Apagar">
+					<input id="id_deleteCk" class="btn btn-danger" value="Apagar">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-
 {% endblock %}
 
 {% block extra_jscript %}
@@ -223,8 +260,15 @@
 			locale: "pt"
 		});
 	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_entrada_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
 </script>
-<script src="{%static 'mobiliario/mobiliario.js'%}"></script>
+<script src="{%static 'Inventario/mobiliario.js'%}"></script>
 {% endblock %}
 
 

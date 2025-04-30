@@ -93,9 +93,13 @@ function get_equipamento_inventario(button){
          data: data,
          success: function (data) {
  
-             const datajs = JSON.parse(data);
              
-             console.log(datajs)
+            document.getElementById('data_entrada_edit').value=data.resultado[0].data_entrada
+            document.getElementById('provinencia_edit').value=data.resultado[0].provinencia
+            document.getElementById('equipamento_edit').value=data.resultado[0].equipamento_id
+            document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
+            document.getElementById('id_inventario_equipamento').value=data.resultado[0].id
+            document.getElementById('obs_edit').value=data.resultado[0].obs
            
  
           },
@@ -105,3 +109,214 @@ function get_equipamento_inventario(button){
          } 
      });
  }
+
+ function get_equipamento_delete_inventario(button){
+
+    document.getElementById('delete_inventario_equipamento').value=button.getAttribute("data-id");
+ 
+ }
+
+ function delete_equipamento_inventario(){
+
+    let inventario_equipamento_id= document.getElementById('delete_inventario_equipamento').value;
+    let user_update= document.getElementById('id_user').value;
+ 
+    const data = {
+     "inventario_equipamento_id":inventario_equipamento_id,
+     "user_update":user_update,
+     "X-CSRFToken": getCSRFToken()
+     };
+ 
+     jqOld.ajax({
+         url: 'delete_inventario_equipamento/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+            
+ 
+            let divPai = document.getElementById("alerta_delete");
+            let divalert = document.createElement("div");
+
+
+            if (data.status == 'success') {
+                
+                divPai.innerHTML = ''
+
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                divalert.setAttribute("class","alert alert-success");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+                slowReload()
+
+            } else {
+
+                divPai.innerHTML = ''
+                
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                divalert.setAttribute("class","alert alert-danger");
+                divalert.setAttribute( "style","text-align;");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+
+                setTimeout(() => {
+                    divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                }, 9000);
+            }
+
+
+
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
+ function edit_equipamento_inventario(){
+
+   let data_entrada_edit = document.getElementById('data_entrada_edit').value
+   let provinencia_edit  = document.getElementById('provinencia_edit').value
+   let equipamento_edit  = document.getElementById('equipamento_edit').value
+   let localizacao_edit = document.getElementById('localizacao_edit').value
+   let id_inventario_equipamento = document.getElementById('id_inventario_equipamento').value
+   let obs_edit = document.getElementById('obs_edit').value
+   let user_update = document.getElementById('id_user').value
+ 
+    const data = {
+     "data_entrada":data_entrada_edit,
+     "provinencia":provinencia_edit,
+     "equipamento":equipamento_edit,
+     "localizacao":localizacao_edit,
+     "id":id_inventario_equipamento,
+     "obs":obs_edit,
+     "user_update":user_update,
+     "X-CSRFToken": getCSRFToken()
+     };
+ 
+     jqOld.ajax({
+         url: 'edit_inventario_equipamento/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+           
+   
+            let divPai = document.getElementById("alerta_edit");
+            let divalert = document.createElement("div");
+
+
+            if (data.status == 'success') {
+                
+                divPai.innerHTML = ''
+
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                divalert.setAttribute("class","alert alert-success");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+                slowReload()
+
+            } else {
+
+                divPai.innerHTML = ''
+                
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                divalert.setAttribute("class","alert alert-danger");
+                divalert.setAttribute( "style","text-align;");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+
+                setTimeout(() => {
+                    divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                }, 9000);
+            }
+
+
+ 
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
+
+
+ document.getElementById("id_deleteCk").addEventListener("click", function () {
+
+    let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
+    if (checkboxes.length === 0) {
+
+            let divPai = document.getElementById("alerta_delete_cheekbox");
+            let divalert = document.createElement("div");
+
+            divPai.innerHTML = ''
+            divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+            divalert.setAttribute("class","alert alert-danger");
+            divalert.setAttribute( "role","alert");
+            divalert.innerHTML = "Selecione pelo menos um para eliminar.";
+            divPai.appendChild(divalert);
+
+        return;
+    } else {
+
+        let equipamento_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
+        let user_id = document.getElementById('id_user').value;
+        let url;
+
+       
+
+        const data = {
+            "id": equipamento_ids,
+            "id_user":user_id,
+            "X-CSRFToken": getCSRFToken()
+        };
+        // Configuração da requisição
+        jqOld.ajax({
+            url: "checkbox_inventario_equipamento/",
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                    
+
+            let divPai = document.getElementById("alerta_delete_cheekbox");
+            let divalert = document.createElement("div");
+
+
+            if (data.status == 'success') {
+                
+                divPai.innerHTML = ''
+
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                divalert.setAttribute("class","alert alert-success");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+                slowReload()
+
+            } else {
+
+                divPai.innerHTML = ''
+                
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                divalert.setAttribute("class","alert alert-danger");
+                divalert.setAttribute( "style","text-align;");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+
+                setTimeout(() => {
+                    divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                }, 9000);
+            }
+
+            },
+            error: function (xhr, status, error) {
+                alert('Erro: ' + xhr.responseJSON.message);
+            }
+        });
+    }
+
+});
