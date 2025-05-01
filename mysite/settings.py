@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dgape',
         'USER': 'dgape_user',  
         'PASSWORD': 'QJJZawUo6qAOlQXVNkxfXuMyXdPeKgLk', 
