@@ -7,13 +7,12 @@ function slowReload() {
         location.reload();
     }, 2000); // 2 segundos
 }
-
-function add_inventario_equipamanto() {
+function add_inventario_mobiliario() {
 
     
     const data_entrada = document.getElementById('data_entrada').value;
     const provinencia = document.getElementById('provinencia').value;
-    const equipamento = document.getElementById('equipamento').value;
+    const mobiliario = document.getElementById('mobiliario').value;
     const localizacao = document.getElementById('localizacao').value;
     const estado = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
@@ -22,7 +21,7 @@ function add_inventario_equipamanto() {
     const data = {
         "data_entrada": data_entrada,
         "provinencia": provinencia,
-        "equipamento": equipamento,
+        "mobiliario": mobiliario,
         "localizacao": localizacao,
         "estado": estado,
         "user_create": id_user,
@@ -78,17 +77,17 @@ function add_inventario_equipamanto() {
 
 }
 
-function get_equipamento_inventario(button){
+function get_mobiliario_inventario(button){
 
-    let quipamento_inventario_id=button.getAttribute("data-id");
+    let mobiliario_inventario_id=button.getAttribute("data-id");
  
     const data = {
-     "equipamento_id":quipamento_inventario_id,
+     "mobiliario_id":mobiliario_inventario_id,
      "X-CSRFToken": getCSRFToken()
      };
  
      jqOld.ajax({
-         url: '../get/equipamento_inventario_id/',
+         url: '../get/mobiliario_inventario_id/',
          type: 'POST',
          data: data,
          success: function (data) {
@@ -96,9 +95,9 @@ function get_equipamento_inventario(button){
              
             document.getElementById('data_entrada_edit').value=data.resultado[0].data_entrada
             document.getElementById('provinencia_edit').value=data.resultado[0].provinencia
-            document.getElementById('equipamento_edit').value=data.resultado[0].equipamento_id
+            document.getElementById('mobiliario_edit').value=data.resultado[0].mobiliario_id
             document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
-            document.getElementById('id_inventario_equipamento').value=data.resultado[0].id
+            document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id_inventario_mobiliario
             document.getElementById('obs_edit').value=data.resultado[0].obs
            
  
@@ -110,13 +109,145 @@ function get_equipamento_inventario(button){
      });
  }
 
- function get_equipamento_delete_inventario(button){
+ function add_mobiliario_inventario(){
 
-    document.getElementById('delete_inventario_equipamento').value=button.getAttribute("data-id");
+    let data_entrada_edit = document.getElementById('data_entrada_edit').value
+    let provinencia_edit  = document.getElementById('provinencia_edit').value
+    let equipamento_edit  = document.getElementById('equipamento_edit').value
+    let localizacao_edit = document.getElementById('localizacao_edit').value
+    let id_inventario_equipamento = document.getElementById('id_inventario_equipamento').value
+    let obs_edit = document.getElementById('obs_edit').value
+    let user_update = document.getElementById('id_user').value
+  
+     const data = {
+      "data_entrada":data_entrada_edit,
+      "provinencia":provinencia_edit,
+      "equipamento":equipamento_edit,
+      "localizacao":localizacao_edit,
+      "id":id_inventario_equipamento,
+      "obs":obs_edit,
+      "user_update":user_update,
+      "X-CSRFToken": getCSRFToken()
+      };
+  
+      jqOld.ajax({
+          url: 'edit_inventario_equipamento/',
+          type: 'POST',
+          data: data,
+          success: function (data) {
+            
+    
+             let divPai = document.getElementById("alerta_edit");
+             let divalert = document.createElement("div");
  
- }
+ 
+             if (data.status == 'success') {
+                 
+                 divPai.innerHTML = ''
+ 
+                 divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                 divalert.setAttribute("class","alert alert-success");
+                 divalert.setAttribute( "role","alert");
+                 divalert.innerHTML = data.message;
+                 divPai.appendChild(divalert);
+                 slowReload()
+ 
+             } else {
+ 
+                 divPai.innerHTML = ''
+                 
+                 divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                 divalert.setAttribute("class","alert alert-danger");
+                 divalert.setAttribute( "style","text-align;");
+                 divalert.setAttribute( "role","alert");
+                 divalert.innerHTML = data.message;
+                 divPai.appendChild(divalert);
+ 
+                 setTimeout(() => {
+                     divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                 }, 9000);
+             }
+ 
+ 
+  
+           },
+          error: function (xhr, status, error) {
+  
+              alert('Erro: ' + xhr.responseJSON.message);
+          } 
+      });
+  }
 
- function delete_equipamento_inventario(){
+function edit_mobiliario_inventario(){
+
+    let data_entrada_edit = document.getElementById('data_entrada_edit').value
+    let provinencia_edit  = document.getElementById('provinencia_edit').value
+    let mobiliario_edit  = document.getElementById('mobiliario_edit').value
+    let localizacao_edit = document.getElementById('localizacao_edit').value
+    let id_inventario_mobiliario = document.getElementById('id_inventario_mobiliario').value
+    let obs_edit = document.getElementById('obs_edit').value
+    let user_update = document.getElementById('id_user').value
+  
+     const data = {
+      "data_entrada":data_entrada_edit,
+      "provinencia":provinencia_edit,
+      "mobiliario_edit":mobiliario_edit,
+      "localizacao":localizacao_edit,
+      "id":id_inventario_mobiliario,
+      "obs":obs_edit,
+      "user_update":user_update,
+      "X-CSRFToken": getCSRFToken()
+      };
+  
+      jqOld.ajax({
+          url: 'edit_inventario_equipamento/',
+          type: 'POST',
+          data: data,
+          success: function (data) {
+            
+    
+             let divPai = document.getElementById("alerta_edit");
+             let divalert = document.createElement("div");
+ 
+ 
+             if (data.status == 'success') {
+                 
+                 divPai.innerHTML = ''
+ 
+                 divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                 divalert.setAttribute("class","alert alert-success");
+                 divalert.setAttribute( "role","alert");
+                 divalert.innerHTML = data.message;
+                 divPai.appendChild(divalert);
+                 slowReload()
+ 
+             } else {
+ 
+                 divPai.innerHTML = ''
+                 
+                 divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                 divalert.setAttribute("class","alert alert-danger");
+                 divalert.setAttribute( "style","text-align;");
+                 divalert.setAttribute( "role","alert");
+                 divalert.innerHTML = data.message;
+                 divPai.appendChild(divalert);
+ 
+                 setTimeout(() => {
+                     divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                 }, 9000);
+             }
+ 
+ 
+  
+           },
+          error: function (xhr, status, error) {
+  
+              alert('Erro: ' + xhr.responseJSON.message);
+          } 
+      });
+  }
+
+  function delete_mobiliario_inventario(){
 
     let inventario_equipamento_id= document.getElementById('delete_inventario_equipamento').value;
     let user_update= document.getElementById('id_user').value;
@@ -174,35 +305,32 @@ function get_equipamento_inventario(button){
          } 
      });
  }
- function edit_equipamento_inventario(){
 
-   let data_entrada_edit = document.getElementById('data_entrada_edit').value
-   let provinencia_edit  = document.getElementById('provinencia_edit').value
-   let equipamento_edit  = document.getElementById('equipamento_edit').value
-   let localizacao_edit = document.getElementById('localizacao_edit').value
-   let id_inventario_equipamento = document.getElementById('id_inventario_equipamento').value
-   let obs_edit = document.getElementById('obs_edit').value
-   let user_update = document.getElementById('id_user').value
+ function get_mobiliario_delete_mobiliario(button){
+
+    document.getElementById('delete_inventario_mobiliario').value=button.getAttribute("data-id");
+ 
+ }
+
+ function delete_mobiliario_inventario(){
+
+    let inventario_mobiliario_id= document.getElementById('delete_inventario_mobiliario').value;
+    let user_update= document.getElementById('id_user').value;
  
     const data = {
-     "data_entrada":data_entrada_edit,
-     "provinencia":provinencia_edit,
-     "equipamento":equipamento_edit,
-     "localizacao":localizacao_edit,
-     "id":id_inventario_equipamento,
-     "obs":obs_edit,
+     "inventario_mobiliario_id":inventario_mobiliario_id,
      "user_update":user_update,
      "X-CSRFToken": getCSRFToken()
      };
  
      jqOld.ajax({
-         url: 'edit_inventario_equipamento/',
+         url: 'delete_inventario_mobiliario/',
          type: 'POST',
          data: data,
          success: function (data) {
-           
-   
-            let divPai = document.getElementById("alerta_edit");
+            
+ 
+            let divPai = document.getElementById("alerta_delete");
             let divalert = document.createElement("div");
 
 
@@ -234,7 +362,7 @@ function get_equipamento_inventario(button){
             }
 
 
- 
+
           },
          error: function (xhr, status, error) {
  
@@ -243,10 +371,9 @@ function get_equipamento_inventario(button){
      });
  }
 
-
  document.getElementById("id_deleteCk").addEventListener("click", function () {
 
-    let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
+    let checkboxes = document.querySelectorAll(".mobiliario-checkbox:checked");
     if (checkboxes.length === 0) {
 
             let divPai = document.getElementById("alerta_delete_cheekbox");
@@ -275,7 +402,7 @@ function get_equipamento_inventario(button){
         };
         // Configuração da requisição
         jqOld.ajax({
-            url: "checkbox_inventario_equipamento/",
+            url: "checkbox_inventario_mobiliario/",
             type: 'POST',
             data: data,
             success: function (data) {

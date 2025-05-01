@@ -95,17 +95,13 @@ function add_mobiliario() {
 
     
     const descricao = document.getElementById('descricao').value;
-    const marca = document.getElementById('marca').value;
-    const modelo = document.getElementById('modelo').value;
-    const serial_number = document.getElementById('serial_number').value;
+    const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
     // Dados para enviar
     const data = {
         "descricao": descricao,
-        "marca": marca,
-        "modelo": modelo,
-        "serial_number": serial_number,
+        "obs": obs,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
     };
@@ -176,9 +172,7 @@ function get_mobiliario(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
-             document.getElementById("marca_edit").value=datajs[0].fields.marca;
-             document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
-             document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
+             document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
  
           },
@@ -193,9 +187,7 @@ function get_mobiliario(button){
 
     
     const descricao = document.getElementById('descricao_edit').value;
-    const marca = document.getElementById('marca_edit').value;
-    const modelo = document.getElementById('modelo_edit').value;
-    const serial_number = document.getElementById('serial_number_edit').value;
+    const obs = document.getElementById('obs_edit').value;
     const id_user = document.getElementById('id_user_edit').value;
     const mobiliario_id = document.getElementById('mobiliario_id').value;
 
@@ -203,9 +195,7 @@ function get_mobiliario(button){
     // Dados para enviar
     const data = {
         "descricao": descricao,
-        "marca": marca,
-        "modelo": modelo,
-        "serial_number": serial_number,
+        "obs": obs,
         "user_update": id_user,
         "mobiliario_id": mobiliario_id,
         "X-CSRFToken": getCSRFToken()

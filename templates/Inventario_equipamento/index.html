@@ -32,7 +32,7 @@
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo inventario</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
+						<a href="#checkboxdeleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_delete_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -92,15 +92,19 @@
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+				<div class="hint-text"> <span>Página {{ equipamento_inventario.number }} de {{ equipamento_inventario.paginator.num_pages }}</span></div>
 				<ul class="pagination">
-					<li class="page-item disabled"><a href="#">Previous</a></li>
-					<li class="page-item"><a href="#" class="page-link">1</a></li>
-					<li class="page-item"><a href="#" class="page-link">2</a></li>
-					<li class="page-item active"><a href="#" class="page-link">3</a></li>
-					<li class="page-item"><a href="#" class="page-link">4</a></li>
-					<li class="page-item"><a href="#" class="page-link">5</a></li>
-					<li class="page-item"><a href="#" class="page-link">Next</a></li>
+
+					{% if equipamento_inventario.has_previous %}
+					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
+					<li class="page-item"><a href="?page={{ equipamento_inventario.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% endif %}
+
+					{% if equipamento_inventario.has_next %}
+						<li class="page-item"><a href="?page={{ equipamento_inventario.next_page_number }}" class="page-link">Próxima</a></li>
+					{% endif %}
+					
+					
 				</ul>
 			</div>
 		</div>
@@ -133,7 +137,7 @@
 						<select class="form-control" id="equipamento">
 							 <option value="">--Por favor, escolha uma opção--</option>
 							 {% for equipamento_list in equipamento %}
-							  <option value="{{equipamento_list.id}}">{{equipamento_list.descricao}}</option>
+							  <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
 							  {% endfor %}
 						</select>
 					</div>
@@ -156,34 +160,48 @@
 </div>
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
+	<div id="alerta_edit" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Edit Employee</h4>
+					<h4 class="modal-title">Editar Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label>Name</label>
-						<input type="text" class="form-control" required>
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada_edit" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="id_inventario_equipamento" class="form-control">
 					</div>
 					<div class="form-group">
-						<label>Email</label>
-						<input type="email" class="form-control" required>
+						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="provinencia_edit" class="form-control">
 					</div>
 					<div class="form-group">
-						<label>Address</label>
-						<textarea class="form-control" required></textarea>
+						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="equipamento_edit">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 {% for equipamento_list in equipamento %}
+							  <option value="{{equipamento_list.id}}">{{equipamento_list.descricao}}</option>
+							  {% endfor %}
+						</select>
 					</div>
 					<div class="form-group">
-						<label>Phone</label>
-						<input type="text" class="form-control" required>
-					</div>					
+						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
+						<input type="text" class="form-control" id="localizacao_edit">
+					</div>		
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
+						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-info" value="Save">
+					<input class="btn btn-info" onclick="edit_equipamento_inventario()" value="Alterar">
 				</div>
 			</form>
 		</div>
@@ -191,20 +209,50 @@
 </div>
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
+	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Delete Employee</h4>
+					<h4 class="modal-title">Apagar Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning"><small>This action cannot be undone.</small></p>
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete">
+					<input  class="btn btn-danger" onclick="delete_equipamento_inventario()" value="Apagar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="checkboxdeleteEmployeeModal" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input id="id_deleteCk" class="btn btn-danger" value="Apagar">
 				</div>
 			</form>
 		</div>
@@ -216,6 +264,13 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		flatpickr("#data_entrada", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_entrada_edit", {
 			dateFormat: "Y-m-d",
 			locale: "pt"
 		});

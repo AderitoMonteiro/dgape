@@ -1,0 +1,22 @@
+# Ignorar ficheiros compilados do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar configurações locais e ficheiros de ambiente virtual
+.env
+*.sqlite3
+db.sqlite3
+*.log
+venv/
+env/
+*.swp
+
+# Ignorar ficheiros do Django migrations cache
+*/migrations/*.pyc
+*/migrations/*.py
+
+# Ignorar ficheiros do VS Code e do JetBrains (PyCharm)
+.vscode/
+.idea/
