@@ -195,7 +195,7 @@ def delete_equipamento(request):
                     equipamento_ob.dateupdate=datetime.now()
                     equipamento_ob.save()
                                                                   
-                    message='Equipamento eleminado com sucesso!!'
+                    message='Equipamento eliminado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
          
@@ -215,7 +215,7 @@ def delete_equipamento_checkbox(request):
                          id_eqs = id_eq.split(",") 
                          equipamento.objects.filter(id__in=id_eqs).update(status=0,user_update=id_user,dateupdate=datetime.now())
                                                                   
-                   message='Equipamento eleminado com sucesso!!'
+                   message='Equipamento eliminado com sucesso!!'
                    status= 'success'
                    return JsonResponse({'status':status, 'message': message })
          
@@ -328,7 +328,7 @@ def delete_mobiliario(request):
                     mobiliario_ob.dateupdate=datetime.now()
                     mobiliario_ob.save()
                                                                   
-                    message='Mobiliario eleminado com sucesso!!'
+                    message='Mobiliario eliminado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
          
@@ -348,7 +348,7 @@ def delete_mobiliario_checkbox(request):
                          id_mbs = id_mb.split(",") 
                          mobiliario.objects.filter(id__in=id_mbs).update(status=0,user_update=id_user,dateupdate=datetime.now())
                                                                   
-                   message='Equipamento eleminado com sucesso!!'
+                   message='Mobiliario eliminado com sucesso!!'
                    status= 'success'
                    return JsonResponse({'status':status, 'message': message })
             except Exception as e:
@@ -468,7 +468,7 @@ def get_mobiliario_inventario(request):
             try:
                   query = '''
                             SELECT 
-                            die.id as id_inventario_mobiliario,
+                            die.id,
                             die.data_entrada,
                             die.localizacao,
                             die.obs,
@@ -554,7 +554,7 @@ def edit_mobiliario_equipamento(request):
                                     inventario_mobiliari.user_update=user_update
                                     inventario_mobiliari.save()
                                                                 
-                                    message='Inventario alterado com sucesso!!'
+                                    message='Inventario mobiliario alterado com sucesso!!'
                                     status= 'success'
                                     return JsonResponse({'status':status, 'message': message })
 
@@ -579,7 +579,7 @@ def delete_equipamento_inventario(request):
                     inventario_equipament.dateupdate=datetime.now()
                     inventario_equipament.save()
                                                                   
-                    message='Inventario eleminado com sucesso!!'
+                    message='Inventario eliminado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
          
@@ -600,7 +600,7 @@ def delete_mobiliario_inventario(request):
                     inventario_mobiliari.dateupdate=datetime.now()
                     inventario_mobiliari.save()
                                                                   
-                    message='Inventario eleminado com sucesso!!'
+                    message='Inventario eliminado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
          
@@ -621,7 +621,7 @@ def delete_equipamento_inventario_checkbox(request):
                          id_eqs = id_eq.split(",") 
                          inventario_equipamento.objects.filter(id__in=id_eqs).update(status=0,user_update=id_user,dateupdate=datetime.now())
                                                                   
-                   message='Equipamento eleminado com sucesso!!'
+                   message='Equipamento eliminado com sucesso!!'
                    status= 'success'
                    return JsonResponse({'status':status, 'message': message })
          
@@ -641,7 +641,7 @@ def delete_mobiliario_inventario_checkbox(request):
                          id_eqs = id_eq.split(",") 
                          inventario_mobiliario.objects.filter(id__in=id_eqs).update(status=0,user_update=id_user,dateupdate=datetime.now())
                                                                   
-                   message='Mobiliario eleminado com sucesso!!'
+                   message='Inventario eliminado com sucesso!!'
                    status= 'success'
                    return JsonResponse({'status':status, 'message': message })
          

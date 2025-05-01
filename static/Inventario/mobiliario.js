@@ -97,7 +97,7 @@ function get_mobiliario_inventario(button){
             document.getElementById('provinencia_edit').value=data.resultado[0].provinencia
             document.getElementById('mobiliario_edit').value=data.resultado[0].mobiliario_id
             document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
-            document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id_inventario_mobiliario
+            document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
            
  
