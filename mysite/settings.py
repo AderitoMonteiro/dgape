@@ -82,10 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dgape',
-        'USER': 'root',  
-        'PASSWORD': '', 
-        'HOST': '127.0.0.1', 
-        'PORT': '3306',
+        'USER': 'dgape_user',  
+        'PASSWORD': 'QJJZawUo6qAOlQXVNkxfXuMyXdPeKgLk', 
+        'HOST': 'dpg-d09cp9uuk2gs73d4of7g-a', 
+        'PORT': '5432',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
