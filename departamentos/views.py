@@ -6,6 +6,8 @@ from django.core.paginator import Paginator
 from django.core.serializers import serialize
 from datetime import datetime
 from django.db import connection
+import openpyxl
+
 
 
 
@@ -648,3 +650,92 @@ def delete_mobiliario_inventario_checkbox(request):
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+def exportar_inventario_equipamento_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Inventario_Equipamento'
+
+    query = '''
+                      SELECT 
+                      die.id as inventario_equipamento_id,
+                      die.data_entrada,
+                      die.localizacao,
+                      die.obs,
+                      die.provinencia,
+                      de.descricao,
+                      de.modelo,
+                      de.marca,
+                      de.mac_address,
+                      de.serial_number
+                      FROM 
+                      departamentos_inventario_equipamento as die
+                      inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                      where die.status=1
+                  '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Equipamento', 'Localização','Modelo','Serial Number','Provinçia','Mac Addres','Marca','Obs'])
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['inventario_equipamento_id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['localizacao'],equipamento['modelo'],equipamento['serial_number'],equipamento['provinencia'],equipamento['mac_address'],equipamento['marca'],equipamento['obs']])
+
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Inventario.xlsx'
+                    workbook.save(response)
+
+    return response
+
+def exportar_inventario_mobiliario_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Inventario_Equipamento'
+
+    query = '''
+                    SELECT 
+                    die.id,
+                    die.data_entrada,
+                    die.localizacao,
+                    die.obs,
+                    die.provinencia,
+                    de.descricao
+                    FROM 
+                    departamentos_inventario_mobiliario as die
+                    inner join departamentos_mobiliario as de on die.mobiliario_id=de.id
+                    where die.status=1
+                  '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Mobiliario', 'Localização','Provinçia','OBS'])
+
+                    # Dados
+                    for mobiliario in resultados:
+                        folha.append([mobiliario['id'], mobiliario['data_entrada'], mobiliario['descricao'],mobiliario['localizacao'],mobiliario['provinencia'],mobiliario['obs']])
+
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Inventario.xlsx'
+                    workbook.save(response)
+
+    return response

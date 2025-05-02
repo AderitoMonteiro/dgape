@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import delete_mobiliario_inventario_checkbox,delete_mobiliario_inventario,edit_mobiliario_equipamento,get_mobiliario_inventario,add_inventario_mobiliario,inventario_mobiliario_home,inventario_equipamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox,add_inventario_equipamento,get_equipamento_inventario,edit_inventario_equipamento,delete_equipamento_inventario,delete_equipamento_inventario_checkbox
+from .views import exportar_inventario_mobiliario_excel,exportar_inventario_equipamento_excel,delete_mobiliario_inventario_checkbox,delete_mobiliario_inventario,edit_mobiliario_equipamento,get_mobiliario_inventario,add_inventario_mobiliario,inventario_mobiliario_home,inventario_equipamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox,add_inventario_equipamento,get_equipamento_inventario,edit_inventario_equipamento,delete_equipamento_inventario,delete_equipamento_inventario_checkbox
 app_name = "departamento"
 urlpatterns = [
    path('equipamento/index/', inventario_equipamento_home, name='departamento'),
@@ -27,5 +27,7 @@ urlpatterns = [
    path('mobiliario/index/delete_inventario_mobiliario/', delete_mobiliario_inventario, name='delete_mobiliario_inventario'),
    path('equipamento/index/checkbox_inventario_equipamento/', delete_equipamento_inventario_checkbox, name='delete_equipamento_inventario'),
    path('mobiliario/index/checkbox_inventario_mobiliario/', delete_mobiliario_inventario_checkbox, name='delete_mobiliario_inventario_checkbox'),
+   path('exportar_inventario_equipamento/', exportar_inventario_equipamento_excel, name='exportar_inventario'),
+   path('exportar_inventario_mobiliario/', exportar_inventario_mobiliario_excel, name='exportar_inventario'),
 
 ]

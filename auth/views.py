@@ -15,7 +15,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             
-            return redirect('/inventario/equipamento_index/')
+            return redirect('/inventario/equipamento/index')
         else:
             return render(request, 'auth/login.html', {'erro': 'Credenciais inválidas'})
 
