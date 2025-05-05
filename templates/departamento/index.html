@@ -46,7 +46,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       var jqOld = jQuery.noConflict(); // Salva a versão antiga do jQuery
-   </script>
+    </script>
+    <script>
+       function toggleSubmenuDGAPE(event) {
+          event.preventDefault();
+          const submenu = event.target.nextElementSibling;
+          if (submenu.style.display === 'none' || submenu.style.display === '') {
+            submenu.style.display = 'block';
+          } else {
+            submenu.style.display = 'none';
+          }
+        }
+        function toggleSubmenuinventariodgape(event) {
+          event.preventDefault();
+          const submenu = event.target.nextElementSibling;
+          if (submenu.style.display === 'none' || submenu.style.display === '') {
+            submenu.style.display = 'block';
+          } else {
+            submenu.style.display = 'none';
+          }
+        }
+
+        function toggleSubmenugestaopatrimonal(event) {
+          event.preventDefault();
+          const submenu = event.target.nextElementSibling;
+          if (submenu.style.display === 'none' || submenu.style.display === '') {
+            submenu.style.display = 'block';
+          } else {
+            submenu.style.display = 'none';
+          }
+        }
+    </script>
+    
     <script src="{%static 'jscript/jscript.js'%}"></script>
     {% block extra_jscript %}
     {% endblock %}

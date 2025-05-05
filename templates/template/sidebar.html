@@ -11,25 +11,36 @@
         <a href="#"></a>
       </li>
       <li>
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">GESTÃO DE INVENTARIO</a>
-        <ul class="list-unstyled collapse" id="homeSubmenu">
-          <li>
-              <a onclick="window.location.href='/inventario/equipamento/index/'" >Equipamentos</a>
-          </li>
-          <li>
-              <a onclick="window.location.href='/inventario/mobiliario/index'">Mobiliario</a>
-          </li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">DGAPE</a>
+        <ul class="list-unstyled collapse">
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuinventariodgape(event)" class="dropdown-toggle">Gestão Inventario</a>
+          <ul class="list-unstyled collapse">
+            <li>
+                <a onclick="window.location.href='/inventario/equipamento/index/'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+            </li>
+            <li>
+                <a onclick="window.location.href='/inventario/mobiliario/index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+            </li> 
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Gestão Patrimonial</a>
+          <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="window.location.href='/gestao_equipamento/equipamento_index'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+              </li>
+              <li>
+                <a onclick="window.location.href='/gestao_mobiliario/mobiliario_index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+              </li>
+          </ul>
         </ul>
       </li>
       <li>
-        <a href="#pagegestao" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">GESTÃO</a>
-        <ul class="list-unstyled collapse" id="pagegestao">
-          <li>
-            <a onclick="window.location.href='/gestao_equipamento/equipamento_index'" >EQUIPAMENTOS</a>
-          </li>
-          <li>
-            <a onclick="window.location.href='/gestao_mobiliario/mobiliario_index'">MOBILIARIOS</a>
-          </li>
+        <a onclick="window.location.href='/gestao_kit_eleitoral/index'" >KIT ELEITORAL</a>
+      </li>
+
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">EQUIPAMENTO ELEITORAL</a>
+        <ul class="list-unstyled collapse">
+         
         </ul>
       </li>
     <li>  
