@@ -52,7 +52,7 @@ function add_kit() {
 
     // Configuração da requisição
     jqOld.ajax({
-        url: 'add/',
+        url: '../add/',
         type: 'POST',
         data: data,
         success: function (data) {
