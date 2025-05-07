@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class kit_el(models.Model):
+class kit_eleit(models.Model):
     id = models.AutoField(primary_key=True)
     data_aquisicao = models.DateField()
     cres_id = models.IntegerField()

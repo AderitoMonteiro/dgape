@@ -11,7 +11,7 @@
         <a href="#"></a>
       </li>
       <li>
-        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">DGAPE</a>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO DGAPE</a>
         <ul class="list-unstyled collapse">
           <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuinventariodgape(event)" class="dropdown-toggle">Gestão Inventario</a>
           <ul class="list-unstyled collapse">
@@ -33,15 +33,32 @@
           </ul>
         </ul>
       </li>
+      
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO ELEITORAL</a>
+        <ul class="list-unstyled collapse">
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuinventariodgape(event)" class="dropdown-toggle">Gestão Inventario</a>
+          <ul class="list-unstyled collapse">
+            <li>
+                <a onclick="window.location.href='/inventario/equipamento/index/'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+            </li>
+            <li>
+                <a onclick="window.location.href='/inventario/mobiliario/index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+            </li>
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Gestão Patrimonial</a>
+          <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="window.location.href='/gestao_equipamento/equipamento_eleitoral_index'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+              </li>
+              <li>
+                <a onclick="window.location.href='/gestao_mobiliario/mobiliario_eleitoral_index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+              </li>
+          </ul>
+          </ul>
+      </li>
       <li>
         <a onclick="window.location.href='/gestao_kit_eleitoral/index'" >KIT ELEITORAL</a>
-      </li>
-
-      <li>
-        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">EQUIPAMENTO ELEITORAL</a>
-        <ul class="list-unstyled collapse">
-         
-        </ul>
       </li>
     <li>  
         <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>

@@ -1,0 +1,251 @@
+
+
+{% extends "../departamento/index.html" %}
+
+{% block title %}SDGAPE{% endblock %}
+{% block extra_styles %}
+{% load static %} 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static 'Departamento/inventario/style.css' %}">
+<script src="{%static 'Departamento/inventario/jscript.js'%}"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+	<div class="table-responsive">
+		<div class="table-wrapper">
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2 style="color: #fff;">GESTÃO DE <b>EQUIPAMENTOS ELEITORAL</b></h2>
+					</div>
+					<div class="col-sm-6">
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo equipamento</span></a>
+						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
+					</div>
+				</div>
+			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="selectAll">
+								<label for="selectAll"></label>
+							</span>
+						</th>
+						<th>Nome</th>
+						<th>Marca</th>
+						<th>Modelo</th>
+						<th>serial Number</th>
+						<th>Mac Address</th>
+						<th>Acões</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					{% for equipamento_list in equipamento %}
+
+					<tr>
+						<td>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="checkbox{{ equipamento_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ equipamento_list.id }}">
+								<label for="checkbox{{ equipamento_list.id }}"></label>
+							</span>
+						</td>
+						<td>{{equipamento_list.descricao}}</td>
+						<td>{{equipamento_list.marca}}</td>
+						<td>{{equipamento_list.modelo}}</td>
+						<td>{{equipamento_list.serial_number}}</td>
+						<td>{{equipamento_list.mac_address}}</td>
+						<td>
+							<a href="#editEmployeeModal" class="edit" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_eleitoral(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_eleitoral_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+						</td>
+					</tr>
+					{% empty %}
+					<tr>
+					   <td colspan="4">Nenhum equipamento  encontrado.</td>
+					</tr>
+				{% endfor %}
+
+				</tbody>
+			</table>
+			<div class="clearfix">
+				<div class="hint-text"> <span>Página {{ equipamento.number }} de {{ equipamento.paginator.num_pages }}</span></div>
+				<ul class="pagination">
+
+					{% if equipamento.has_previous %}
+					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
+					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% endif %}
+
+					{% if equipamento.has_next %}
+						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
+					{% endif %}
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>        
+</div>
+<!-- Edit Modal HTML -->
+
+<div id="addEmployeeModal" class="modal fade" >
+	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Novo Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				
+				<div class="modal-body">				
+					<div class="form-group">
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="descricao" class="form-control" required>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>
+					<div class="form-group">
+						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="marca" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="modelo" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Serial Number</strong></label></label>
+						<input type="text" id="serial_number" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Mac Address</strong></span></label></label>
+						<input type="text" id="mac_address" class="form-control" required>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input class="btn btn-success" onclick="add_equipamanto_eleitoral()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Edit Modal HTML -->
+<div id="editEmployeeModal" class="modal fade">
+	<div id="alerta_edit" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Editar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="descricao_edit" class="form-control" required>
+						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="equipamento_id" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="marca_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="modelo_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Serial Number</strong></label></label>
+						<input type="text" id="serial_number_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Mac Address</strong></span></label></label>
+						<input type="text" id="mac_address_edit" class="form-control" required>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input class="btn btn-info" onclick="edit_equipamanto_eleitoral()" value="Alterar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Delete Modal HTML -->
+<div id="deleteEmployeeModal" class="modal fade">
+	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="equipamento_delete" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-danger" onclick="delete_equipamanto()" value="Apagar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteEmployeeModalcheekbox" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+		
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  id="id_equipamento_eleitoral_deleteCk"  class="btn btn-danger" value="Apagar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extra_jscript %}
+<script src="{%static 'equipamento/equipamento.js'%}"></script>
+<script src="{%static 'equipamento/equipamento_eleitoral.js'%}"></script>
+{% endblock %}
+
+

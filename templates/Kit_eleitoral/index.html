@@ -30,6 +30,7 @@
 						<h2 style="color: #fff;">GESTÃO DE <b>KIT ELEITORAL</b></h2>
 					</div>
 					<div class="col-sm-6">
+						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo kit</span></a>
 						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
@@ -44,33 +45,47 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Nome</th>
-						<th>Marca</th>
-						<th>Modelo</th>
-						<th>serial Number</th>
-						<th>Mac Address</th>
+						<th>Data Aquisicao</th>
+						<th>CRES</th>
+						<th>Malas</th>
+						<th>Kit</th>
+						<th>Any Dask</th>
+						<th>Serial Number</th>
+						<th>Impresora</th>
+						<th>Scaner Impresão Digital</th>
+						<th>Capitura Assinatura</th>
+						<th>Camara Fotografica</th>
+						<th>guia Entrega</th>	
+						<th>Data Saida</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for conselho_list in equipamento %}
+					{% for paginator_kit_list in kit_eleitoral %}
 
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ conselho_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ conselho_list.id }}">
-								<label for="checkbox{{ conselho_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ paginator_kit_list.id }}" class="kit-checkbox" name="options[]" value="{{ paginator_kit_list.id }}">
+								<label for="checkbox{{ paginator_kit_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{conselho_list.descricao}}</td>
-						<td>{{conselho_list.marca}}</td>
-						<td>{{conselho_list.modelo}}</td>
-						<td>{{conselho_list.serial_number}}</td>
-						<td>{{conselho_list.mac_address}}</td>
+						<td>{{paginator_kit_list.data_aquisicao | date:"j \d\e F \d\e Y"}}</td>
+						<td>{{paginator_kit_list.descricao}}</td>
+						<td>{{paginator_kit_list.malas}}</td>
+						<td>{{paginator_kit_list.kit}}</td>
+						<td>{{paginator_kit_list.any_dask}}</td>
+						<td>{{paginator_kit_list.serial_number}}</td>
+						<td>{{paginator_kit_list.impresora}}</td>
+						<td>{{paginator_kit_list.scaner_impresao_digital}}</td>
+						<td>{{paginator_kit_list.capitura_assinatura}}</td>
+						<td>{{paginator_kit_list.camara_fotografica}}</td>
+						<td>{{paginator_kit_list.guia_entrega}}</td>
+						<td>{{paginator_kit_list.data_saida}}</td>
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-id="{{ conselho_list.id }}" onclick="get_equipamento(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-id="{{ conselho_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal" class="edit" data-id="{{ paginator_kit_list.id }}" onclick="get_kit(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ paginator_kit_list.id }}" onclick="get_kit_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -78,23 +93,21 @@
 					   <td colspan="4">Nenhum equipamento  encontrado.</td>
 					</tr>
 				{% endfor %}
-
 				</tbody>
+
 			</table>
 			<div class="clearfix">
-				<div class="hint-text"> <span>Página {{ equipamento.number }} de {{ equipamento.paginator.num_pages }}</span></div>
+				<div class="hint-text"> <span>Página {{ kit_eleitoral.number }} de {{ kit_eleitoral.paginator.num_pages }}</span></div>
 				<ul class="pagination">
 
-					{% if equipamento.has_previous %}
+					{% if kit_eleitoral.has_previous %}
 					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
+					<li class="page-item"><a href="?page={{ kit_eleitoral.previous_page_number }}" class="page-link">Anterior</a></li>
 					{% endif %}
 
-					{% if equipamento.has_next %}
-						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
+					{% if kit_eleitoral.has_next %}
+						<li class="page-item"><a href="?page={{ kit_eleitoral.next_page_number }}" class="page-link">Próxima</a></li>
 					{% endif %}
-					
-					
 				</ul>
 			</div>
 		</div>
@@ -198,36 +211,78 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Editar Equipamento</h4>
+					<h4 class="modal-title">Editar Kit</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label><strong>Descrição</strong><span style="color: red;">*</span></label>
-						<input type="text" id="descricao_edit" class="form-control" required>
+						<label><strong>Data Aquisição</strong><span style="color: red;">*</span></label>
+						<input type="date" id="data_aquisicao_edit" readonly>
 						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="equipamento_id" class="form-control">
+						<input type="hidden" id="kit_el_id" class="form-control">
 					</div>
 					<div class="form-group">
-						<label><strong>Marca</strong><span style="color: red;">*</span></label>
-						<input type="text" id="marca_edit" class="form-control" required>
+						<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="conselho_edit">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 {% for conselho_list in conselho %}
+							  <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
+							  {% endfor %}
+						</select>
 					</div>
 					<div class="form-group">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label>
-						<input type="text" id="modelo_edit" class="form-control" required>
+						<label><strong>Malas</strong><span style="color: red;">*</span></label>
+						<input type="text" id="malas_edit" class="form-control">
 					</div>
 					<div class="form-group">
-						<label><strong>Serial Number</strong></label>
-						<input type="text" id="serial_number_edit" class="form-control" required>
+						<label><strong>Kit</strong><span style="color: red;">*</span></label>
+						<input type="text" id="kit_edit" class="form-control" >
 					</div>
 					<div class="form-group">
-						<label><strong>Mac Address</strong></span></label>
-						<input type="text" id="mac_address_edit" class="form-control" required>
-					</div>	
+						<label><strong>Any Dask</strong></label><span style="color: red;">*</span></label>
+						<input type="text" id="any_dask_edit" class="form-control" >
+					</div>
+				    <div class="form-group">
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label>
+						<input type="text" id="serial_number_edit" class="form-control" >
+					</div>
+					<div class="form-group">
+						<label><strong>Mac Address</strong><span style="color: red;">*</span></label>
+						<input type="text" id="mac_address_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Portatel</strong><span style="color: red;">*</span></label>
+						<input type="text" id="portatel_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Impressora</strong><span style="color: red;">*</span></label>
+						<input type="text" id="impressora_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+						<input type="text" id="Scaner_impresao_digital_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
+						<input type="text" id="capitura_assinatura_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
+						<input type="text" id="cama_fotografia_edit" class="form-control">
+					</div>
+					<div class="form-group">
+						<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
+						<input type="text" id="guia_entrega_edit" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
+						<input type="date" id="data_saida_edit" readonly>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_equipamanto()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_kit()" value="Alterar">
 				</div>
 			</form>
 		</div>
@@ -242,18 +297,18 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Apagar Equipamento</h4>
+					<h4 class="modal-title">Apagar Kit</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<p>Tem a certeza de que pretende eliminar esses registos?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
 					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="equipamento_delete" class="form-control">
+					<input type="hidden" id="kit_delete" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="delete_equipamanto()" value="Apagar">
+					<input  class="btn btn-danger" onclick="delete_kit()" value="Apagar">
 				</div>
 			</form>
 		</div>
@@ -302,6 +357,23 @@
 			dateFormat: "Y-m-d",
 			locale: "pt"
 		});
+	
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_saida_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_aquisicao_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	
 	});
 </script>
 <script src="{%static 'Kit/kit.js'%}"></script>

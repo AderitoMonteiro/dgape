@@ -1,25 +1,37 @@
 from django.urls import path
 
-from .views import exportar_inventario_mobiliario_excel,exportar_inventario_equipamento_excel,delete_mobiliario_inventario_checkbox,delete_mobiliario_inventario,edit_mobiliario_equipamento,get_mobiliario_inventario,add_inventario_mobiliario,inventario_mobiliario_home,inventario_equipamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox,add_inventario_equipamento,get_equipamento_inventario,edit_inventario_equipamento,delete_equipamento_inventario,delete_equipamento_inventario_checkbox
+from .views import delete_mobiliario_eleitoral_checkbox,delete_mobiliario_eleitoral,editar_mobiliario_eleitoral,get_mobiliario_eleitoral,add_mobiliario_eleitoral,gestao_mobiliario_eleitoral,delete_equipamento_eleitoral_checkbox,delete_equipamento_eleitoral,editar_equipamento_eleitoral,get_equipamento_eleitoral,add_equipamento_eleitoral,gestao_equipamento_eleitoral,exportar_inventario_mobiliario_excel,exportar_inventario_equipamento_excel,delete_mobiliario_inventario_checkbox,delete_mobiliario_inventario,edit_mobiliario_equipamento,get_mobiliario_inventario,add_inventario_mobiliario,inventario_mobiliario_home,inventario_equipamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox,add_inventario_equipamento,get_equipamento_inventario,edit_inventario_equipamento,delete_equipamento_inventario,delete_equipamento_inventario_checkbox
 app_name = "departamento"
 urlpatterns = [
    path('equipamento/index/', inventario_equipamento_home, name='departamento'),
    path('mobiliario/index/', inventario_mobiliario_home, name='departamento'),
    path('mobiliario/index/add/', add_inventario_mobiliario, name='add_inventario_mobiliario'),
    path('equipamento_index/', gestao_equipamento, name='equipamento'),
+   path('equipamento_eleitoral_index/', gestao_equipamento_eleitoral, name='equipamento'),
    path('equipamento_index/add/', add_equipamento, name='add_equipamento'),
+   path('equipamento_eleitoral_index/add/', add_equipamento_eleitoral, name='add_equipamento'),
    path('get/equipamento_editar/', get_equipamento, name='get_equipamento'),
+   path('get/equipamento_eleitoral_editar/', get_equipamento_eleitoral, name='get_equipamento'),
    path('equipamento/get/equipamento_inventario_id/', get_equipamento_inventario, name='get_equipamento_inventario'),
    path('mobiliario/get/mobiliario_inventario_id/', get_mobiliario_inventario, name='get_mobiliario_inventario'),
    path('equipamento_index/edit/', editar_equipamento, name='editar_equipamento'),
+   path('equipamento_eleitoral_index/edit/', editar_equipamento_eleitoral, name='editar_equipamento'),
    path('equipamento_index/delete/', delete_equipamento, name='delete_equipamento'),
+   path('equipamento_eleitoral_index/delete/', delete_equipamento_eleitoral, name='delete_equipamento'),
    path('mobiliario_index/delete/', delete_mobiliario, name='delete_mobiliario'),
+   path('mobiliario_eleitoral_index/delete/', delete_mobiliario_eleitoral, name='delete_mobiliario_eleitoral'),
    path('equipamento_index/checkbox/', delete_equipamento_checkbox, name='delete_equipamento_checkbox'),
+   path('equipamento_eleitoral_index/checkbox/', delete_equipamento_eleitoral_checkbox, name='delete_equipamento_checkbox'),
    path('mobiliario_index/checkbox/', delete_mobiliario_checkbox, name='delete_mobiliario_checkbox'),
+   path('mobiliario_eleitoral_index/checkbox/', delete_mobiliario_eleitoral_checkbox, name='delete_mobiliario_checkbox'),
    path('mobiliario_index/', gestao_mobiliario, name='mobiliario'),
+   path('mobiliario_eleitoral_index/', gestao_mobiliario_eleitoral, name='mobiliario'),
    path('mobiliario_index/add/', add_mobiliario, name='add_mobiliario'),
+   path('mobiliario_eleitoral_index/add/', add_mobiliario_eleitoral, name='add_mobiliario'),
    path('get/mobiliario_editar/', get_mobiliario, name='get_mobiliario'),
+   path('get/mobiliario_eleitoral_editar/', get_mobiliario_eleitoral, name='get_mobiliario_eleitoral'),
    path('mobiliario_index/edit/', editar_mobiliario, name='editar_mobiliario'),
+   path('mobiliario_eleitoral_index/edit/', editar_mobiliario_eleitoral, name='editar_mobiliario_eleitoral'),
    path('equipamento/index/add/', add_inventario_equipamento, name='add_inventario_equipamento'),
    path('equipamento/index/edit_inventario_equipamento/', edit_inventario_equipamento, name='edit_inventario_equipamento'),
    path('mobiliario/index/edit_inventario_equipamento/', edit_mobiliario_equipamento, name='edit_mobiliario_equipamento'),
