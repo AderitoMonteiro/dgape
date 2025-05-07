@@ -44,33 +44,51 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Nome</th>
-						<th>Marca</th>
-						<th>Modelo</th>
-						<th>serial Number</th>
-						<th>Mac Address</th>
+						<th>Data Aquisicao</th>
+						<th>CRES</th>
+						<th>Malas</th>
+						<th>Kit</th>
+						<th>Any Dask</th>
+						<th>Serial Number</th>
+						<th>Mac</th>
+						<th>Portatel</th>
+						<th>Impresora</th>
+						<th>Scaner Impresão Digital</th>
+						<th>Capitura Assinatura</th>
+						<th>Camara Fotografica</th>
+						<th>Guia Entrega</th>
+						<th>Data Saida</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for conselho_list in equipamento %}
+					{% for paginator_kit_list in kit_eleitoral %}
 
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ conselho_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ conselho_list.id }}">
-								<label for="checkbox{{ conselho_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ paginator_kit_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ paginator_kit_list.id }}">
+								<label for="checkbox{{ paginator_kit_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{conselho_list.descricao}}</td>
-						<td>{{conselho_list.marca}}</td>
-						<td>{{conselho_list.modelo}}</td>
-						<td>{{conselho_list.serial_number}}</td>
-						<td>{{conselho_list.mac_address}}</td>
+						<td>{{paginator_kit_list.data_aquisicao}}</td>
+						<td>{{paginator_kit_list.descricao}}</td>
+						<td>{{paginator_kit_list.malas}}</td>
+						<td>{{paginator_kit_list.kit}}</td>
+						<td>{{paginator_kit_list.any_dask}}</td>
+						<td>{{paginator_kit_list.serial_number}}</td>
+						<td>{{paginator_kit_list.mac}}</td>
+						<td>{{paginator_kit_list.portatel}}</td>
+						<td>{{paginator_kit_list.impresora}}</td>
+						<td>{{paginator_kit_list.scaner_impresao_digital}}</td>
+						<td>{{paginator_kit_list.capitura_assinatura}}</td>
+						<td>{{paginator_kit_list.camara_fotografica}}</td>
+						<td>{{paginator_kit_list.guia_entrega}}</td>
+						<td>{{paginator_kit_list.data_saida}}</td>
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-id="{{ conselho_list.id }}" onclick="get_equipamento(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-id="{{ conselho_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal" class="edit" data-id="{{ paginator_kit_list.id }}" onclick="get_equipamento(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" class="delete" data-id="{{ paginator_kit_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -93,8 +111,6 @@
 					{% if equipamento.has_next %}
 						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
 					{% endif %}
-					
-					
 				</ul>
 			</div>
 		</div>

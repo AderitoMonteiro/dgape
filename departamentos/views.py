@@ -38,7 +38,7 @@ def inventario_equipamento_home(request):
                 '''
     with connection.cursor() as cursor:
           cursor.execute(query)
-
+          print(cursor.description)
           colunas = [col[0] for col in cursor.description] 
           resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 

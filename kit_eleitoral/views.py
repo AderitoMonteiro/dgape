@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from .models import kit_eleitoral,conselho
+from .models import kit_eleit,conselho
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
 from django.db import connection
+from django.core.paginator import Paginator
 
 
 
@@ -11,8 +12,7 @@ def gestao_kit_eleitoral(request):
 
             conselho_lis = conselho.objects.all().filter(status=1)     
             try:
-                query = '''
-                                SELECT 
+                query = '''     SELECT 
                                 KE.id as id, 
                                 KE.data_aquisicao as data_aquisicao,
                                 KE.cres_id as cres_id, 
@@ -30,19 +30,18 @@ def gestao_kit_eleitoral(request):
                                 KE.guia_entrega as guia_entrega,
                                 KE.data_saida as data_saida,
                                 kec.descricao as descricao
-                                FROM kit_eleitoral_kit_eleitoral as KE
+                                FROM kit_eleitoral_kit_eleit as KE
                                 INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
                                 where KE.status=1
                             '''
                 with connection.cursor() as cursor:
                  cursor.execute(query)
-
-                colunas = [col[0] for col in cursor.description] 
-                resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-
-                paginator = Paginator(resultados, 7)
-                page_number = request.GET.get("page")  
-                paginator_kit_list = paginator.get_page(page_number)
+                
+                 colunas = [col[0] for col in cursor.description] 
+                 resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                 paginator = Paginator(resultados, 7)
+                 page_number = request.GET.get("page")  
+                 paginator_kit_list = paginator.get_page(page_number)
              
 
                 return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list})
