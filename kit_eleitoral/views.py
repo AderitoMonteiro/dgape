@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import kit_eleitoral,conselho
+from .models import kit_el,conselho
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
@@ -11,31 +11,30 @@ def gestao_kit_eleitoral(request):
 
             conselho_lis = conselho.objects.all().filter(status=1)     
             try:
-                query = '''
-                                SELECT 
-                                KE.id as id, 
-                                KE.data_aquisicao as data_aquisicao,
-                                KE.cres_id as cres_id, 
-                                KE.status as status, 
-                                KE.malas as malas, 
-                                KE.kit as kit ,
-                                KE.any_dask as any_dask,
-                                KE.serial_number as serial_number, 
-                                KE.mac as mac, 
-                                KE.portatel as portatel, 
-                                KE.impresora as impresora, 
-                                KE.scaner_impresao_digital as scaner_impresao_digital,
-                                KE.capitura_assinatura as capitura_assinatura,
-                                KE.camara_fotografica as camara_fotografica,
-                                KE.guia_entrega as guia_entrega,
-                                KE.data_saida as data_saida,
-                                kec.descricao as descricao
-                                FROM kit_eleitoral_kit_eleitoral as KE
-                                INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                where KE.status=1
+                query = ''' SELECT 
+                            kit_el.id as kit_el_id,
+                            kit_el.data_aquisicao,
+                            kit_el.cres_id, 
+                            kit_el.status, 
+                            kit_el.malas, 
+                            kit_el.kit,
+                            kit_el.any_dask,
+                            kit_el.serial_number, 
+                            kit_el.mac, 
+                            kit_el.portatel, 
+                            kit_el.impresora, 
+                            kit_el.scaner_impresao_digital,
+                            kit_el.capitura_assinatura,
+                            kit_el.camara_fotografica,
+                            kit_el.guia_entrega,
+                            kit_el.data_saida,
+                            kec.descricao as descricao
+                            FROM kit_eleitoral_kit_el as kit_el
+                            inner join kit_eleitoral_conselho as kec on kit_el.cres_id=kec.id
                             '''
                 with connection.cursor() as cursor:
                  cursor.execute(query)
+                 print(cursor.fetchall())
 
                 colunas = [col[0] for col in cursor.description] 
                 resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
@@ -43,9 +42,10 @@ def gestao_kit_eleitoral(request):
                 paginator = Paginator(resultados, 7)
                 page_number = request.GET.get("page")  
                 paginator_kit_list = paginator.get_page(page_number)
-             
-
-                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list})
+              
+              
+                print(paginator_kit_list)
+                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_el":paginator_kit_list})
 
             except Exception as e:
                   return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -69,11 +69,11 @@ def add_kit(request):
                      data_saida = request.POST.get("data_saida")
                      serial_number = request.POST.get("serial_number")
                      mac_address = request.POST.get("mac_address")
-                     user_create = request.POST.get("id_user")
+                     user_create = request.POST.get("user_create")
 
                      if data_aquisicao !="" and conselho !="" and malas !="" and any_dask !="" and kit !="" and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="" and serial_number !="" and mac_address !="":
 
-                                    kit_eleitoral.objects.create(
+                                    kit_el.objects.create(
                                                                 data_aquisicao = data_aquisicao,
                                                                 cres_id = conselho,
                                                                 malas = malas,
