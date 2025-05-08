@@ -48,10 +48,9 @@
 						<th>Data Aquisicao</th>
 						<th>CRES</th>
 						<th>Malas</th>
-						<th>Kit</th>
-						<th>Any Dask</th>
-						<th>Serial Number</th>
-						<th>Impresora</th>
+						<th>Portatel</th>
+						<th>Impressora</th>
+					
 						<th>Scaner Impresão Digital</th>
 						<th>Capitura Assinatura</th>
 						<th>Camara Fotografica</th>
@@ -74,10 +73,8 @@
 						<td>{{paginator_kit_list.data_aquisicao | date:"j \d\e F \d\e Y"}}</td>
 						<td>{{paginator_kit_list.descricao}}</td>
 						<td>{{paginator_kit_list.malas}}</td>
-						<td>{{paginator_kit_list.kit}}</td>
-						<td>{{paginator_kit_list.any_dask}}</td>
-						<td>{{paginator_kit_list.serial_number}}</td>
-						<td>{{paginator_kit_list.impresora}}</td>
+						<td>{{paginator_kit_list.equipamento}}</td>
+						<td>{{paginator_kit_list.impressora}}</td>
 						<td>{{paginator_kit_list.scaner_impresao_digital}}</td>
 						<td>{{paginator_kit_list.capitura_assinatura}}</td>
 						<td>{{paginator_kit_list.camara_fotografica}}</td>
@@ -90,7 +87,7 @@
 					</tr>
 					{% empty %}
 					<tr>
-					   <td colspan="4">Nenhum equipamento  encontrado.</td>
+					   <td colspan="4">Nenhum Kit encontrado.</td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -137,41 +134,37 @@
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
+						
 						<select class="form-control" id="conselho">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for conselho_list in conselho %}
-							  <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
-							  {% endfor %}
-						</select>
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for conselho_list in conselho %}
+							 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
+							 {% endfor %}
+					   </select>
 					</div>
 					<div class="form-group">
 						<label><strong>Malas</strong><span style="color: red;">*</span></label>
 						<input type="text" id="malas" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Kit</strong><span style="color: red;">*</span></label>
-						<input type="text" id="kit" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Any Dask</strong></label><span style="color: red;">*</span></label>
-						<input type="text" id="any_dask" class="form-control" required>
-					</div>
-				    <div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label>
-						<input type="text" id="serial_number" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Mac Address</strong><span style="color: red;">*</span></label>
-						<input type="text" id="mac_address" class="form-control" required>
-					</div>
-					<div class="form-group">
 						<label><strong>Portatel</strong><span style="color: red;">*</span></label>
-						<input type="text" id="portatel" class="form-control" required>
+						<select class="form-control" id="portatel">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for equipamento_list in equipamento %}
+							 <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>		
+										
 					</div>
 					<div class="form-group">
 						<label><strong>Impressora</strong><span style="color: red;">*</span></label>
-						<input type="text" id="impressora" class="form-control" required>
-					</div>
+						<select class="form-control" id="impressora">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for impressora_list in impressora %}
+							 <option value="{{impressora_list.id}}">{{impressora_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>		
+						</div>
 					<div class="form-group">
 						<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
 						<input type="text" id="Scaner_impresao_digital" class="form-control" required>

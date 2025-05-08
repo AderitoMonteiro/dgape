@@ -58,7 +58,16 @@
           </ul>
       </li>
       <li>
-        <a onclick="window.location.href='/gestao_kit_eleitoral/index'" >KIT ELEITORAL</a>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">GESTÃO KIT</a>
+
+        <ul class="list-unstyled collapse">
+          <li>
+            <a onclick="window.location.href='/gestao_kit_eleitoral/index'" >&nbsp;&nbsp;&nbsp;Registar KIT</a>
+          </li>
+          <li>
+            <a onclick="window.location.href='/gestao_kit_eleitoral/equipamento'">&nbsp;&nbsp;&nbsp;Registar Equipamento</a>
+          </li>
+        </ul>
       </li>
     <li>  
         <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>
