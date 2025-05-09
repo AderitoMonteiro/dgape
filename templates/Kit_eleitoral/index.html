@@ -30,7 +30,7 @@
 						<h2 style="color: #fff;">GESTÃO DE <b>KIT ELEITORAL</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
+						<a onclick="window.location.href='/gestao_kit_eleitoral/index/exportar_kit_excel/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo kit</span></a>
 						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
@@ -111,8 +111,6 @@
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-
-
 
 <div id="addEmployeeModal" class="modal fade" >
 	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
@@ -208,70 +206,67 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<div class="form-group">
-						<label><strong>Data Aquisição</strong><span style="color: red;">*</span></label>
-						<input type="date" id="data_aquisicao_edit" readonly>
-						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="kit_el_id" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="conselho_edit">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for conselho_list in conselho %}
-							  <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
-							  {% endfor %}
-						</select>
-					</div>
-					<div class="form-group">
-						<label><strong>Malas</strong><span style="color: red;">*</span></label>
-						<input type="text" id="malas_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Kit</strong><span style="color: red;">*</span></label>
-						<input type="text" id="kit_edit" class="form-control" >
-					</div>
-					<div class="form-group">
-						<label><strong>Any Dask</strong></label><span style="color: red;">*</span></label>
-						<input type="text" id="any_dask_edit" class="form-control" >
-					</div>
-				    <div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label>
-						<input type="text" id="serial_number_edit" class="form-control" >
-					</div>
-					<div class="form-group">
-						<label><strong>Mac Address</strong><span style="color: red;">*</span></label>
-						<input type="text" id="mac_address_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Portatel</strong><span style="color: red;">*</span></label>
-						<input type="text" id="portatel_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Impressora</strong><span style="color: red;">*</span></label>
-						<input type="text" id="impressora_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
-						<input type="text" id="Scaner_impresao_digital_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
-						<input type="text" id="capitura_assinatura_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
-						<input type="text" id="cama_fotografia_edit" class="form-control">
-					</div>
-					<div class="form-group">
-						<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
-						<input type="text" id="guia_entrega_edit" class="form-control" required>
-					</div>
+						<div class="form-group">
+							<label><strong>Data Aquisição</strong><span style="color: red;">*</span></label>
+							<input type="date" id="data_aquisicao_edit" readonly>
+							<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+							<input type="hidden" id="kit_el_id" class="form-control">
 
-					<div class="form-group">
-						<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
-						<input type="date" id="data_saida_edit" readonly>
-					</div>
+						</div>
+						<div class="form-group">
+							<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
+							
+							<select class="form-control" id="conselho_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for conselho_list in conselho %}
+								 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Malas</strong><span style="color: red;">*</span></label>
+							<input type="text" id="malas_edit" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label><strong>Portatel</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="portatel_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for equipamento_list in equipamento %}
+								 <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>		
+											
+						</div>
+						<div class="form-group">
+							<label><strong>Impressora</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="impressora_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for impressora_list in impressora %}
+								 <option value="{{impressora_list.id}}">{{impressora_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>		
+							</div>
+						<div class="form-group">
+							<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+							<input type="text" id="Scaner_impresao_digital_edit" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
+							<input type="text" id="capitura_assinatura_edit" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
+							<input type="text" id="cama_fotografia_edit" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
+							<input type="text" id="guia_entrega_edit" class="form-control" required>
+						</div>
+	
+						<div class="form-group">
+							<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
+							<input type="date" id="data_saida_edit" readonly>
+						</div>
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

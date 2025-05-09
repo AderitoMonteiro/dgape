@@ -111,14 +111,12 @@ function get_kit(button){
             document.getElementById("data_aquisicao_edit").value= result.resultado[0].data_aquisicao;
             document.getElementById("conselho_edit").value= result.resultado[0].cres_id;
             document.getElementById("malas_edit").value= result.resultado[0].malas;
-            document.getElementById("kit_edit").value= result.resultado[0].kit;
-            document.getElementById("any_dask_edit").value= result.resultado[0].any_dask;
-            document.getElementById("serial_number_edit").value= result.resultado[0].serial_number;
-            document.getElementById("mac_address_edit").value= result.resultado[0].mac;
-            document.getElementById("portatel_edit").value= result.resultado[0].portatel;
-            document.getElementById("impressora_edit").value= result.resultado[0].impresora;
+            document.getElementById("portatel_edit").value= result.resultado[0].id_portatel;
+            document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
             document.getElementById("Scaner_impresao_digital_edit").value= result.resultado[0].scaner_impresao_digital;
             document.getElementById("capitura_assinatura_edit").value= result.resultado[0].capitura_assinatura;
+            document.getElementById("portatel_edit").value= result.resultado[0].id_portatel;
+            document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
             document.getElementById("cama_fotografia_edit").value= result.resultado[0].camara_fotografica;
             document.getElementById("guia_entrega_edit").value= result.resultado[0].guia_entrega;
             document.getElementById("data_saida_edit").value= result.resultado[0].data_saida;
@@ -138,8 +136,6 @@ function get_kit(button){
     const data_aquisicao = document.getElementById('data_aquisicao_edit').value;
     const conselho = document.getElementById('conselho_edit').value;
     const malas = document.getElementById('malas_edit').value;
-    const any_dask = document.getElementById('any_dask_edit').value;
-    const kit = document.getElementById('kit_edit').value;
     const portatel = document.getElementById('portatel_edit').value;
     const impressora = document.getElementById('impressora_edit').value;
     const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital_edit').value;
@@ -147,8 +143,6 @@ function get_kit(button){
     const cama_fotografia = document.getElementById('cama_fotografia_edit').value;
     const guia_entrega = document.getElementById('guia_entrega_edit').value;
     const data_saida = document.getElementById('data_saida_edit').value;
-    const serial_number = document.getElementById('serial_number_edit').value;
-    const mac_address = document.getElementById('mac_address_edit').value;
     const id_user = document.getElementById('id_user_edit').value;
     const kit_el_id = document.getElementById('kit_el_id').value;
 
@@ -158,8 +152,6 @@ function get_kit(button){
         "data_aquisicao": data_aquisicao,
         "conselho": conselho,
         "malas": malas,
-        "any_dask": any_dask,
-        "kit": any_dask,
         "portatel": portatel,
         "impressora": impressora,
         "Scaner_impresao_digital": Scaner_impresao_digital,
@@ -167,8 +159,6 @@ function get_kit(button){
         "cama_fotografia": cama_fotografia,
         "guia_entrega": guia_entrega,
         "data_saida": data_saida,
-        "serial_number": serial_number,
-        "mac_address": mac_address,
         "user_update": id_user,
         "kit_el_id": kit_el_id,
         "X-CSRFToken": getCSRFToken()
