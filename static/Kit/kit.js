@@ -22,6 +22,7 @@ function add_kit() {
     const cama_fotografia = document.getElementById('cama_fotografia').value;
     const guia_entrega = document.getElementById('guia_entrega').value;
     const data_saida = document.getElementById('data_saida').value;
+    const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
     
 
@@ -39,6 +40,7 @@ function add_kit() {
         "guia_entrega": guia_entrega,
         "data_saida": data_saida,
         "user_create": id_user,
+        "obs": obs,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -121,6 +123,7 @@ function get_kit(button){
             document.getElementById("guia_entrega_edit").value= result.resultado[0].guia_entrega;
             document.getElementById("data_saida_edit").value= result.resultado[0].data_saida;
             document.getElementById("kit_el_id").value= result.resultado[0].id;
+            document.getElementById("obs_edit").value= result.resultado[0].obs;
 
           },
          error: function (xhr, status, error) {
@@ -145,6 +148,7 @@ function get_kit(button){
     const data_saida = document.getElementById('data_saida_edit').value;
     const id_user = document.getElementById('id_user_edit').value;
     const kit_el_id = document.getElementById('kit_el_id').value;
+    const obs_edit = document.getElementById('obs_edit').value;
 
 
     // Dados para enviar
@@ -161,6 +165,7 @@ function get_kit(button){
         "data_saida": data_saida,
         "user_update": id_user,
         "kit_el_id": kit_el_id,
+        "obs_edit": obs_edit,
         "X-CSRFToken": getCSRFToken()
     };
 

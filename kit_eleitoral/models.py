@@ -7,6 +7,7 @@ class kit_eleit(models.Model):
     cres_id = models.IntegerField()
     status = models.BooleanField(default=1)
     malas = models.CharField(max_length=100)
+    obs = models.CharField(max_length=100,null=True)
     equipamento_id = models.IntegerField(null=True)
     impresora_id = models.IntegerField(null=True)
     scaner_impresao_digital = models.CharField(max_length=100,null=True)

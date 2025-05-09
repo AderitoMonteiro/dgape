@@ -72,6 +72,7 @@ def add_kit(request):
                      cama_fotografia = request.POST.get("cama_fotografia")
                      guia_entrega = request.POST.get("guia_entrega")
                      data_saida = request.POST.get("data_saida")
+                     obs = request.POST.get("obs")
                      user_create = request.POST.get("user_create")
 
                      if data_aquisicao !="" and conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
@@ -89,6 +90,7 @@ def add_kit(request):
                                                                 guia_entrega = guia_entrega,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
+                                                                obs=obs,
                                                                 datecreate=datetime.now()
                                                                   )
                                     message='Kit registado com sucesso!!'
@@ -136,7 +138,8 @@ def get_kit(request):
                                 eq.marca as marca,
                                 eq.modelo as modelo,
                                 eq.mac_address as mac_address,
-                                eq.any_dask as any_dask
+                                eq.any_dask as any_dask,
+                                KE.obs as obs
                                 FROM kit_eleitoral_kit_eleit as KE
                                 INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
                                 INNER JOIN kit_eleitoral_equipamento as eq on KE.equipamento_id=eq.id
@@ -171,6 +174,7 @@ def editar_kit(request):
                      guia_entrega = request.POST.get("guia_entrega")
                      data_saida = request.POST.get("data_saida")
                      user_update = request.POST.get("user_update")
+                     obs_edit = request.POST.get("obs_edit")
 
                      if data_aquisicao !="" and conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
 
@@ -188,6 +192,7 @@ def editar_kit(request):
                                     kit_el_edit.data_saida = data_saida
                                     kit_el_edit.user_update=user_update
                                     kit_el_edit.datecreate=datetime.now()
+                                    kit_el_edit.obs=obs_edit
                                     kit_el_edit.save()
                                   
                                                                   
