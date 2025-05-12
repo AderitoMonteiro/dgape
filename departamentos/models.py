@@ -83,6 +83,7 @@ class equipamento_eleitoral(models.Model):
 class mobiliario(models.Model):
     id = models.AutoField(primary_key=True)
     descricao = models.CharField(max_length=100,default=True) 
+    serial_number = models.CharField(max_length=100,default=True) 
     obs = models.CharField(max_length=100,default=True)    
     status = models.BooleanField(default=1)
     user_create = models.IntegerField()
@@ -93,6 +94,7 @@ class mobiliario(models.Model):
 class mobiliario_eleitoral(models.Model):
     id = models.AutoField(primary_key=True)
     descricao = models.CharField(max_length=100,default=True) 
+    serial_number = models.CharField(max_length=100,default=True) 
     obs = models.CharField(max_length=100,default=True)    
     status = models.BooleanField(default=1)
     user_create = models.IntegerField()

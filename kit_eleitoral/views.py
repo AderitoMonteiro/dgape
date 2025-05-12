@@ -388,34 +388,35 @@ def exportar_kit_excel(request):
     folha.title = 'Kit Eleitoral'
 
     query = '''   SELECT 
-                                KE.id as id, 
-                                KE.data_aquisicao as data_aquisicao,
-                                kec.descricao as conselho,
+                                SELECT 
+                                KE.id, 
+                                KE.cres_id as cres_id, 
+                                KE.status as status, 
                                 KE.malas as malas, 
-                                KE.equipamento_id as portatel, 
-                                KE.impresora_id as impresora, 
-                                KE.scaner_impresao_digital as scaner_impresao_digital,
-                                KE.capitura_assinatura as capitura_assinatura,
-                                KE.camara_fotografica as camara_fotografica,
+                                scaner.descricao as scaner_impresao_digital,
+                                scaner.id as scaner_impresao_digital_id,
+                                KE.impresora_id as impresora_id, 
                                 KE.guia_entrega as guia_entrega,
                                 KE.data_saida as data_saida,
-                                eq.descricao as portatel,
+                                kec.descricao as descricao,
+                                eq.descricao as equipamento,
+                                eq.id as portatel_id,
                                 imp.descricao as impressora,
                                 eq.serial_number as serial_number_portatel,
                                 imp.serial_number as serial_number_impressora,
-                                eq.id as id_portatel,
-                                imp.id as id_impressora,
-                                eq.marca as marca_portatel,
-                                eq.modelo as modelo_portatel,
-                                imp.marca as marca_impressora,
-                                imp.modelo as modelo_impressora,
-                                eq.mac_address as mac_address,
-                                eq.any_dask as  any_dask_portatel,
-                                imp.any_dask as any_dask_impressora
+                                ass.descricao as capitura_assinatura,
+                                ass.id as capitura_assinatura_id,
+                                cm.descricao as camara_fotografica,
+                                cm.id as camara_fotografica_id,
+                                eq.data_aquisicao as data_aquisicao_portatel,
+                                KE.obs
                                 FROM kit_eleitoral_kit_eleit as KE
                                 INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.equipamento_id=eq.id
+                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
                                 INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
+                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
+                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
                                 where KE.status=1
                             '''
     with connection.cursor() as cursor:
@@ -425,11 +426,11 @@ def exportar_kit_excel(request):
                     resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
                   # Cabeçalhos
-                    folha.append(['id','Data Aquisicao', 'Conselho', 'Malas','Portatel','Serial Number portatel','Marca Portatel','Modelo Portatel','Mac Address','Any Desk Portatel','Impressora','Marca Impressora','Modelo Impressora','Serial Number Impressora','Any Desk Impressora','Scanner Impressao Digital','Capitura Assinatura','Camara Fotografica','Guia Entrega','Data Saida'])
+                    folha.append(['id', 'Conselho', 'Malas','Data Aquisicao','Portatel','Serial Number portatel','Marca Portatel','Modelo Portatel','Mac Address','Any Desk Portatel','Impressora','Marca Impressora','Modelo Impressora','Serial Number Impressora','Any Desk Impressora','Scanner Impressao Digital','Capitura Assinatura','Camara Fotografica','Guia Entrega','Data Saida'])
 
                     # Dados
                     for kit in resultados:
-                        folha.append([kit['id'],kit['data_aquisicao'], kit['conselho'], kit['malas'],kit['portatel'],kit['serial_number_portatel'],kit['marca_portatel'],kit['modelo_portatel'],kit['mac_address'],kit['any_dask_portatel'],kit['marca_impressora'],kit['modelo_impressora'],kit['serial_number_impressora'],kit['any_dask_impressora'],kit['scaner_impresao_digital'],kit['capitura_assinatura'],kit['camara_fotografica'],kit['camara_fotografica'],kit['guia_entrega'],kit['data_saida']])
+                        folha.append([kit['id'], kit['conselho'], kit['malas'],kit['data_aquisicao_portatel'],kit['portatel'],kit['serial_number_portatel'],kit['marca_portatel'],kit['modelo_portatel'],kit['mac_address'],kit['any_dask_portatel'],kit['marca_impressora'],kit['modelo_impressora'],kit['serial_number_impressora'],kit['any_dask_impressora'],kit['scaner_impresao_digital'],kit['capitura_assinatura'],kit['camara_fotografica'],kit['camara_fotografica'],kit['guia_entrega'],kit['data_saida']])
 
                     # Preparar resposta HTTP
                     response = HttpResponse(

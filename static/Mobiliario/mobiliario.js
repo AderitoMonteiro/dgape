@@ -102,12 +102,14 @@ function add_mobiliario() {
 
     
     const descricao = document.getElementById('descricao').value;
+    const serial_number = document.getElementById('serial_number').value;
     const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "serial_number":serial_number,
         "obs": obs,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
@@ -166,12 +168,14 @@ function add_mobiliario_eleitoral() {
 
     
     const descricao = document.getElementById('descricao').value;
+    const serial_number = document.getElementById('serial_number').value;
     const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "serial_number":serial_number,
         "obs": obs,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
@@ -243,9 +247,12 @@ function get_mobiliario(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
              document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
- 
+            
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
           },
          error: function (xhr, status, error) {
  
@@ -271,8 +278,12 @@ function get_mobiliario(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
              document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
+
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {

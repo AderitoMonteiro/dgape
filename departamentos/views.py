@@ -460,16 +460,19 @@ def add_mobiliario(request):
   if request.method == "POST":
             try:
                     descricao= request.POST.get("descricao")
+                    serial_number= request.POST.get("serial_number")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
-                    validate=mobiliario.objects.filter(descricao=descricao).count()
 
-                    if validate==0:
-                          if descricao !="":
+                    if descricao !="" and serial_number !="":
+                      
+                          validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                          if validate==0:
 
                                     mobiliario.objects.create(
                                                                 descricao=descricao,
+                                                                serial_number=serial_number,
                                                                 obs=obs,
                                                                 user_create=user_create
                                                                   )
@@ -478,11 +481,12 @@ def add_mobiliario(request):
                                     return JsonResponse({'status':status, 'message': message })
 
                           else:
-                            message='Erro, tem que preencher todos os campos obrigatorios!!'
+                           
+                            message='Erro, este mobiliario já foi registado!!'
                             status= 'error'
                             return JsonResponse({'status':status, 'message': message })
                     else:
-                      message='Erro, este mobiliario já está registado!!'
+                      message='Erro, tem que preencher todos os campos obrigatorios!!'
                       status= 'error'
                       return JsonResponse({'status':status, 'message': message })
 
@@ -497,16 +501,20 @@ def add_mobiliario_eleitoral(request):
   if request.method == "POST":
             try:
                     descricao= request.POST.get("descricao")
+                    serial_number= request.POST.get("serial_number")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
-                    validate=mobiliario_eleitoral.objects.filter(descricao=descricao).count()
+                    validate=mobiliario_eleitoral.objects.filter(descricao=descricao,serial_number=serial_number).count()
 
-                    if validate==0:
-                          if descricao !="":
+                    if descricao !="" and serial_number !="":
+                       
+                          if validate==0:
+                          
 
                                     mobiliario_eleitoral.objects.create(
                                                                 descricao=descricao,
+                                                                serial_number=serial_number,
                                                                 obs=obs,
                                                                 user_create=user_create
                                                                   )
@@ -515,11 +523,11 @@ def add_mobiliario_eleitoral(request):
                                     return JsonResponse({'status':status, 'message': message })
 
                           else:
-                            message='Erro, tem que preencher todos os campos obrigatorios!!'
+                            message='Erro, este mobiliario já foi registado!!'
                             status= 'error'
                             return JsonResponse({'status':status, 'message': message })
                     else:
-                      message='Erro, este mobiliario já está registado!!'
+                      message='Erro, tem que preencher todos os campos obrigatorios!!'
                       status= 'error'
                       return JsonResponse({'status':status, 'message': message })
 
