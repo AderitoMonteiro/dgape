@@ -178,14 +178,26 @@ function get_equipamento(button){
  
              const datajs = JSON.parse(data);
              
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_aquisicao;
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
              document.getElementById("marca_edit").value=datajs[0].fields.marca;
              document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
              document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
              document.getElementById("mac_address_edit").value=datajs[0].fields.mac_address;
+             document.getElementById("tipo_item_edit").value=datajs[0].fields.tipo_item;
              document.getElementById("any_desk_edit").value=datajs[0].fields.any_dask;
+             document.getElementById("localizacao_edit").value=datajs[0].fields.localizacao;
+             document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("equipamento_id").value=equipamento_id;
- 
+
+             document.getElementById("data_entrada_edit").disabled = true;
+             document.getElementById("modelo_edit").disabled = true;
+             document.getElementById("descricao_edit").disabled = true;
+             document.getElementById("marca_edit").disabled = true;
+             document.getElementById("serial_number_edit").disabled = true;
+             document.getElementById("mac_address_edit").disabled = true;
+             document.getElementById("tipo_item_edit").disabled = true;
+             document.getElementById("any_desk_edit").disabled = true;
           },
          error: function (xhr, status, error) {
  
@@ -198,24 +210,20 @@ function get_equipamento(button){
  function edit_equipamanto() {
  
      
-     const descricao = document.getElementById('descricao_edit').value;
-     const marca = document.getElementById('marca_edit').value;
-     const modelo = document.getElementById('modelo_edit').value;
-     const serial_number = document.getElementById('serial_number_edit').value;
-     const mac_address = document.getElementById('mac_address_edit').value;
-     const id_user = document.getElementById('id_user_edit').value;
+     const localizacao_edit = document.getElementById('localizacao_edit').value;
+     const obs_edit = document.getElementById('obs_edit').value;
+     const id_user = document.getElementById('id_user').value;
      const equipamento_id = document.getElementById('equipamento_id').value;
+
+   
  
  
      // Dados para enviar
      const data = {
-         "descricao": descricao,
-         "marca": marca,
-         "modelo": modelo,
-         "serial_number": serial_number,
-         "mac_address": mac_address,
+         "localizacao_edit": localizacao_edit,
+         "obs_edit": obs_edit,
          "user_create": id_user,
-         "equipamento_id": equipamento_id,
+         "equipamento_id":equipamento_id,
          "X-CSRFToken": getCSRFToken()
      };
  
@@ -336,6 +344,10 @@ function add_equipamanto() {
 
     
     const descricao = document.getElementById('descricao').value;
+    const data_entrada = document.getElementById('data_entrada').value;
+    const tipo_item = document.getElementById('tipo_item').value;
+    const localizacao = document.getElementById('localizacao').value;
+    const obs = document.getElementById('obs').value;
     const marca = document.getElementById('marca').value;
     const modelo = document.getElementById('modelo').value;
     const serial_number = document.getElementById('serial_number').value;
@@ -352,6 +364,10 @@ function add_equipamanto() {
         "mac_address": mac_address,
         "user_create": id_user,
         "any_desk": any_desk,
+        "data_entrada": data_entrada,
+        "tipo_item": tipo_item,
+        "localizacao": localizacao,
+        "obs": obs,
         "X-CSRFToken": getCSRFToken()
     };
 

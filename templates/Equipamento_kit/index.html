@@ -46,17 +46,20 @@
 						</th>
 						<th>Nome</th>
 						<th>Marca</th>
+						<th>Data Entrada</th>
+						<th>Tipo Item</th>
 						<th>Modelo</th>
 						<th>serial Number</th>
 						<th>Mac Address</th>
+						<th>Localização</th>
 						<th>Any Desk</th>
+						<th>OBS/Estado</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
 					{% for equipamento_list in equipamento %}
-
 					<tr>
 						<td>
 							<span class="custom-checkbox">
@@ -66,10 +69,14 @@
 						</td>
 						<td>{{equipamento_list.descricao}}</td>
 						<td>{{equipamento_list.marca}}</td>
+						<td>{{equipamento_list.data_aquisicao}}</td>
+						<td>{{equipamento_list.tipo_item}}</td>
 						<td>{{equipamento_list.modelo}}</td>
 						<td>{{equipamento_list.serial_number}}</td>
 						<td>{{equipamento_list.mac_address}}</td>
+						<td>{{equipamento_list.localizacao}}</td>
 						<td>{{equipamento_list.any_dask}}</td>
+						<td>{{equipamento_list.obs}}</td>
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ equipamento_list.id }}" onclick="get_equipamento(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a href="#deleteEmployeeModal" class="delete" data-id="{{ equipamento_list.id }}" onclick="get_equipamento_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -118,7 +125,12 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
-				<div class="modal-body">				
+				<div class="modal-body">	
+					<div class="form-group">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>			
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao" class="form-control" required>
@@ -129,11 +141,23 @@
 						<input type="text" id="marca" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Tipo de Item</strong><span style="color: red;">*</span></label></label>
+						<select class="form-control" id="tipo_item">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="Portatel">Portatel</option>
+							 <option value="Mala">Mala</option>
+							 <option value="Impressora">Impressora</option>
+							 <option value="Scaner Impresão Digital">Scaner Impresão Digital</option>
+							 <option value="Camara Fotografica">Camara Fotografica</option>
+							 <option value="Capitura Assinatura">Capitura Assinatura</option>
+					   </select>
+					</div>
+					<div class="form-group">
+						<label><strong>Modelo</strong></label>
 						<input type="text" id="modelo" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Serial Number</strong></label></label>
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number" class="form-control" required>
 					</div>
 					<div class="form-group">
@@ -144,10 +168,18 @@
 						<label><strong>Any Desk</strong></span></label></label>
 						<input type="text" id="any_desk" class="form-control" required>
 					</div>
+					<div class="form-group">
+						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="localizacao" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong></label>
+						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-success" onclick="add_equipamanto()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar">
+					<input class="btn btn-success" onclick="add_equipamanto()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -165,7 +197,12 @@
 					<h4 class="modal-title">Editar Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">	
+					<div class="form-group">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada_edit" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>				
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao_edit" class="form-control" required>
@@ -177,11 +214,23 @@
 						<input type="text" id="marca_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Tipo de Item</strong><span style="color: red;">*</span></label></label>
+						<select class="form-control" id="tipo_item_edit">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="Portatel">Portatel</option>
+							 <option value="Mala">Mala</option>
+							 <option value="Impressora">Impressora</option>
+							 <option value="Scaner Impresão Digital">Scaner Impresão Digital</option>
+							 <option value="Camara Fotografica">Camara Fotografica</option>
+							 <option value="Capitura Assinatura">Capitura Assinatura</option>
+					   </select>
+					</div>
+					<div class="form-group">
+						<label><strong>Modelo</strong></label></label>
 						<input type="text" id="modelo_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Serial Number</strong></label></label>
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
@@ -192,10 +241,18 @@
 						<label><strong>Any Desk</strong></span></label></label>
 						<input type="text" id="any_desk_edit" class="form-control" required>
 					</div>
+					<div class="form-group">
+						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="localizacao_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong></label>
+						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_equipamanto()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_equipamanto()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
@@ -256,6 +313,21 @@
 {% endblock %}
 
 {% block extra_jscript %}
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_entrada", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_entrada_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
+</script>
 <script src="{%static 'kit/equipamento.js'%}"></script>
 {% endblock %}
 

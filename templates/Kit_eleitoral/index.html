@@ -45,12 +45,10 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Data Aquisicao</th>
 						<th>CRES</th>
 						<th>Malas</th>
 						<th>Portatel</th>
 						<th>Impressora</th>
-					
 						<th>Scaner Impresão Digital</th>
 						<th>Capitura Assinatura</th>
 						<th>Camara Fotografica</th>
@@ -70,7 +68,6 @@
 								<label for="checkbox{{ paginator_kit_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{paginator_kit_list.data_aquisicao | date:"j \d\e F \d\e Y"}}</td>
 						<td>{{paginator_kit_list.descricao}}</td>
 						<td>{{paginator_kit_list.malas}}</td>
 						<td>{{paginator_kit_list.equipamento}}</td>
@@ -125,11 +122,7 @@
 				</div>
 				
 				<div class="modal-body">				
-					<div class="form-group">
-						<label><strong>Data Aquisição</strong><span style="color: red;">*</span></label>
-						<input type="date" id="data_aquisicao" readonly>
-						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					</div>
+					
 					<div class="form-group">
 						<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
 						
@@ -139,50 +132,71 @@
 							 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
 							 {% endfor %}
 					   </select>
+					   <input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+
 					</div>
 					<div class="form-group">
 						<label><strong>Malas</strong><span style="color: red;">*</span></label>
-						<input type="text" id="malas" class="form-control" required>
+						<select class="form-control" id="malas">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for mala_list in mala %}
+							 <option value="{{mala_list.id}}">{{mala_list.descricao}} / {{mala_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>
 					</div>
 					<div class="form-group">
 						<label><strong>Portatel</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="portatel">
 							<option value="">--Por favor, escolha uma opção--</option>
-							{% for equipamento_list in equipamento %}
-							 <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
+							{% for portatel_list in portatel %}
+							 <option value="{{portatel_list.id}}">{{portatel_list.descricao}} / {{portatel_list.serial_number}}</option>
 							 {% endfor %}
-					   </select>		
-										
+					   </select>							
 					</div>
 					<div class="form-group">
 						<label><strong>Impressora</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="impressora">
 							<option value="">--Por favor, escolha uma opção--</option>
 							{% for impressora_list in impressora %}
-							 <option value="{{impressora_list.id}}">{{impressora_list.serial_number}}</option>
+							 <option value="{{impressora_list.id}}">{{impressora_list.descricao}} / {{impressora_list.serial_number}}</option>
 							 {% endfor %}
 					   </select>		
 						</div>
 					<div class="form-group">
 						<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
-						<input type="text" id="Scaner_impresao_digital" class="form-control" required>
+						<select class="form-control" id="Scaner_impresao_digital">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for scaner_list in scaner %}
+							 <option value="{{scaner_list.id}}">{{scaner_list.descricao}} / {{scaner_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>
 					</div>
 					<div class="form-group">
 						<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
-						<input type="text" id="capitura_assinatura" class="form-control" required>
+						<select class="form-control" id="capitura_assinatura">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for assinatura_list in assinatura %}
+							 <option value="{{assinatura_list.id}}">{{assinatura_list.descricao}} / {{assinatura_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>
 					</div>
 					<div class="form-group">
 						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
-						<input type="text" id="cama_fotografia" class="form-control" required>
+						<select class="form-control" id="cama_fotografia">
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for camera_list in camera %}
+							 <option value="{{camera_list.id}}">{{camera_list.descricao}} / {{camera_list.serial_number}}</option>
+							 {% endfor %}
+					   </select>
 					</div>
 					<div class="form-group">
 						<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
-						<input type="text" id="guia_entrega" class="form-control" required>
+						<input type="text" id="guia_entrega" class="form-control" >
 					</div>
 
 					<div class="form-group">
 						<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
-						<input type="date" id="data_saida" readonly>
+						<input type="date" id="data_saida" >
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
@@ -191,7 +205,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-success" onclick="add_kit()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar">
+					<input class="btn btn-success" onclick="add_kit()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -210,13 +224,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-						<div class="form-group">
-							<label><strong>Data Aquisição</strong><span style="color: red;">*</span></label>
-							<input type="date" id="data_aquisicao_edit" readonly>
-							<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
-							<input type="hidden" id="kit_el_id" class="form-control">
-
-						</div>
+						
 						<div class="form-group">
 							<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
 							
@@ -226,41 +234,62 @@
 								 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
 								 {% endfor %}
 						   </select>
+						   <input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+						   <input type="hidden" id="kit_el_id" class="form-control">
 						</div>
 						<div class="form-group">
 							<label><strong>Malas</strong><span style="color: red;">*</span></label>
-							<input type="text" id="malas_edit" class="form-control" required>
+							<select class="form-control" id="malas_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for mala_list in mala %}
+								 <option value="{{mala_list.id}}">{{mala_list.descricao}} / {{mala_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>
 						</div>
 						<div class="form-group">
 							<label><strong>Portatel</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="portatel_edit">
 								<option value="">--Por favor, escolha uma opção--</option>
-								{% for equipamento_list in equipamento %}
-								 <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
-								 {% endfor %}
-						   </select>		
-											
+									{% for portatel_list in portatel %}
+								<option value="{{portatel_list.id}}">{{portatel_list.descricao}} / {{portatel_list.serial_number}}</option>
+									{% endfor %}
+						   </select>						
 						</div>
 						<div class="form-group">
 							<label><strong>Impressora</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="impressora_edit">
 								<option value="">--Por favor, escolha uma opção--</option>
 								{% for impressora_list in impressora %}
-								 <option value="{{impressora_list.id}}">{{impressora_list.serial_number}}</option>
-								 {% endfor %}
+								<option value="{{impressora_list.id}}">{{impressora_list.descricao}} / {{impressora_list.serial_number}}</option>
+								{% endfor %}
 						   </select>		
-							</div>
+						</div>
 						<div class="form-group">
-							<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
-							<input type="text" id="Scaner_impresao_digital_edit" class="form-control" required>
+								<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+								<select class="form-control" id="Scaner_impresao_digital_edit">
+									<option value="">--Por favor, escolha uma opção--</option>
+									{% for scaner_list in scaner %}
+									 <option value="{{scaner_list.id}}">{{scaner_list.descricao}} / {{scaner_list.serial_number}}</option>
+									 {% endfor %}
+							   </select>
 						</div>
 						<div class="form-group">
 							<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
-							<input type="text" id="capitura_assinatura_edit" class="form-control" required>
+							<select class="form-control" id="capitura_assinatura_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for assinatura_list in assinatura %}
+								 <option value="{{assinatura_list.id}}">{{assinatura_list.descricao}} / {{assinatura_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>
 						</div>
 						<div class="form-group">
 							<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
-							<input type="text" id="cama_fotografia_edit" class="form-control" required>
+							<select class="form-control" id="cama_fotografia_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for camera_list in camera %}
+								 <option value="{{camera_list.id}}">{{camera_list.descricao}} / {{camera_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>
 						</div>
 						<div class="form-group">
 							<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
@@ -278,7 +307,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_kit()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_kit()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>

@@ -14,32 +14,37 @@ import openpyxl
 def gestao_kit_eleitoral(request):
 
             conselho_lis = conselho.objects.all().filter(status=1)  
-            equipament  = equipamento.objects.all().filter(~Q(mac_address=""),status=1)
-            impressora  = equipamento.objects.all().filter(mac_address="",status=1)   
+            portatel  = equipamento.objects.all().filter(tipo_item="Portatel",status=1)
+            impressora  = equipamento.objects.all().filter(tipo_item="Impressora",status=1) 
+            mala  = equipamento.objects.all().filter(tipo_item="Mala",status=1) 
+            scaner  = equipamento.objects.all().filter(tipo_item="Scaner Impresão Digital",status=1)
+            camera  = equipamento.objects.all().filter(tipo_item="Camara Fotografica",status=1) 
+            assinatura  = equipamento.objects.all().filter(tipo_item="Capitura Assinatura",status=1)     
 
             try:
                 query = '''     SELECT 
                                 KE.id as id, 
-                                KE.data_aquisicao as data_aquisicao,
                                 KE.cres_id as cres_id, 
                                 KE.status as status, 
                                 KE.malas as malas, 
-                                KE.equipamento_id as portatel, 
+                                scaner.descricao as scaner_impresao_digital,
                                 KE.impresora_id as impresora, 
-                                KE.scaner_impresao_digital as scaner_impresao_digital,
-                                KE.capitura_assinatura as capitura_assinatura,
-                                KE.camara_fotografica as camara_fotografica,
                                 KE.guia_entrega as guia_entrega,
                                 KE.data_saida as data_saida,
                                 kec.descricao as descricao,
                                 eq.descricao as equipamento,
                                 imp.descricao as impressora,
                                 eq.serial_number as serial_number_portatel,
-                                imp.serial_number as serial_number_impressora
+                                imp.serial_number as serial_number_impressora,
+                                ass.descricao as capitura_assinatura,
+                                cm.descricao as camara_fotografica
                                 FROM kit_eleitoral_kit_eleit as KE
                                 INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.equipamento_id=eq.id
+                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
                                 INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
+                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
+                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
                                 where KE.status=1
                             '''
                 with connection.cursor() as cursor:
@@ -47,12 +52,12 @@ def gestao_kit_eleitoral(request):
                 
                  colunas = [col[0] for col in cursor.description] 
                  resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-                 paginator = Paginator(resultados, 7)
+                 paginator = Paginator(resultados, 5)
                  page_number = request.GET.get("page")  
                  paginator_kit_list = paginator.get_page(page_number)
              
 
-                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"equipamento":equipament,"impressora":impressora})
+                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura})
 
             except Exception as e:
                   return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -62,7 +67,6 @@ def add_kit(request):
   
   if request.method == "POST":
             try:
-                     data_aquisicao = request.POST.get("data_aquisicao")
                      conselho = request.POST.get("conselho")
                      malas = request.POST.get("malas")
                      portatel = request.POST.get("portatel")
@@ -75,18 +79,17 @@ def add_kit(request):
                      obs = request.POST.get("obs")
                      user_create = request.POST.get("user_create")
 
-                     if data_aquisicao !="" and conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
+                     if conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
 
                     
                                     kit_eleit.objects.create(
-                                                                data_aquisicao = data_aquisicao,
                                                                 cres_id = conselho,
                                                                 malas = malas,
-                                                                equipamento_id = portatel,
+                                                                portatel_id = portatel,
                                                                 impresora_id = impressora,
-                                                                scaner_impresao_digital = Scaner_impresao_digital,
+                                                                Scaner_impresao_digital = Scaner_impresao_digital,
                                                                 capitura_assinatura = capitura_assinatura,
-                                                                camara_fotografica = cama_fotografia,
+                                                                camera_fotografia = cama_fotografia,
                                                                 guia_entrega = guia_entrega,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
@@ -117,33 +120,32 @@ def get_kit(request):
             try:
                   query = '''   SELECT 
                                 KE.id as id, 
-                                KE.data_aquisicao as data_aquisicao,
                                 KE.cres_id as cres_id, 
                                 KE.status as status, 
                                 KE.malas as malas, 
-                                KE.equipamento_id as portatel, 
-                                KE.impresora_id as impresora, 
-                                KE.scaner_impresao_digital as scaner_impresao_digital,
-                                KE.capitura_assinatura as capitura_assinatura,
-                                KE.camara_fotografica as camara_fotografica,
+                                scaner.descricao as scaner_impresao_digital,
+                                scaner.id as scaner_impresao_digital_id,
+                                KE.impresora_id as impresora_id, 
                                 KE.guia_entrega as guia_entrega,
                                 KE.data_saida as data_saida,
                                 kec.descricao as descricao,
                                 eq.descricao as equipamento,
+                                eq.id as portatel_id,
                                 imp.descricao as impressora,
                                 eq.serial_number as serial_number_portatel,
                                 imp.serial_number as serial_number_impressora,
-                                eq.id as id_portatel,
-                                imp.id as id_impressora,
-                                eq.marca as marca,
-                                eq.modelo as modelo,
-                                eq.mac_address as mac_address,
-                                eq.any_dask as any_dask,
-                                KE.obs as obs
+                                ass.descricao as capitura_assinatura,
+                                ass.id as capitura_assinatura_id,
+                                cm.descricao as camara_fotografica,
+                                cm.id as camara_fotografica_id,
+                                KE.obs
                                 FROM kit_eleitoral_kit_eleit as KE
                                 INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.equipamento_id=eq.id
+                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
                                 INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
+                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
+                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
                                 where KE.id=%s
                             '''
                   with connection.cursor() as cursor:
@@ -163,48 +165,20 @@ def editar_kit(request):
   if request.method == "POST":
             try:
                      kit_el_id = request.POST.get("kit_el_id")
-                     data_aquisicao = request.POST.get("data_aquisicao")
-                     conselho = request.POST.get("conselho")
-                     malas = request.POST.get("malas")
-                     portatel = request.POST.get("portatel")
-                     impressora = request.POST.get("impressora")
-                     Scaner_impresao_digital = request.POST.get("Scaner_impresao_digital")
-                     capitura_assinatura = request.POST.get("capitura_assinatura")
-                     cama_fotografia = request.POST.get("cama_fotografia")
-                     guia_entrega = request.POST.get("guia_entrega")
-                     data_saida = request.POST.get("data_saida")
                      user_update = request.POST.get("user_update")
                      obs_edit = request.POST.get("obs_edit")
 
-                     if data_aquisicao !="" and conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
-
-
-                                    kit_el_edit=get_object_or_404(kit_eleit,id=kit_el_id)
-                                    kit_el_edit.data_aquisicao = data_aquisicao
-                                    kit_el_edit.cres_id = conselho
-                                    kit_el_edit.malas = malas
-                                    kit_el_edit.portatel = portatel
-                                    kit_el_edit.impresora = impressora
-                                    kit_el_edit.scaner_impresao_digital = Scaner_impresao_digital
-                                    kit_el_edit.capitura_assinatura = capitura_assinatura
-                                    kit_el_edit.camara_fotografica = cama_fotografia
-                                    kit_el_edit.guia_entrega = guia_entrega
-                                    kit_el_edit.data_saida = data_saida
-                                    kit_el_edit.user_update=user_update
-                                    kit_el_edit.datecreate=datetime.now()
-                                    kit_el_edit.obs=obs_edit
-                                    kit_el_edit.save()
+                     kit_el_edit=get_object_or_404(kit_eleit,id=kit_el_id)
+                     kit_el_edit.user_update=user_update
+                     kit_el_edit.datecreate=datetime.now()
+                     kit_el_edit.obs=obs_edit
+                     kit_el_edit.save()
                                   
                                                                   
-                                    message='Kit alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
+                     message='Kit alterado com sucesso!!'
+                     status= 'success'
+                     return JsonResponse({'status':status, 'message': message })
 
-                     else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
-         
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -256,7 +230,7 @@ def gestao_equipamento(request):
                       
 
                       equipamento_list = equipamento.objects.all().filter(status=1)
-                      paginator = Paginator(equipamento_list, 7)
+                      paginator = Paginator(equipamento_list, 5)
                       page_number = request.GET.get("page")  
                       paginator_equipamento = paginator.get_page(page_number)
                   
@@ -269,36 +243,46 @@ def add_equipamento(request):
             try:
                     descricao= request.POST.get("descricao")
                     marca= request.POST.get("marca")
+                    
+                    data_entrada = request.POST.get("data_entrada")
+                    tipo_item = request.POST.get("tipo_item")
+                    localizacao = request.POST.get("localizacao")
+                    obs = request.POST.get("obs")
                     modelo= request.POST.get("modelo")
                     serial_number= request.POST.get("serial_number")
                     mac_address= request.POST.get("mac_address")
                     any_desk= request.POST.get("any_desk")
                     user_create= request.POST.get("user_create")
 
-                    validate=equipamento.objects.filter(descricao=descricao,marca=marca,modelo=modelo).count()
+                    if data_entrada !="" and descricao !="" and marca !="" and data_entrada !="" and serial_number !="" and tipo_item !="" and localizacao !="":
+                     
+                      validate=equipamento.objects.filter(descricao=descricao,marca=marca,data_aquisicao=data_entrada,serial_number=serial_number).count()
 
-                    if validate==0:
-                          if descricao !="" and marca !="" and modelo !="":
+                      if validate==0:
 
                                     equipamento.objects.create(
-                                                                descricao=descricao,
-                                                                marca=marca,
-                                                                modelo=modelo,
-                                                                serial_number=serial_number,
-                                                                mac_address=mac_address,
-                                                                any_dask=any_desk,
-                                                                user_create=user_create
+                                                                  descricao=descricao,
+                                                                  marca=marca,
+                                                                  modelo=modelo,
+                                                                  serial_number=serial_number,
+                                                                  mac_address=mac_address,
+                                                                  any_dask=any_desk,
+                                                                  user_create=user_create,
+                                                                  data_aquisicao = data_entrada,
+                                                                  tipo_item = tipo_item,
+                                                                  localizacao = localizacao,
+                                                                  obs = obs
                                                                   )
                                     message='Equipamento registado com sucesso!!'
                                     status= 'success'
                                     return JsonResponse({'status':status, 'message': message })
 
-                          else:
-                            message='Erro, tem que preencher todos os campos obrigatorios!!'
+                      else:
+                            message='Erro, este equipamento já está registado!!'
                             status= 'error'
                             return JsonResponse({'status':status, 'message': message })
                     else:
-                      message='Erro, este equipamento já está registado!!'
+                      message='Erro, tem que preencher todos os campos obrigatorios!!'
                       status= 'error'
                       return JsonResponse({'status':status, 'message': message })
 
@@ -325,35 +309,22 @@ def editar_equipamento(request):
   
   if request.method == "POST":
             try:
-                    equipamento_id = request.POST.get("equipamento_id")
-                    descricao= request.POST.get("descricao")
-                    marca= request.POST.get("marca")
-                    modelo= request.POST.get("modelo")
-                    serial_number= request.POST.get("serial_number")
-                    mac_address= request.POST.get("mac_address")
+                    localizacao_edit= request.POST.get("localizacao_edit")
+                    obs_edit= request.POST.get("obs_edit")
                     user_update= request.POST.get("user_create")
+                    equipamento_id= request.POST.get("equipamento_id")
 
-                    if descricao !="" and marca !="" and modelo !="":
 
-                                    equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
-                                    equipamento_ob.descricao=descricao
-                                    equipamento_ob.marca=marca
-                                    equipamento_ob.modelo=modelo
-                                    equipamento_ob.serial_number=serial_number
-                                    equipamento_ob.mac_address=mac_address
-                                    equipamento_ob.user_update=user_update
-                                    equipamento_ob.dateupdate=datetime.now()
-                                    equipamento_ob.save()
+                    equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
+                    equipamento_ob.localizacao=localizacao_edit
+                    equipamento_ob.obs=obs_edit
+                    equipamento_ob.user_update=user_update
+                    equipamento_ob.dateupdate=datetime.now()
+                    equipamento_ob.save()
                                                                   
-                                    message='Equipamento alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
-
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
-         
+                    message='Equipamento alterado com sucesso!!'
+                    status= 'success'
+                    return JsonResponse({'status':status, 'message': message })
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

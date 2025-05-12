@@ -12,14 +12,13 @@ function slowReload() {
 function add_kit() {
 
     
-    const data_aquisicao = document.getElementById('data_aquisicao').value;
     const conselho = document.getElementById('conselho').value;
     const malas = document.getElementById('malas').value;
     const portatel = document.getElementById('portatel').value;
     const impressora = document.getElementById('impressora').value;
     const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital').value;
     const capitura_assinatura = document.getElementById('capitura_assinatura').value;
-    const cama_fotografia = document.getElementById('cama_fotografia').value;
+    const camera_fotografia = document.getElementById('cama_fotografia').value;
     const guia_entrega = document.getElementById('guia_entrega').value;
     const data_saida = document.getElementById('data_saida').value;
     const obs = document.getElementById('obs').value;
@@ -29,14 +28,13 @@ function add_kit() {
 
     // Dados para enviar
     const data = {
-        "data_aquisicao": data_aquisicao,
         "conselho": conselho,
         "malas": malas,
         "portatel": portatel,
         "impressora": impressora,
         "Scaner_impresao_digital": Scaner_impresao_digital,
         "capitura_assinatura": capitura_assinatura,
-        "cama_fotografia": cama_fotografia,
+        "cama_fotografia": camera_fotografia,
         "guia_entrega": guia_entrega,
         "data_saida": data_saida,
         "user_create": id_user,
@@ -110,20 +108,30 @@ function get_kit(button){
             const jsonString = JSON.stringify(data);  
             const result = JSON.parse(jsonString);               
              
-            document.getElementById("data_aquisicao_edit").value= result.resultado[0].data_aquisicao;
             document.getElementById("conselho_edit").value= result.resultado[0].cres_id;
             document.getElementById("malas_edit").value= result.resultado[0].malas;
-            document.getElementById("portatel_edit").value= result.resultado[0].id_portatel;
+            document.getElementById("portatel_edit").value= result.resultado[0].portatel_id;
             document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
-            document.getElementById("Scaner_impresao_digital_edit").value= result.resultado[0].scaner_impresao_digital;
-            document.getElementById("capitura_assinatura_edit").value= result.resultado[0].capitura_assinatura;
-            document.getElementById("portatel_edit").value= result.resultado[0].id_portatel;
-            document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
-            document.getElementById("cama_fotografia_edit").value= result.resultado[0].camara_fotografica;
+            document.getElementById("Scaner_impresao_digital_edit").value= result.resultado[0].scaner_impresao_digital_id;
+            document.getElementById("capitura_assinatura_edit").value= result.resultado[0].capitura_assinatura_id;
+            document.getElementById("impressora_edit").value= result.resultado[0].impresora_id;
+            document.getElementById("cama_fotografia_edit").value= result.resultado[0].camara_fotografica_id;
             document.getElementById("guia_entrega_edit").value= result.resultado[0].guia_entrega;
             document.getElementById("data_saida_edit").value= result.resultado[0].data_saida;
             document.getElementById("kit_el_id").value= result.resultado[0].id;
             document.getElementById("obs_edit").value= result.resultado[0].obs;
+
+
+            document.getElementById("conselho_edit").disabled = true;
+            document.getElementById("malas_edit").disabled = true;
+            document.getElementById("portatel_edit").disabled = true;
+            document.getElementById("impressora_edit").disabled = true;
+            document.getElementById("Scaner_impresao_digital_edit").disabled = true;
+            document.getElementById("capitura_assinatura_edit").disabled = true;
+            document.getElementById("impressora_edit").disabled = true;
+            document.getElementById("cama_fotografia_edit").disabled = true;
+            document.getElementById("guia_entrega_edit").disabled = true;
+            document.getElementById("data_saida_edit").disabled = true;
 
           },
          error: function (xhr, status, error) {
@@ -135,17 +143,17 @@ function get_kit(button){
 
  function edit_kit() {
  
-     
-    const data_aquisicao = document.getElementById('data_aquisicao_edit').value;
-    const conselho = document.getElementById('conselho_edit').value;
-    const malas = document.getElementById('malas_edit').value;
-    const portatel = document.getElementById('portatel_edit').value;
-    const impressora = document.getElementById('impressora_edit').value;
-    const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital_edit').value;
-    const capitura_assinatura = document.getElementById('capitura_assinatura_edit').value;
-    const cama_fotografia = document.getElementById('cama_fotografia_edit').value;
-    const guia_entrega = document.getElementById('guia_entrega_edit').value;
-    const data_saida = document.getElementById('data_saida_edit').value;
+ 
+    //const conselho = document.getElementById('conselho_edit').value;
+    //const malas = document.getElementById('malas_edit').value;
+    //const portatel = document.getElementById('portatel_edit').value;
+    //const impressora = document.getElementById('impressora_edit').value;
+    //const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital_edit').value;
+    //const capitura_assinatura = document.getElementById('capitura_assinatura_edit').value;
+    //const cama_fotografia = document.getElementById('cama_fotografia_edit').value;
+    //const guia_entrega = document.getElementById('guia_entrega_edit').value;
+    //const data_saida = document.getElementById('data_saida_edit').value;
+    
     const id_user = document.getElementById('id_user_edit').value;
     const kit_el_id = document.getElementById('kit_el_id').value;
     const obs_edit = document.getElementById('obs_edit').value;
@@ -153,16 +161,6 @@ function get_kit(button){
 
     // Dados para enviar
     const data = {
-        "data_aquisicao": data_aquisicao,
-        "conselho": conselho,
-        "malas": malas,
-        "portatel": portatel,
-        "impressora": impressora,
-        "Scaner_impresao_digital": Scaner_impresao_digital,
-        "capitura_assinatura": capitura_assinatura,
-        "cama_fotografia": cama_fotografia,
-        "guia_entrega": guia_entrega,
-        "data_saida": data_saida,
         "user_update": id_user,
         "kit_el_id": kit_el_id,
         "obs_edit": obs_edit,
