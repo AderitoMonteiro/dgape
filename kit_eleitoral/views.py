@@ -388,7 +388,7 @@ def exportar_kit_excel(request):
     folha = workbook.active
     folha.title = 'Kit Eleitoral'
 
-    query = '''   SELECT 
+    query = ''' 
                                 SELECT 
                                 KE.id, 
                                 KE.cres_id as cres_id, 
@@ -399,10 +399,17 @@ def exportar_kit_excel(request):
                                 KE.impresora_id as impresora_id, 
                                 KE.guia_entrega as guia_entrega,
                                 KE.data_saida as data_saida,
-                                kec.descricao as descricao,
-                                eq.descricao as equipamento,
+                                kec.descricao as conselho,
+                                eq.descricao as portatel,
+                                eq.marca as marca_portatel,
+                                eq.modelo as modelo_portatel,
+                                eq.mac_address,
+                                eq.any_dask as any_dask_portatel,
                                 eq.id as portatel_id,
                                 imp.descricao as impressora,
+                                imp.marca as marca_impressora,
+                                imp.modelo as modelo_impressora,
+                                imp.any_dask as any_dask_impressora,
                                 eq.serial_number as serial_number_portatel,
                                 imp.serial_number as serial_number_impressora,
                                 ass.descricao as capitura_assinatura,
