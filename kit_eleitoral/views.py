@@ -274,7 +274,7 @@ def add_equipamento(request):
                                                                   localizacao = localizacao,
                                                                   obs = obs
                                                                   )
-                                    message='Equipamento registado com sucesso!!'
+                                    message='Item registado com sucesso!!'
                                     status= 'success'
                                     return JsonResponse({'status':status, 'message': message })
 
@@ -323,7 +323,7 @@ def editar_equipamento(request):
                     equipamento_ob.dateupdate=datetime.now()
                     equipamento_ob.save()
                                                                   
-                    message='Equipamento alterado com sucesso!!'
+                    message='Item alterado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
 
@@ -344,7 +344,7 @@ def delete_equipamento(request):
                     equipamento_ob.dateupdate=datetime.now()
                     equipamento_ob.save()
                                                                   
-                    message='Equipamento eliminado com sucesso!!'
+                    message='Item eliminado com sucesso!!'
                     status= 'success'
                     return JsonResponse({'status':status, 'message': message })
          
@@ -364,7 +364,7 @@ def delete_mobiliario_checkbox(request):
                          id_mbs = id_mb.split(",") 
                          equipamento.objects.filter(id__in=id_mbs).update(status=0,user_update=id_user,dateupdate=datetime.now())
                                                                   
-                   message='Equipamento eliminado com sucesso!!'
+                   message='Item eliminado com sucesso!!'
                    status= 'success'
                    return JsonResponse({'status':status, 'message': message })
             except Exception as e:
