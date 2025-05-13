@@ -70,7 +70,6 @@
 						<td>{{mobiliario_list.localizacao}}</td>
 						<td>{{mobiliario_list.provinencia}}</td>
 						<td>{{mobiliario_list.obs}}</td>
-
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a href="#deleteEmployeeModal" class="delete" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_delete_mobiliario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -116,14 +115,12 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<div class="form-group">
-						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
-						<input type="date" id="data_entrada" readonly>
-						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					</div>
+					
 					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia" class="form-control">
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
@@ -139,13 +136,13 @@
 						<input type="text" class="form-control" id="localizacao">
 					</div>		
 					<div class="form-group">
-						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  onclick="add_inventario_mobiliario()" class="btn btn-success" value="Guardar">
+					<input  onclick="add_inventario_mobiliario()" class="btn btn-success" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -173,6 +170,8 @@
 					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia_edit" class="form-control">
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="id_inventario_mobiliario" class="form-control">
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
@@ -188,13 +187,13 @@
 						<input type="text" class="form-control" id="localizacao_edit">
 					</div>		
 					<div class="form-group">
-						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_mobiliario_inventario()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_mobiliario_inventario()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
@@ -220,7 +219,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="delete_mobiliario_inventario()" value="Apagar">
+					<input  class="btn btn-danger" onclick="delete_mobiliario_inventario()" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>
@@ -245,7 +244,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="id_deleteCk" class="btn btn-danger" value="Apagar">
+					<input id="id_deleteCk" class="btn btn-danger" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>

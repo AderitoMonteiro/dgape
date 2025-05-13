@@ -10,7 +10,6 @@ function slowReload() {
 function add_inventario_mobiliario() {
 
     
-    const data_entrada = document.getElementById('data_entrada').value;
     const provinencia = document.getElementById('provinencia').value;
     const mobiliario = document.getElementById('mobiliario').value;
     const localizacao = document.getElementById('localizacao').value;
@@ -19,7 +18,6 @@ function add_inventario_mobiliario() {
 
     // Dados para enviar
     const data = {
-        "data_entrada": data_entrada,
         "provinencia": provinencia,
         "mobiliario": mobiliario,
         "localizacao": localizacao,
@@ -80,7 +78,6 @@ function add_inventario_mobiliario() {
 function add_inventario_mobiliario_eleitoral() {
 
     
-    const data_entrada = document.getElementById('data_entrada').value;
     const provinencia = document.getElementById('provinencia').value;
     const mobiliario = document.getElementById('mobiliario').value;
     const localizacao = document.getElementById('localizacao').value;
@@ -89,7 +86,6 @@ function add_inventario_mobiliario_eleitoral() {
 
     // Dados para enviar
     const data = {
-        "data_entrada": data_entrada,
         "provinencia": provinencia,
         "mobiliario": mobiliario,
         "localizacao": localizacao,
@@ -170,6 +166,10 @@ function get_mobiliario_inventario(button){
             document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
             document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
+
+            document.getElementById('data_entrada_edit').disabled=true
+            document.getElementById('provinencia_edit').disabled=true
+            document.getElementById('mobiliario_edit').disabled=true
            
  
           },
@@ -202,6 +202,10 @@ function get_mobiliario_inventario(button){
             document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
             document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
+
+            document.getElementById('data_entrada_edit').disabled=true;
+            document.getElementById('provinencia_edit').disabled=true;
+            document.getElementById('mobiliario_edit').disabled=true;
            
  
           },
@@ -283,18 +287,12 @@ function get_mobiliario_inventario(button){
 
 function edit_mobiliario_inventario(){
 
-    let data_entrada_edit = document.getElementById('data_entrada_edit').value
-    let provinencia_edit  = document.getElementById('provinencia_edit').value
-    let mobiliario_edit  = document.getElementById('mobiliario_edit').value
     let localizacao_edit = document.getElementById('localizacao_edit').value
     let id_inventario_mobiliario = document.getElementById('id_inventario_mobiliario').value
     let obs_edit = document.getElementById('obs_edit').value
     let user_update = document.getElementById('id_user').value
   
      const data = {
-      "data_entrada":data_entrada_edit,
-      "provinencia":provinencia_edit,
-      "mobiliario_edit":mobiliario_edit,
       "localizacao":localizacao_edit,
       "id":id_inventario_mobiliario,
       "obs":obs_edit,
@@ -352,18 +350,12 @@ function edit_mobiliario_inventario(){
 
   function edit_mobiliario_inventario_eleitoral(){
 
-    let data_entrada_edit = document.getElementById('data_entrada_edit').value
-    let provinencia_edit  = document.getElementById('provinencia_edit').value
-    let mobiliario_edit  = document.getElementById('mobiliario_edit').value
     let localizacao_edit = document.getElementById('localizacao_edit').value
     let id_inventario_mobiliario = document.getElementById('id_inventario_mobiliario').value
     let obs_edit = document.getElementById('obs_edit').value
     let user_update = document.getElementById('id_user').value
   
      const data = {
-      "data_entrada":data_entrada_edit,
-      "provinencia":provinencia_edit,
-      "mobiliario_edit":mobiliario_edit,
       "localizacao":localizacao_edit,
       "id":id_inventario_mobiliario,
       "obs":obs_edit,

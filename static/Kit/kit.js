@@ -123,7 +123,6 @@ function get_kit(button){
 
 
             document.getElementById("conselho_edit").disabled = true;
-            document.getElementById("malas_edit").disabled = true;
             document.getElementById("portatel_edit").disabled = true;
             document.getElementById("impressora_edit").disabled = true;
             document.getElementById("Scaner_impresao_digital_edit").disabled = true;
@@ -145,7 +144,7 @@ function get_kit(button){
  
  
     //const conselho = document.getElementById('conselho_edit').value;
-    //const malas = document.getElementById('malas_edit').value;
+     const malas = document.getElementById('malas_edit').value;
     //const portatel = document.getElementById('portatel_edit').value;
     //const impressora = document.getElementById('impressora_edit').value;
     //const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital_edit').value;
@@ -163,6 +162,7 @@ function get_kit(button){
     const data = {
         "user_update": id_user,
         "kit_el_id": kit_el_id,
+        "malas":malas,
         "obs_edit": obs_edit,
         "X-CSRFToken": getCSRFToken()
     };

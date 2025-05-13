@@ -10,8 +10,6 @@ function slowReload() {
 
 function add_inventario_equipamanto() {
 
-    
-    const data_entrada = document.getElementById('data_entrada').value;
     const provinencia = document.getElementById('provinencia').value;
     const equipamento = document.getElementById('equipamento').value;
     const localizacao = document.getElementById('localizacao').value;
@@ -20,7 +18,6 @@ function add_inventario_equipamanto() {
 
     // Dados para enviar
     const data = {
-        "data_entrada": data_entrada,
         "provinencia": provinencia,
         "equipamento": equipamento,
         "localizacao": localizacao,
@@ -81,7 +78,6 @@ function add_inventario_equipamanto() {
 function add_inventario_equipamanto_eleitoral() {
 
     
-    const data_entrada = document.getElementById('data_entrada').value;
     const provinencia = document.getElementById('provinencia').value;
     const equipamento = document.getElementById('equipamento').value;
     const localizacao = document.getElementById('localizacao').value;
@@ -90,7 +86,6 @@ function add_inventario_equipamanto_eleitoral() {
 
     // Dados para enviar
     const data = {
-        "data_entrada": data_entrada,
         "provinencia": provinencia,
         "equipamento": equipamento,
         "localizacao": localizacao,
@@ -168,6 +163,10 @@ function get_equipamento_inventario(button){
             document.getElementById('id_inventario_equipamento').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
            
+
+            document.getElementById('data_entrada_edit').disabled=true
+            document.getElementById('provinencia_edit').disabled=true
+            document.getElementById('equipamento_edit').disabled=true
  
           },
          error: function (xhr, status, error) {
@@ -200,6 +199,9 @@ function get_equipamento_inventario(button){
             document.getElementById('id_inventario_equipamento').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
            
+            document.getElementById('data_entrada_edit').disabled=true
+            document.getElementById('provinencia_edit').disabled=true
+            document.getElementById('equipamento_edit').disabled=true
  
           },
          error: function (xhr, status, error) {
@@ -340,18 +342,12 @@ function get_equipamento_inventario(button){
  }
  function edit_equipamento_inventario(){
 
-   let data_entrada_edit = document.getElementById('data_entrada_edit').value
-   let provinencia_edit  = document.getElementById('provinencia_edit').value
-   let equipamento_edit  = document.getElementById('equipamento_edit').value
    let localizacao_edit = document.getElementById('localizacao_edit').value
    let id_inventario_equipamento = document.getElementById('id_inventario_equipamento').value
    let obs_edit = document.getElementById('obs_edit').value
    let user_update = document.getElementById('id_user').value
  
     const data = {
-     "data_entrada":data_entrada_edit,
-     "provinencia":provinencia_edit,
-     "equipamento":equipamento_edit,
      "localizacao":localizacao_edit,
      "id":id_inventario_equipamento,
      "obs":obs_edit,

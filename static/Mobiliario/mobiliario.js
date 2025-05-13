@@ -102,6 +102,7 @@ function add_mobiliario() {
 
     
     const descricao = document.getElementById('descricao').value;
+    const data_entrada = document.getElementById('data_entrada').value;
     const serial_number = document.getElementById('serial_number').value;
     const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
@@ -110,6 +111,7 @@ function add_mobiliario() {
     const data = {
         "descricao": descricao,
         "serial_number":serial_number,
+        "data_entrada":data_entrada,
         "obs": obs,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
@@ -166,7 +168,7 @@ function add_mobiliario() {
 
 function add_mobiliario_eleitoral() {
 
-    
+    const data_entrada = document.getElementById('data_entrada').value;
     const descricao = document.getElementById('descricao').value;
     const serial_number = document.getElementById('serial_number').value;
     const obs = document.getElementById('obs').value;
@@ -174,6 +176,7 @@ function add_mobiliario_eleitoral() {
 
     // Dados para enviar
     const data = {
+        "data_entrada":data_entrada,
         "descricao": descricao,
         "serial_number":serial_number,
         "obs": obs,
@@ -247,10 +250,12 @@ function get_mobiliario(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
              document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
              document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
             
+             document.getElementById("data_entrada_edit").disabled=true;
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
           },
@@ -278,12 +283,14 @@ function get_mobiliario(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
              document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
              document.getElementById("obs_edit").value=datajs[0].fields.obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
 
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("data_entrada_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {

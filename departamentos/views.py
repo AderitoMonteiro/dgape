@@ -22,7 +22,7 @@ def inventario_equipamento_home(request):
     query = '''
                     SELECT 
                     die.id,
-                    die.data_entrada,
+                    de.data_entrada,
                     die.localizacao,
                     die.obs,
                     die.provinencia,
@@ -58,7 +58,7 @@ def inventario_equipamento_eleitoral_home(request):
     query = '''
                     SELECT 
                     die.id,
-                    die.data_entrada,
+                    de.data_entrada,
                     die.localizacao,
                     die.obs,
                     die.provinencia,
@@ -93,7 +93,7 @@ def inventario_mobiliario_home(request):
     query = '''
                     SELECT 
                     die.id,
-                    die.data_entrada,
+                    de.data_entrada,
                     die.localizacao,
                     die.obs,
                     die.provinencia,
@@ -123,7 +123,7 @@ def inventario_mobiliario_eleitoral_home(request):
     query = '''
                     SELECT 
                     die.id,
-                    die.data_entrada,
+                    de.data_entrada,
                     die.localizacao,
                     die.obs,
                     die.provinencia,
@@ -172,6 +172,8 @@ def add_equipamento(request):
   if request.method == "POST":
             try:
                     descricao= request.POST.get("descricao")
+                    data_entrada= request.POST.get("data_entrada")
+                    obs= request.POST.get("obs")
                     marca= request.POST.get("marca")
                     modelo= request.POST.get("modelo")
                     serial_number= request.POST.get("serial_number")
@@ -181,10 +183,12 @@ def add_equipamento(request):
                     validate=equipamento.objects.filter(descricao=descricao,marca=marca,modelo=modelo).count()
 
                     if validate==0:
-                          if descricao !="" and marca !="" and modelo !="":
+                          if descricao !="" and marca !="" and modelo !="" and data_entrada !="":
 
                                     equipamento.objects.create(
                                                                 descricao=descricao,
+                                                                data_entrada=data_entrada,
+                                                                obs=obs,
                                                                 marca=marca,
                                                                 modelo=modelo,
                                                                 serial_number=serial_number,
@@ -214,6 +218,8 @@ def add_equipamento_eleitoral(request):
   
   if request.method == "POST":
             try:
+                    data_entrada= request.POST.get("data_entrada")
+                    obs= request.POST.get("obs")
                     descricao= request.POST.get("descricao")
                     marca= request.POST.get("marca")
                     modelo= request.POST.get("modelo")
@@ -221,13 +227,15 @@ def add_equipamento_eleitoral(request):
                     mac_address= request.POST.get("mac_address")
                     user_create= request.POST.get("user_create")
 
-                    validate=equipamento_eleitoral.objects.filter(descricao=descricao,marca=marca,modelo=modelo).count()
+                    validate=equipamento_eleitoral.objects.filter(descricao=descricao,marca=marca,modelo=modelo,serial_number=serial_number).count()
 
                     if validate==0:
-                          if descricao !="" and marca !="" and modelo !="":
+                          if descricao !="" and marca !="" and modelo !="" and serial_number !="":
 
                                     equipamento_eleitoral.objects.create(
                                                                 descricao=descricao,
+                                                                data_entrada=data_entrada,
+                                                                obs=obs,
                                                                 marca=marca,
                                                                 modelo=modelo,
                                                                 serial_number=serial_number,
@@ -284,34 +292,21 @@ def editar_equipamento(request):
   if request.method == "POST":
             try:
                     equipamento_id = request.POST.get("equipamento_id")
-                    descricao= request.POST.get("descricao")
-                    marca= request.POST.get("marca")
-                    modelo= request.POST.get("modelo")
+                    obs= request.POST.get("obs")
                     serial_number= request.POST.get("serial_number")
                     mac_address= request.POST.get("mac_address")
                     user_update= request.POST.get("user_create")
 
-                    if descricao !="" and marca !="" and modelo !="":
-
-                                    equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
-                                    equipamento_ob.descricao=descricao
-                                    equipamento_ob.marca=marca
-                                    equipamento_ob.modelo=modelo
-                                    equipamento_ob.serial_number=serial_number
-                                    equipamento_ob.mac_address=mac_address
-                                    equipamento_ob.user_update=user_update
-                                    equipamento_ob.dateupdate=datetime.now()
-                                    equipamento_ob.save()
+                    equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
+                    equipamento_ob.obs=obs
+                    equipamento_ob.user_update=user_update
+                    equipamento_ob.dateupdate=datetime.now()
+                    equipamento_ob.save()
                                                                   
-                                    message='Equipamento alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
+                    message='Equipamento alterado com sucesso!!'
+                    status= 'success'
+                    return JsonResponse({'status':status, 'message': message })
 
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
-         
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -322,33 +317,19 @@ def editar_equipamento_eleitoral(request):
   if request.method == "POST":
             try:
                     equipamento_id = request.POST.get("equipamento_id")
-                    descricao= request.POST.get("descricao")
-                    marca= request.POST.get("marca")
-                    modelo= request.POST.get("modelo")
-                    serial_number= request.POST.get("serial_number")
-                    mac_address= request.POST.get("mac_address")
+                    obs_edit= request.POST.get("obs_edit")
                     user_update= request.POST.get("user_create")
 
-                    if descricao !="" and marca !="" and modelo !="":
-
-                                    equipamento_ob=get_object_or_404(equipamento_eleitoral,id=equipamento_id)
-                                    equipamento_ob.descricao=descricao
-                                    equipamento_ob.marca=marca
-                                    equipamento_ob.modelo=modelo
-                                    equipamento_ob.serial_number=serial_number
-                                    equipamento_ob.mac_address=mac_address
-                                    equipamento_ob.user_update=user_update
-                                    equipamento_ob.dateupdate=datetime.now()
-                                    equipamento_ob.save()
+                    equipamento_ob=get_object_or_404(equipamento_eleitoral,id=equipamento_id)
+                    equipamento_ob.obs=obs_edit
+                    equipamento_ob.user_update=user_update
+                    equipamento_ob.dateupdate=datetime.now()
+                    equipamento_ob.save()
                                                                   
-                                    message='Equipamento alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
+                    message='Equipamento alterado com sucesso!!'
+                    status= 'success'
+                    return JsonResponse({'status':status, 'message': message })
 
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
          
 
             except Exception as e:
@@ -436,6 +417,7 @@ def delete_equipamento_eleitoral_checkbox(request):
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 def gestao_mobiliario(request):
    
     mobiliario_list = mobiliario.objects.all().filter(status=1)
@@ -460,18 +442,21 @@ def add_mobiliario(request):
   if request.method == "POST":
             try:
                     descricao= request.POST.get("descricao")
+                    data_entrada= request.POST.get("data_entrada_edit")
+                    data_entrada= request.POST.get("data_entrada")
                     serial_number= request.POST.get("serial_number")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
 
-                    if descricao !="" and serial_number !="":
+                    if descricao !="" and serial_number !="" and data_entrada !="":
                       
                           validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
                           if validate==0:
 
                                     mobiliario.objects.create(
                                                                 descricao=descricao,
+                                                                data_entrada=data_entrada,
                                                                 serial_number=serial_number,
                                                                 obs=obs,
                                                                 user_create=user_create
@@ -501,18 +486,20 @@ def add_mobiliario_eleitoral(request):
   if request.method == "POST":
             try:
                     descricao= request.POST.get("descricao")
+                    data_entrada= request.POST.get("data_entrada")
                     serial_number= request.POST.get("serial_number")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
                     validate=mobiliario_eleitoral.objects.filter(descricao=descricao,serial_number=serial_number).count()
 
-                    if descricao !="" and serial_number !="":
+                    if descricao !="" and serial_number !="" and data_entrada !="":
                        
                           if validate==0:
                           
 
                                     mobiliario_eleitoral.objects.create(
+                                                                data_entrada=data_entrada,
                                                                 descricao=descricao,
                                                                 serial_number=serial_number,
                                                                 obs=obs,
@@ -600,28 +587,21 @@ def editar_mobiliario_eleitoral(request):
   if request.method == "POST":
             try:
                     mobiliario_id = request.POST.get("mobiliario_id")
-                    descricao= request.POST.get("descricao")
                     obs= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if descricao !="":
 
-                                    mobiliario_ob=get_object_or_404(mobiliario_eleitoral,id=mobiliario_id)
-                                    mobiliario_ob.descricao=descricao
-                                    mobiliario_ob.obs=obs
-                                    mobiliario_ob.user_update=user_update
-                                    mobiliario_ob.dateupdate=datetime.now()
-                                    mobiliario_ob.save()
+                    mobiliario_ob=get_object_or_404(mobiliario_eleitoral,id=mobiliario_id)
+                    mobiliario_ob.obs=obs
+                    mobiliario_ob.user_update=user_update
+                    mobiliario_ob.dateupdate=datetime.now()
+                    mobiliario_ob.save()
                                                                   
-                                    message='Mobiliario alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
+                    message='Mobiliario alterado com sucesso!!'
+                    status= 'success'
+                    return JsonResponse({'status':status, 'message': message })
 
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
-         
+                  
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -711,17 +691,15 @@ def add_inventario_equipamento(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
                     equipamento= request.POST.get("equipamento")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("estado")
                     user_create= request.POST.get("user_create")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if provinencia !="" and equipamento !="" and localizacao !="":
 
                                     inventario_equipamento.objects.create(
-                                                                data_entrada=data_entrada,
                                                                 equipamento_id=equipamento,
                                                                 localizacao=localizacao,
                                                                 provinencia=provinencia,
@@ -744,17 +722,15 @@ def add_inventario_equipamento_eleitoral(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
                     equipamento= request.POST.get("equipamento")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("estado")
                     user_create= request.POST.get("user_create")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
 
                                     inventario_equipamento_eleitoral.objects.create(
-                                                                data_entrada=data_entrada,
                                                                 equipamento_id=equipamento,
                                                                 localizacao=localizacao,
                                                                 provinencia=provinencia,
@@ -777,17 +753,14 @@ def add_inventario_mobiliario(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
                     mobiliario= request.POST.get("mobiliario")
                     localizacao= request.POST.get("localizacao")
-                    estado= request.POST.get("estado")
                     user_create= request.POST.get("user_create")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if provinencia !="" and equipamento !="" and localizacao !="":
 
                                     inventario_mobiliario.objects.create(
-                                                                data_entrada=data_entrada,
                                                                 mobiliario_id=mobiliario,
                                                                 localizacao=localizacao,
                                                                 provinencia=provinencia,
@@ -810,17 +783,15 @@ def add_inventario_mobiliario_eleitoral(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
                     mobiliario= request.POST.get("mobiliario")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("estado")
                     user_create= request.POST.get("user_create")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
 
                                     inventario_mobiliario_eleitoral.objects.create(
-                                                                data_entrada=data_entrada,
                                                                 mobiliario_id=mobiliario,
                                                                 localizacao=localizacao,
                                                                 provinencia=provinencia,
@@ -851,7 +822,7 @@ def get_equipamento_inventario(request):
                   query = '''
                             SELECT 
                             die.id,
-                            die.data_entrada,
+                            de.data_entrada,
                             die.localizacao,
                             die.obs,
                             die.provinencia,
@@ -890,7 +861,7 @@ def get_equipamento_eleitoral_inventario(request):
                   query = '''
                             SELECT 
                             die.id,
-                            die.data_entrada,
+                            de.data_entrada,
                             die.localizacao,
                             die.obs,
                             die.provinencia,
@@ -926,7 +897,7 @@ def get_mobiliario_inventario(request):
                   query = '''
                             SELECT 
                             die.id,
-                            die.data_entrada,
+                            de.data_entrada,
                             die.localizacao,
                             die.obs,
                             die.provinencia,
@@ -959,7 +930,7 @@ def get_mobiliario_eleitoral_inventario(request):
                   query = '''
                             SELECT 
                             die.id,
-                            die.data_entrada,
+                            de.data_entrada,
                             die.localizacao,
                             die.obs,
                             die.provinencia,
@@ -986,22 +957,16 @@ def edit_inventario_equipamento(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
-                    provinencia= request.POST.get("provinencia")
-                    equipamento= request.POST.get("equipamento")
                     id= request.POST.get("id")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if equipamento !="" and localizacao !="" :
 
                                     inventario_equipament=get_object_or_404(inventario_equipamento,id=id)
                                   
-                                    inventario_equipament.data_entrada=data_entrada
-                                    inventario_equipament.equipamento_id=equipamento
                                     inventario_equipament.localizacao=localizacao
-                                    inventario_equipament.provinencia=provinencia
                                     inventario_equipament.obs=estado
                                     inventario_equipament.dateupdate=datetime.now()
                                     inventario_equipament.user_update=user_update
@@ -1023,22 +988,15 @@ def edit_inventario_equipamente_eleitoral(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
-                    provinencia= request.POST.get("provinencia")
-                    equipamento= request.POST.get("equipamento")
                     id= request.POST.get("id")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if data_entrada !="" and provinencia !="" and equipamento !="" and localizacao !=""  and estado !="":
+                    if localizacao !=""  :
 
                                     inventario_equipament=get_object_or_404(inventario_equipamento_eleitoral,id=id)
-                                  
-                                    inventario_equipament.data_entrada=data_entrada
-                                    inventario_equipament.equipamento_id=equipamento
                                     inventario_equipament.localizacao=localizacao
-                                    inventario_equipament.provinencia=provinencia
                                     inventario_equipament.obs=estado
                                     inventario_equipament.dateupdate=datetime.now()
                                     inventario_equipament.user_update=user_update
@@ -1060,22 +1018,16 @@ def edit_mobiliario_equipamento(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
-                    provinencia= request.POST.get("provinencia")
-                    mobiliario= request.POST.get("mobiliario_edit")
                     id= request.POST.get("id")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if data_entrada !="" and provinencia !="" and mobiliario !="" and localizacao !=""  and estado !="":
+                    if localizacao !="":
 
                                     inventario_mobiliari=get_object_or_404(inventario_mobiliario,id=id)
                                   
-                                    inventario_mobiliari.data_entrada=data_entrada
-                                    inventario_mobiliari.mobiliario_id=mobiliario
                                     inventario_mobiliari.localizacao=localizacao
-                                    inventario_mobiliari.provinencia=provinencia
                                     inventario_mobiliari.obs=estado
                                     inventario_mobiliari.dateupdate=datetime.now()
                                     inventario_mobiliari.user_update=user_update
@@ -1097,22 +1049,15 @@ def edit_mobiliario_inventario_eleitoral(request):
   
   if request.method == "POST":
             try:
-                    data_entrada= request.POST.get("data_entrada")
-                    provinencia= request.POST.get("provinencia")
-                    mobiliario= request.POST.get("mobiliario_edit")
                     id= request.POST.get("id")
                     localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if data_entrada !="" and provinencia !="" and mobiliario !="" and localizacao !=""  and estado !="":
+                    if localizacao !="":
 
                                     inventario_mobiliari=get_object_or_404(inventario_mobiliario_eleitoral,id=id)
-                                  
-                                    inventario_mobiliari.data_entrada=data_entrada
-                                    inventario_mobiliari.mobiliario_id=mobiliario
                                     inventario_mobiliari.localizacao=localizacao
-                                    inventario_mobiliari.provinencia=provinencia
                                     inventario_mobiliari.obs=estado
                                     inventario_mobiliari.dateupdate=datetime.now()
                                     inventario_mobiliari.user_update=user_update

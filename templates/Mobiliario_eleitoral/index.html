@@ -46,6 +46,7 @@
 						</th>
 						<th>Nome</th>
 						<th>Serial Number</th>
+						<th>Data Entrada</th>
 						<th>OBS</th>
 						<th>Acões</th>
 					</tr>
@@ -63,6 +64,7 @@
 						</td>
 						<td>{{mobiliario_list.descricao}}</td>
 						<td>{{mobiliario_list.serial_number}}</td>
+						<td>{{mobiliario_list.data_entrada}}</td>
 						<td>{{mobiliario_list.obs}}</td>
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_eleitoral(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -110,7 +112,11 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
-				<div class="modal-body">				
+				<div class="modal-body">	
+					<div class="form-group">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada" readonly>
+					</div>			
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao" class="form-control" required>
@@ -128,7 +134,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-success" onclick="add_mobiliario_eleitoral()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar">
+					<input class="btn btn-success" onclick="add_mobiliario_eleitoral()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -146,7 +152,11 @@
 					<h4 class="modal-title">Editar mobiliario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">		
+					<div class="form-group">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada_edit" readonly>
+					</div>				
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao_edit" class="form-control" required>
@@ -165,7 +175,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_mobiliario_eleitoral()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_mobiliario_eleitoral()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
@@ -191,7 +201,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="delete_mobiliario_eleitoral()" value="Apagar">
+					<input  class="btn btn-danger" onclick="delete_mobiliario_eleitoral()" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>
@@ -216,7 +226,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  id="id_mobiliario_eleitoral_deleteCk"  class="btn btn-danger" value="Apagar">
+					<input  id="id_mobiliario_eleitoral_deleteCk"  class="btn btn-danger" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>
@@ -229,6 +239,12 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		flatpickr("#data_entrada", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_entrada_edit", {
 			dateFormat: "Y-m-d",
 			locale: "pt"
 		});

@@ -126,13 +126,9 @@
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
-						<input type="date" id="data_entrada" readonly>
-						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					</div>
-					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia" class="form-control">
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
@@ -148,13 +144,13 @@
 						<input type="text" class="form-control" id="localizacao">
 					</div>		
 					<div class="form-group">
-						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  onclick="add_inventario_equipamanto()" class="btn btn-success" value="Guardar">
+					<input  onclick="add_inventario_equipamanto()" class="btn btn-success" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -203,7 +199,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_equipamento_inventario()" value="Alterar">
+					<input class="btn btn-info" onclick="edit_equipamento_inventario()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
@@ -229,7 +225,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="delete_equipamento_inventario()" value="Apagar">
+					<input  class="btn btn-danger" onclick="delete_equipamento_inventario()" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>

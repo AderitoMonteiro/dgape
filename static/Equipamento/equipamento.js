@@ -179,11 +179,21 @@ function get_equipamento(button){
              const datajs = JSON.parse(data);
              
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
+             document.getElementById("obs_edit").value= datajs[0].fields.obs;
              document.getElementById("marca_edit").value=datajs[0].fields.marca;
              document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
              document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
              document.getElementById("mac_address_edit").value=datajs[0].fields.mac_address;
              document.getElementById("equipamento_id").value=equipamento_id;
+
+
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("marca_edit").disabled=true;
+             document.getElementById("modelo_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("mac_address_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {
@@ -209,12 +219,21 @@ function get_equipamento_eleitoral(button){
  
              const datajs = JSON.parse(data);
              
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
+             document.getElementById("obs_edit").value= datajs[0].fields.obs;
              document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
              document.getElementById("marca_edit").value=datajs[0].fields.marca;
              document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
              document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
              document.getElementById("mac_address_edit").value=datajs[0].fields.mac_address;
              document.getElementById("equipamento_id").value=equipamento_id;
+
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("marca_edit").disabled=true;
+             document.getElementById("modelo_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("mac_address_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {
@@ -241,23 +260,14 @@ function get_equipamento_eleitoral(button){
  
  function edit_equipamanto() {
  
-     
-     const descricao = document.getElementById('descricao_edit').value;
-     const marca = document.getElementById('marca_edit').value;
-     const modelo = document.getElementById('modelo_edit').value;
-     const serial_number = document.getElementById('serial_number_edit').value;
-     const mac_address = document.getElementById('mac_address_edit').value;
+     const obs = document.getElementById('obs_edit').value;
      const id_user = document.getElementById('id_user_edit').value;
      const equipamento_id = document.getElementById('equipamento_id').value;
  
  
      // Dados para enviar
      const data = {
-         "descricao": descricao,
-         "marca": marca,
-         "modelo": modelo,
-         "serial_number": serial_number,
-         "mac_address": mac_address,
+         "obs": obs,
          "user_create": id_user,
          "equipamento_id": equipamento_id,
          "X-CSRFToken": getCSRFToken()
@@ -315,22 +325,14 @@ function get_equipamento_eleitoral(button){
  function edit_equipamanto_eleitoral() {
  
      
-    const descricao = document.getElementById('descricao_edit').value;
-    const marca = document.getElementById('marca_edit').value;
-    const modelo = document.getElementById('modelo_edit').value;
-    const serial_number = document.getElementById('serial_number_edit').value;
-    const mac_address = document.getElementById('mac_address_edit').value;
+    const obs_edit = document.getElementById('obs_edit').value;
     const id_user = document.getElementById('id_user_edit').value;
     const equipamento_id = document.getElementById('equipamento_id').value;
 
 
     // Dados para enviar
     const data = {
-        "descricao": descricao,
-        "marca": marca,
-        "modelo": modelo,
-        "serial_number": serial_number,
-        "mac_address": mac_address,
+        "obs_edit": obs_edit,
         "user_create": id_user,
         "equipamento_id": equipamento_id,
         "X-CSRFToken": getCSRFToken()
@@ -515,6 +517,8 @@ function add_equipamanto() {
 
     
     const descricao = document.getElementById('descricao').value;
+    const data_entrada = document.getElementById('data_entrada').value;
+    const obs = document.getElementById('obs').value;
     const marca = document.getElementById('marca').value;
     const modelo = document.getElementById('modelo').value;
     const serial_number = document.getElementById('serial_number').value;
@@ -524,6 +528,8 @@ function add_equipamanto() {
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "data_entrada": data_entrada,
+        "obs": obs,
         "marca": marca,
         "modelo": modelo,
         "serial_number": serial_number,
@@ -583,7 +589,8 @@ function add_equipamanto() {
 
 function add_equipamanto_eleitoral() {
 
-    
+    const data_entrada = document.getElementById('data_entrada').value;
+    const obs = document.getElementById('obs').value;
     const descricao = document.getElementById('descricao').value;
     const marca = document.getElementById('marca').value;
     const modelo = document.getElementById('modelo').value;
@@ -594,6 +601,8 @@ function add_equipamanto_eleitoral() {
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "data_entrada": data_entrada,
+        "obs": descricao,
         "marca": marca,
         "modelo": modelo,
         "serial_number": serial_number,

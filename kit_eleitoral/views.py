@@ -165,6 +165,7 @@ def editar_kit(request):
   if request.method == "POST":
             try:
                      kit_el_id = request.POST.get("kit_el_id")
+                     malas_id = request.POST.get("malas")
                      user_update = request.POST.get("user_update")
                      obs_edit = request.POST.get("obs_edit")
 
