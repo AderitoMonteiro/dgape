@@ -124,12 +124,13 @@
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="mobiliario">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for mobiliario_list in mobiliario %}
-							  <option value="{{mobiliario_list.id}}">{{mobiliario_list.descricao}}</option>
-							  {% endfor %}
-						</select>
+						<input id="mobiliario" class="form-control" type="text" onclick="toggleDropdownmobiliario()"></input>
+						<div id="dropdownMenuemobiliario" class="dropdown-content">
+						  <input type="text"  id="dropdownInputmobiliario" placeholder="Type to filter..." onkeyup="filterDropdownmobiliario()">
+						  {% for mobiliario_list in mobiliario %}
+						  <div  data-id="{{ mobiliario_list.id }}" class="dropdown-item" onclick="selectItmobiliario(this)">{{mobiliario_list.descricao}}</div>
+							{% endfor %}
+					  </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>

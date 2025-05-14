@@ -132,12 +132,13 @@
 					</div>
 					<div class="form-group">
 						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="equipamento">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for equipamento_list in equipamento %}
-							  <option value="{{equipamento_list.id}}">{{equipamento_list.serial_number}}</option>
-							  {% endfor %}
-						</select>
+						<input id="equipamento" class="form-control" type="text" onclick="toggleDropdownequipamento()"></input>
+						<div id="dropdownMenuequipamento" class="dropdown-content">
+						  <input type="text"  id="dropdownInputequipamento" placeholder="Type to filter..." onkeyup="filterDropdownequipamento()">
+						  {% for equipamento_list in equipamento %}
+							  <div  data-id="{{ equipamento_list.id }}" class="dropdown-item" onclick="selectItequipamento(this)">{{equipamento_list.descricao}}</div>
+							{% endfor %}
+					  </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>

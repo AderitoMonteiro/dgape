@@ -27,6 +27,7 @@ def gestao_kit_eleitoral(request):
                                 KE.cres_id as cres_id, 
                                 KE.status as status, 
                                 KE.malas as malas, 
+                                ml.descricao as malas_descricao,
                                 scaner.descricao as scaner_impresao_digital,
                                 KE.impresora_id as impresora, 
                                 KE.guia_entrega as guia_entrega,
@@ -45,6 +46,7 @@ def gestao_kit_eleitoral(request):
                                 INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                 INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
                                 INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
+                                INNER JOIN kit_eleitoral_equipamento as ml on KE.malas=ml.id
                                 where KE.status=1
                             '''
                 with connection.cursor() as cursor:
@@ -123,6 +125,7 @@ def get_kit(request):
                                 KE.cres_id as cres_id, 
                                 KE.status as status, 
                                 KE.malas as malas, 
+                                ml.descricao as malas_descricao, 
                                 scaner.descricao as scaner_impresao_digital,
                                 scaner.id as scaner_impresao_digital_id,
                                 KE.impresora_id as impresora_id, 
@@ -146,6 +149,7 @@ def get_kit(request):
                                 INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                 INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
                                 INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
+                                INNER JOIN kit_eleitoral_equipamento as ml on KE.malas=ml.id
                                 where KE.id=%s
                             '''
                   with connection.cursor() as cursor:
@@ -171,6 +175,7 @@ def editar_kit(request):
 
                      kit_el_edit=get_object_or_404(kit_eleit,id=kit_el_id)
                      kit_el_edit.user_update=user_update
+                     kit_el_edit.malas=malas_id
                      kit_el_edit.datecreate=datetime.now()
                      kit_el_edit.obs=obs_edit
                      kit_el_edit.save()

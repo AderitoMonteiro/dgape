@@ -11,7 +11,7 @@ function add_inventario_mobiliario() {
 
     
     const provinencia = document.getElementById('provinencia').value;
-    const mobiliario = document.getElementById('mobiliario').value;
+    const mobiliario = document.getElementById('mobiliario').getAttribute("data-id");;
     const localizacao = document.getElementById('localizacao').value;
     const estado = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
@@ -348,7 +348,7 @@ function edit_mobiliario_inventario(){
       });
   }
 
-  function edit_mobiliario_inventario_eleitoral(){
+function edit_mobiliario_inventario_eleitoral(){
 
     let localizacao_edit = document.getElementById('localizacao_edit').value
     let id_inventario_mobiliario = document.getElementById('id_inventario_mobiliario').value
@@ -616,3 +616,39 @@ function edit_mobiliario_inventario(){
     }
 
 });
+
+
+ // filtragem drop mobiliario start
+
+ function toggleDropdownmobiliario() {
+    const dropdown = document.getElementById("dropdownMenuemobiliario");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInputmobiliario").value = "";
+    filterDropdownmobiliario();
+    document.getElementById("dropdownInputmobiliario").focus();
+  }
+
+  function filterDropdownmobiliario() {
+    const input = document.getElementById("dropdownInputmobiliario").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItmobiliario(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("mobiliario").value = selectedValue;
+    document.getElementById("mobiliario").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenuemobiliario").style.display = "none";
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".form-group");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+  // close filtragem drop mobiliario start

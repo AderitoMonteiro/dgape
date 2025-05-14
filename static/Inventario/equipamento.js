@@ -11,7 +11,7 @@ function slowReload() {
 function add_inventario_equipamanto() {
 
     const provinencia = document.getElementById('provinencia').value;
-    const equipamento = document.getElementById('equipamento').value;
+    const equipamento = document.getElementById('equipamento').getAttribute("data-id");
     const localizacao = document.getElementById('localizacao').value;
     const estado = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
@@ -480,3 +480,39 @@ function get_equipamento_inventario(button){
     }
 
 });
+
+
+ // filtragem drop equipamento start
+
+ function toggleDropdownequipamento() {
+    const dropdown = document.getElementById("dropdownMenuequipamento");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInputequipamento").value = "";
+    filterDropdownequipamento();
+    document.getElementById("dropdownInputequipamento").focus();
+  }
+
+  function filterDropdownequipamento() {
+    const input = document.getElementById("dropdownInputequipamento").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItequipamento(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("equipamento").value = selectedValue;
+    document.getElementById("equipamento").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenuequipamento").style.display = "none";
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".form-group");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+  // close filtragem drop equipamento start

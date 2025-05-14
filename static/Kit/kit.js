@@ -12,13 +12,13 @@ function slowReload() {
 function add_kit() {
 
     
-    const conselho = document.getElementById('conselho').value;
-    const malas = document.getElementById('malas').value;
-    const portatel = document.getElementById('portatel').value;
-    const impressora = document.getElementById('impressora').value;
-    const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital').value;
-    const capitura_assinatura = document.getElementById('capitura_assinatura').value;
-    const camera_fotografia = document.getElementById('cama_fotografia').value;
+    const conselho = document.getElementById('conselho').getAttribute("data-id");
+    const malas = document.getElementById('malas').getAttribute("data-id");
+    const portatel = document.getElementById('portatel').getAttribute("data-id");
+    const impressora = document.getElementById('impressora').getAttribute("data-id");
+    const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital').getAttribute("data-id");
+    const capitura_assinatura = document.getElementById('capitura_assinatura').getAttribute("data-id");
+    const camera_fotografia = document.getElementById('cama_fotografia').getAttribute("data-id");
     const guia_entrega = document.getElementById('guia_entrega').value;
     const data_saida = document.getElementById('data_saida').value;
     const obs = document.getElementById('obs').value;
@@ -109,7 +109,8 @@ function get_kit(button){
             const result = JSON.parse(jsonString);               
              
             document.getElementById("conselho_edit").value= result.resultado[0].cres_id;
-            document.getElementById("malas_edit").value= result.resultado[0].malas;
+            document.getElementById("malas_edit").value= result.resultado[0].malas_descricao;
+            document.getElementById("malas_edit").setAttribute("data-id",  result.resultado[0].malas);
             document.getElementById("portatel_edit").value= result.resultado[0].portatel_id;
             document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
             document.getElementById("Scaner_impresao_digital_edit").value= result.resultado[0].scaner_impresao_digital_id;
@@ -144,7 +145,7 @@ function get_kit(button){
  
  
     //const conselho = document.getElementById('conselho_edit').value;
-     const malas = document.getElementById('malas_edit').value;
+     const malas = document.getElementById('malas_edit').getAttribute("data-id");
     //const portatel = document.getElementById('portatel_edit').value;
     //const impressora = document.getElementById('impressora_edit').value;
     //const Scaner_impresao_digital = document.getElementById('Scaner_impresao_digital_edit').value;
@@ -381,15 +382,260 @@ function toggleDropdown() {
   function selectItem(el) {
     const selectedValue = el.textContent;
     document.getElementById("conselho").value = selectedValue;
+    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
     document.getElementById("dropdownMenu").style.display = "none";
   }
 
   // Close dropdown when clicking outside
   document.addEventListener("click", function (e) {
-    const dropdown = document.querySelector(".dropdown");
+     const dropdown = document.querySelector(".form-group");
+
     if (!dropdown.contains(e.target)) {
       document.getElementById("dropdownMenu").style.display = "none";
     }
   });
 
   // close filtragem drop conselho
+
+  // filtragem drop mala start
+
+  function toggleDropdownmala() {
+    const dropdown = document.getElementById("dropdownMenumala");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInputmala").value = "";
+    filterDropdownmala();
+    document.getElementById("dropdownInputmala").focus();
+  }
+
+  function filterDropdownmala() {
+    const input = document.getElementById("dropdownInputmala").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItemmala(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("malas").value = selectedValue;
+    document.getElementById("malas").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenumala").style.display = "none";
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".form-group");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop mala start
+
+ // filtragem drop portatel start
+
+    function toggleDropdownportatel() {
+        const dropdown = document.getElementById("dropdownMenuportatel");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputportatel").value = "";
+        filterDropdownportatel();
+        document.getElementById("dropdownInputportatel").focus();
+      }
+    
+      function filterDropdownportatel() {
+        const input = document.getElementById("dropdownInputportatel").value.toLowerCase();
+        const items = document.querySelectorAll(".dropdown-item");
+    
+        items.forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+        });
+      }
+    
+      function selectIteportatel(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("portatel").value = selectedValue;
+        document.getElementById("portatel").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+    
+      // close filtragem drop portatel start
+
+    // filtragem drop impressora start
+
+    function toggleDropdownimpressora() {
+        const dropdown = document.getElementById("dropdownMenuimpressora");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputimpressora").value = "";
+        filterDropdownimpressora();
+        document.getElementById("dropdownInputimpressora").focus();
+        
+      }
+    
+      function filterDropdownimpressora() {
+        const input = document.getElementById("dropdownInputimpressora").value.toLowerCase();
+        const items = document.querySelectorAll(".dropdown-item");
+    
+        items.forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+        });
+      }
+      
+      function selectItimpressora(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("impressora").value = selectedValue;
+        document.getElementById("impressora").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+    
+      // close filtragem drop impressora start
+
+     // filtragem drop scanner start
+
+       function toggleDropdownscanner() {
+        const dropdown = document.getElementById("dropdownMenuscaner");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputscaner").value = "";
+        filterDropdownscaner();
+        document.getElementById("dropdownInputscaner").focus();
+      }
+    
+      function filterDropdownscaner() {
+        const input = document.getElementById("dropdownInputscaner").value.toLowerCase();
+        const items = document.querySelectorAll(".dropdown-item");
+    
+        items.forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+        });
+      }
+    
+      function selectItscaner(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("Scaner_impresao_digital").value = selectedValue;
+        document.getElementById("Scaner_impresao_digital").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+      // close filtragem drop scanner start
+      // filtragem drop scanner start
+
+      function toggleDropdowncapitura() {
+        const dropdown = document.getElementById("dropdownMenucapitura");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputcamera").value = "";
+        filterDropdowncapitura();
+        document.getElementById("dropdownInputcamera").focus();
+      }
+    
+      function filterDropdowncapitura() {
+        const input = document.getElementById("dropdownInputcamera").value.toLowerCase();
+        const items = document.querySelectorAll(".dropdown-item");
+        items.forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+        });
+      }
+    
+      function selectItcapitura(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("capitura_assinatura").value = selectedValue;
+        document.getElementById("capitura_assinatura").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+      // close filtragem drop scanner start
+
+      // filtragem drop scanner start
+
+      function toggleDropdowncamera() {
+        const dropdown = document.getElementById("dropdownMenucamera");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputcamera").value = "";
+        document.getElementById("dropdownInputcamera").focus();
+      }
+  
+      function selectItcamera(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("cama_fotografia").value = selectedValue;
+        document.getElementById("cama_fotografia").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenucamera").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+      // close filtragem drop scanner start
+
+      // filtragem drop scanner start
+
+      function toggleDropdownmalas_edit() {
+        const dropdown = document.getElementById("dropdownMenumalas_edit");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        document.getElementById("dropdownInputmalas_edit").value = "";
+        filterDropdownmala_edit();
+        document.getElementById("dropdownInputmalas_edit").focus();
+      }
+
+      function filterDropdownmala_edit() {
+        const input = document.getElementById("dropdownInputmalas_edit").value.toLowerCase();
+        const items = document.querySelectorAll(".dropdown-item");
+        items.forEach(item => {
+          item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+        });
+      }
+  
+      function selectItmalas_edit(el) {
+        const selectedValue = el.textContent;
+        document.getElementById("malas_edit").value = selectedValue;
+        document.getElementById("malas_edit").setAttribute("data-id", el.getAttribute("data-id"));
+        document.getElementById("dropdownMenumalas_edit").style.display = "none";
+      }
+    
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+         const dropdown = document.querySelector(".form-group");
+
+        if (!dropdown.contains(e.target)) {
+          document.getElementById("dropdownMenu").style.display = "none";
+        }
+      });
+      // close filtragem drop scanner start

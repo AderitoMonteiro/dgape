@@ -72,7 +72,7 @@
 							</span>
 						</td>
 						<td>{{paginator_kit_list.descricao}}</td>
-						<td>{{paginator_kit_list.malas}}</td>
+						<td>{{paginator_kit_list.malas_descricao}}</td>
 						<td>{{paginator_kit_list.equipamento}}</td>
 						<td>{{paginator_kit_list.impressora}}</td>
 						<td>{{paginator_kit_list.scaner_impresao_digital}}</td>
@@ -132,64 +132,72 @@
 							<div id="dropdownMenu" class="dropdown-content">
 							  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
 							    {% for conselho_list in conselho %}
-							      <div class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+							      <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
 								{% endfor %}
 								<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 						  </div>
 					</div>
 					<div class="form-group">
-						<label><strong>Malas</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="malas">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for mala_list in mala %}
-							 <option value="{{mala_list.id}}">{{mala_list.descricao}} / {{mala_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>
+						<label><strong>Mala</strong><span style="color: red;">*</span></label>
+					    <input id="malas" class="form-control" type="text" onclick="toggleDropdownmala()"></input>
+							<div id="dropdownMenumala" class="dropdown-content">
+							  <input type="text"  id="dropdownInputmala" placeholder="Type to filter..." onkeyup="filterDropdownmala()">
+							    {% for mala_list in mala %}
+							      <div  data-id="{{ mala_list.id }}" class="dropdown-item" onclick="selectItemmala(this)">{{mala_list.descricao}}</div>
+								{% endfor %}
+						  </div>
 					</div>
 					<div class="form-group">
-						<label><strong>Portatel</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="portatel">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for portatel_list in portatel %}
-							 <option value="{{portatel_list.id}}">{{portatel_list.descricao}} / {{portatel_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>							
+	
+					   <label><strong>Portatel</strong><span style="color: red;">*</span></label>
+					    <input id="portatel" class="form-control" type="text" onclick="toggleDropdownportatel()"></input>
+							<div id="dropdownMenuportatel" class="dropdown-content">
+							  <input type="text"  id="dropdownInputportatel" placeholder="Type to filter..." onkeyup="filterDropdownportatel()">
+							    {% for portatel_list in portatel %}
+							      <div  data-id="{{ portatel_list.id }}" class="dropdown-item" onclick="selectIteportatel(this)">{{portatel_list.descricao}}</div>
+								{% endfor %}
+						  </div>				
 					</div>
 					<div class="form-group">
-						<label><strong>Impressora</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="impressora">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for impressora_list in impressora %}
-							 <option value="{{impressora_list.id}}">{{impressora_list.descricao}} / {{impressora_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>		
-						</div>
-					<div class="form-group">
-						<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="Scaner_impresao_digital">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for scaner_list in scaner %}
-							 <option value="{{scaner_list.id}}">{{scaner_list.descricao}} / {{scaner_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>
+					   <label><strong>Impressora</strong><span style="color: red;">*</span></label>
+					    <input id="impressora" class="form-control" type="text" onclick="toggleDropdownimpressora()"></input>
+							<div id="dropdownMenuimpressora" class="dropdown-content">
+							  <input type="text"  id="dropdownInputimpressora" placeholder="Type to filter..." onkeyup="filterDropdownimpressora()">
+							  {% for impressora_list in impressora %}
+							      <div  data-id="{{ impressora_list.id }}" class="dropdown-item" onclick="selectItimpressora(this)">{{impressora_list.descricao}}</div>
+								{% endfor %}
+						    </div>	
 					</div>
 					<div class="form-group">
-						<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="capitura_assinatura">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for assinatura_list in assinatura %}
-							 <option value="{{assinatura_list.id}}">{{assinatura_list.descricao}} / {{assinatura_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>
+					   <label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+					   <input id="Scaner_impresao_digital" class="form-control" type="text" onclick="toggleDropdownscanner()"></input>
+						   <div id="dropdownMenuscaner" class="dropdown-content">
+							 <input type="text"  id="dropdownInputscaner" placeholder="Type to filter..." onkeyup="filterDropdownscaner()">
+							 {% for scaner_list in scaner %}
+								 <div  data-id="{{ scaner_list.id }}" class="dropdown-item" onclick="selectItscaner(this)">{{scaner_list.descricao}}</div>
+							   {% endfor %}
+						   </div>	
+					</div>
+					<div class="form-group">
+					
+					   <label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
+					   <input id="capitura_assinatura" class="form-control" type="text" onclick="toggleDropdowncapitura()"></input>
+						   <div id="dropdownMenucapitura" class="dropdown-content">
+							 <input type="text"  id="dropdownInputcapitura" placeholder="Type to filter..." onkeyup="filterDropdown()">
+							 {% for assinatura_list in assinatura %}
+								 <div  data-id="{{ assinatura_list.id }}" class="dropdown-item" onclick="selectItcapitura(this)">{{assinatura_list.descricao}}</div>
+							   {% endfor %}
+						   </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="cama_fotografia">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for camera_list in camera %}
-							 <option value="{{camera_list.id}}">{{camera_list.descricao}} / {{camera_list.serial_number}}</option>
-							 {% endfor %}
-					   </select>
+					    <input id="cama_fotografia" class="form-control" type="text" onclick="toggleDropdowncamera()"></input>
+						   <div id="dropdownMenucamera" class="dropdown-content">
+							 <input type="text"  id="dropdownInputcamera" placeholder="Type to filter..." onkeyup="filterDropdowncapitura()">
+							 {% for camera_list in camera %}
+								 <div  data-id="{{ camera_list.id }}" class="dropdown-item" onclick="selectItcamera(this)">{{camera_list.descricao}}</div>
+							   {% endfor %}
+						   </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
@@ -240,13 +248,15 @@
 						   <input type="hidden" id="kit_el_id" class="form-control">
 						</div>
 						<div class="form-group">
-							<label><strong>Malas</strong><span style="color: red;">*</span></label>
-							<select class="form-control" id="malas_edit">
-								<option value="">--Por favor, escolha uma opção--</option>
-								{% for mala_list in mala %}
-								 <option value="{{mala_list.id}}">{{mala_list.descricao}} / {{mala_list.serial_number}}</option>
-								 {% endfor %}
-						   </select>
+							
+						<label><strong>Mala</strong><span style="color: red;">*</span></label>
+					    <input id="malas_edit" class="form-control" type="text" onclick="toggleDropdownmalas_edit()"></input>
+							<div id="dropdownMenumalas_edit" class="dropdown-content">
+							  <input type="text"  id="dropdownInputmalas_edit" placeholder="Type to filter..." onkeyup="filterDropdownmala_edit()">
+							    {% for mala_list in mala %}
+							      <div  data-id="{{ mala_list.id }}" class="dropdown-item" onclick="selectItmalas_edit(this)">{{mala_list.descricao}}</div>
+								{% endfor %}
+						  </div>
 						</div>
 						<div class="form-group">
 							<label><strong>Portatel</strong><span style="color: red;">*</span></label>
