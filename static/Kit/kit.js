@@ -360,3 +360,36 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
 
 });
 
+// filtragem drop conselho start
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInput").value = "";
+    filterDropdown(); // show all items when opening
+    document.getElementById("dropdownInput").focus();
+  }
+
+  function filterDropdown() {
+    const input = document.getElementById("dropdownInput").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho").value = selectedValue;
+    document.getElementById("dropdownMenu").style.display = "none";
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+    const dropdown = document.querySelector(".dropdown");
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop conselho

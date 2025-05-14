@@ -13,11 +13,14 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="{% static 'Departamento/inventario/style.css' %}">
+<link rel="stylesheet" href="{% static 'Kit/kit.css' %}">
+
 <script src="{%static 'Departamento/inventario/jscript.js'%}"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -124,16 +127,15 @@
 				<div class="modal-body">				
 					
 					<div class="form-group">
-						<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
-						
-						<select class="form-control" id="conselho">
-							<option value="">--Por favor, escolha uma opção--</option>
-							{% for conselho_list in conselho %}
-							 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
-							 {% endfor %}
-					   </select>
-					   <input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-
+						    <label><strong>Conselho</strong><span style="color: red;">*</span></label>
+							<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
+							<div id="dropdownMenu" class="dropdown-content">
+							  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
+							    {% for conselho_list in conselho %}
+							      <div class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+								{% endfor %}
+								<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						  </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Malas</strong><span style="color: red;">*</span></label>
@@ -402,6 +404,7 @@
 	});
 </script>
 <script src="{%static 'Kit/kit.js'%}"></script>
+
 {% endblock %}
 
 
