@@ -10,6 +10,8 @@
       <li>
         <a href="#"></a>
       </li>
+      <!--
+      {% if perms.departamentos %}
       <li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO DGAPE</a>
         <ul class="list-unstyled collapse">
@@ -69,9 +71,33 @@
           </li>
         </ul>
       </li>
-    <li>  
-        <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>
+      {% endif %}-->
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO DGAPE</a>
+        <ul class="list-unstyled collapse">
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuinventariodgape(event)" class="dropdown-toggle">Lançamento Inventario</a>
+          <ul class="list-unstyled collapse">
+            <li>
+                <a onclick="window.location.href='/diretor/index/'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+            </li>
+            <li>
+                <a onclick="window.location.href='/inventario/mobiliario/index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+            </li> 
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Lançamento Patrimonial</a>
+          <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="window.location.href='/gestao_equipamento/equipamento_index'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+              </li>
+              <li>
+                <a onclick="window.location.href='/gestao_mobiliario/mobiliario_index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+              </li>
+          </ul>
+        </ul>
       </li>
+     <li>  
+        <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>
+     </li>
   </ul>
 
 <div class="footer">
