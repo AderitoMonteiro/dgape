@@ -16,7 +16,7 @@ class inventario_equipamento(models.Model):
 class inventario_equipamento_eleitoral(models.Model):
     id = models.AutoField(primary_key=True)
     equipamento_id = models.IntegerField()
-    status = models.BooleanField(default=1)
+    status = models.IntegerField(default=1)
     localizacao = models.CharField(max_length=100)
     provinencia = models.CharField(max_length=100,null=True)
     obs = models.CharField(max_length=100)
@@ -28,7 +28,7 @@ class inventario_equipamento_eleitoral(models.Model):
 class inventario_mobiliario(models.Model):
     id = models.AutoField(primary_key=True)
     mobiliario_id = models.IntegerField()
-    status = models.BooleanField(default=1)
+    status = models.IntegerField(default=1)
     localizacao = models.CharField(max_length=100)
     provinencia = models.CharField(max_length=100,null=True)
     obs = models.CharField(max_length=100)
@@ -59,7 +59,7 @@ class equipamento(models.Model):
     mac_address = models.CharField(max_length=100,default=True) 
     data_entrada = models.DateField(null=True) 
     obs = models.CharField(max_length=100,default=True)    
-    status = models.BooleanField(default=1)
+    status = models.IntegerField(default=1)
     user_create = models.IntegerField()
     user_update = models.IntegerField(null=True)
     datecreate = models.DateTimeField(auto_now_add=True)

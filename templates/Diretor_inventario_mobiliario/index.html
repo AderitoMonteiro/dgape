@@ -28,12 +28,12 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 style="color: #fff;">INVENTARIO DE <b>EQUIPAMENTOS</b></h2>
+						<h2 style="color: #fff;">INVENTARIO DE <b>MOBILIARIO</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
+						<a onclick="window.location.href='/inventario/exportar_inventario_mobiliario/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
 						<a href="#checkboxdeleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Bloquear</span></a>
-						<a href="#checkboxunlockEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-unlock"></i> <span>Desbloquear</span></a>
+						<a href="#checkboxunlockEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-unlock"></i> <span>Desbloquear</span></a>					
 					</div>
 				</div>
 			</div>
@@ -47,50 +47,38 @@
 							</span>
 						</th>
 						<th>Data Entrada</th>
-						<th>Equipamento</th>
+						<th>Mobiliario</th>
 						<th>Localização</th>
-						<th>Modelo</th>
-						<th>serial Number</th>
-						<th>Mac Address</th>
 						<th>provinçia</th>
-						<th>Marca</th>
 						<th>Obs</th>
-						<th>Registado Por</th>
-						<th>Alterado Por</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for equipamento_list in equipamento_inventario %}
+					{% for mobiliario_list in mobiliario_inventario %}
 
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ equipamento_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ equipamento_list.id }}">
-								<label for="checkbox{{ equipamento_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ mobiliario_list.id }}" class="mobiliario-checkbox" name="options[]" value="{{ mobiliario_list.id }}">
+								<label for="checkbox{{ mobiliario_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{equipamento_list.data_entrada}}</td>
-						<td>{{equipamento_list.descricao}}</td>
-						<td>{{equipamento_list.localizacao}}</td>
-						<td>{{equipamento_list.modelo}}</td>
-						<td>{{equipamento_list.serial_number}}</td>
-						<td>{{equipamento_list.mac_address}}</td>
-						<td>{{equipamento_list.provinencia}}</td>
-						<td>{{equipamento_list.marca}}</td>
-						<td>{{equipamento_list.obs}}</td>
-						<td>{{equipamento_list.user_create}}</td>
-						<td>{{equipamento_list.user_create}}</td>
+						<td>{{mobiliario_list.data_entrada}}</td>
+						<td>{{mobiliario_list.descricao}}</td>
+						<td>{{mobiliario_list.localizacao}}</td>
+						<td>{{mobiliario_list.provinencia}}</td>
+						<td>{{mobiliario_list.obs}}</td>
 						
 						<td>
-							<a href="#seeEmployeeModal"    data-id="{{ equipamento_list.id }}"   class="edit" onclick="get_equipamento_inventario(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
-							<a href="{{equipamento_list.action}}"    id="status-value"  data-status="{{ equipamento_list.status }}" data-id="{{ equipamento_list.id }}"  class="edit" onclick="{{ equipamento_list.function }}" data-toggle="modal"><i class="{{ equipamento_list.class }}" id="block_bt"  title="{{ equipamento_list.title }}"></i></a>
+							<a href="#seeEmployeeModal"    data-id="{{ mobiliario_list.id }}"   class="edit" onclick="get_mobiliario_inventario(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
+							<a href="{{mobiliario_list.action}}"    id="status-value"  data-status="{{ mobiliario_list.status }}" data-id="{{ mobiliario_list.id }}"  class="edit" onclick="{{ mobiliario_list.function }}" data-toggle="modal"><i class="{{ mobiliario_list.class }}" id="block_bt"  title="{{ mobiliario_list.title }}"></i></a>
 						</td>
 					</tr>
 					{% empty %}
 					<tr>
-					   <td colspan="4">Nenhum equipamento  encontrado.</td>
+					   <td colspan="4">Nenhum mobiliario encontrado.</td>
 					</tr>
 				{% endfor %}
 
@@ -124,22 +112,24 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Inventario Equipamento</h4>
+					<h4 class="modal-title">Inventario Mobiliario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
+					
 					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia" class="form-control">
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+
 					</div>
 					<div class="form-group">
-						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
-						<input id="equipamento" class="form-control" type="text" onclick="toggleDropdownequipamento()"></input>
-						<div id="dropdownMenuequipamento" class="dropdown-content">
-						  <input type="text"  id="dropdownInputequipamento" placeholder="Type to filter..." onkeyup="filterDropdownequipamento()">
-						  {% for equipamento_list in equipamento %}
-							  <div  data-id="{{ equipamento_list.id }}" class="dropdown-item" onclick="selectItequipamento(this)">{{equipamento_list.descricao}}</div>
+						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
+						<input id="mobiliario" class="form-control" type="text" onclick="toggleDropdownmobiliario()"></input>
+						<div id="dropdownMenuemobiliario" class="dropdown-content">
+						  <input type="text"  id="dropdownInputmobiliario" placeholder="Type to filter..." onkeyup="filterDropdownmobiliario()">
+						  {% for mobiliario_list in mobiliario %}
+						  <div  data-id="{{ mobiliario_list.id }}" class="dropdown-item" onclick="selectItmobiliario(this)">{{mobiliario_list.descricao}}</div>
 							{% endfor %}
 					  </div>
 					</div>
@@ -154,7 +144,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  onclick="add_inventario_equipamanto()" class="btn btn-success" value="Guardar" readonly>
+					<input  onclick="add_inventario_mobiliario()" class="btn btn-success" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -177,18 +167,20 @@
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
 						<input type="date" id="data_entrada_edit" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="id_inventario_equipamento" class="form-control">
+						<input type="hidden" id="id_inventario_mobiliario" class="form-control">
 					</div>
 					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia_edit" class="form-control">
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="id_inventario_mobiliario" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="equipamento_edit">
+						<label for="opcao"><strong>Mobiliario</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="mobiliario_edit">
 							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for equipamento_list in equipamento %}
-							  <option value="{{equipamento_list.id}}">{{equipamento_list.descricao}}</option>
+							 {% for mobiliario_list in mobiliario %}
+							  <option value="{{mobiliario_list.id}}">{{mobiliario_list.descricao}}</option>
 							  {% endfor %}
 						</select>
 					</div>
@@ -197,69 +189,19 @@
 						<input type="text" class="form-control" id="localizacao_edit">
 					</div>		
 					<div class="form-group">
-						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_equipamento_inventario()" value="Alterar" readonly>
+					<input id="editar" class="btn btn-info" onclick="edit_mobiliario_inventario()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <!-- Delete Modal HTML -->
-<div id="blockEmployeeModal" class="modal fade">
-	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
-	
-    </div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">						
-					<h4 class="modal-title">Bloquear Inventario</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">					
-					<p>Tem a certeza de que pretende bloquear esse registo?</p>
-					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
-					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="lock_inventario_equipamento" class="form-control">
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="bloquear_equipamento_inventario()" value="Bloquear" readonly>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="unblockEmployeeModal" class="modal fade">
-	<div id="alerta_unlok" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
-	
-    </div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">						
-					<h4 class="modal-title">Desbloquear Inventario</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">					
-					<p>Tem a certeza de que pretende desbloquear esse registo?</p>
-					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
-					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="id_unlok_inventario_equipamento" class="form-control">
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-success" onclick="desbloquear_equipamento_inventario()" value="Desbloquear" readonly>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
 <div id="checkboxdeleteEmployeeModal" class="modal fade">
 	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
@@ -275,7 +217,7 @@
 					<p>Tem a certeza de que pretende bloquear esses registos?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
 					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
+					<input type="hidden" id="delete_inventario_mobiliario" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -300,11 +242,61 @@
 					<p>Tem a certeza de que pretende desbloquear esses registos?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
 					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
+					<input type="hidden" id="delete_inventario_mobiliario" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="id_deleteCkunlok" class="btn btn-danger" value="Continuar">
+					<input id="id_deleteCkunlok" class="btn btn-success" value="Continuar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="blockEmployeeModal" class="modal fade">
+	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Bloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende bloquear esse registo?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="lock_inventario_mobiliario" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-danger" onclick="bloquear_mobiliario_inventario()" value="Bloquear" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="unblockEmployeeModal" class="modal fade">
+	<div id="alerta_unlok" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Desbloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende desbloquear esse registo?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="id_unlok_inventario_mobiliario" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-success" onclick="desbloquear_equipamento_inventario()" value="Desbloquear" readonly>
 				</div>
 			</form>
 		</div>
@@ -328,7 +320,7 @@
 		});
 	});
 </script>
-<script src="{%static 'Diretor/equipamento_inventario.js'%}"></script>
+<script src="{%static 'Diretor/mobiliario_inventario.js'%}"></script>
 {% endblock %}
 
 

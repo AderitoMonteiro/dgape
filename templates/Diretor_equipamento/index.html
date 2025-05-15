@@ -18,7 +18,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -28,12 +27,12 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 style="color: #fff;">INVENTARIO DE <b>EQUIPAMENTOS</b></h2>
+						<h2 style="color: #fff;">GESTÃO DE <b>EQUIPAMENTOS</b></h2>
 					</div>
 					<div class="col-sm-6">
 						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
 						<a href="#checkboxdeleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Bloquear</span></a>
-						<a href="#checkboxunlockEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-unlock"></i> <span>Desbloquear</span></a>
+						<a href="#checkboxunlockEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-unlock"></i> <span>Desbloquear</span></a>			
 					</div>
 				</div>
 			</div>
@@ -46,23 +45,19 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Data Entrada</th>
-						<th>Equipamento</th>
-						<th>Localização</th>
+						<th>Nome</th>
+						<th>Marca</th>
 						<th>Modelo</th>
+						<th>Data Entrada</th>
 						<th>serial Number</th>
 						<th>Mac Address</th>
-						<th>provinçia</th>
-						<th>Marca</th>
-						<th>Obs</th>
-						<th>Registado Por</th>
-						<th>Alterado Por</th>
+						<th>OBS</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for equipamento_list in equipamento_inventario %}
+					{% for equipamento_list in equipamento %}
 
 					<tr>
 						<td>
@@ -71,20 +66,16 @@
 								<label for="checkbox{{ equipamento_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{equipamento_list.data_entrada}}</td>
 						<td>{{equipamento_list.descricao}}</td>
-						<td>{{equipamento_list.localizacao}}</td>
+						<td>{{equipamento_list.marca}}</td>
 						<td>{{equipamento_list.modelo}}</td>
+						<td>{{equipamento_list.data_entrada}}</td>
 						<td>{{equipamento_list.serial_number}}</td>
 						<td>{{equipamento_list.mac_address}}</td>
-						<td>{{equipamento_list.provinencia}}</td>
-						<td>{{equipamento_list.marca}}</td>
 						<td>{{equipamento_list.obs}}</td>
-						<td>{{equipamento_list.user_create}}</td>
-						<td>{{equipamento_list.user_create}}</td>
-						
+
 						<td>
-							<a href="#seeEmployeeModal"    data-id="{{ equipamento_list.id }}"   class="edit" onclick="get_equipamento_inventario(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
+							<a href="#seeEmployeeModal"    data-id="{{ equipamento_list.id }}"   class="edit" onclick="get_mobiliario_inventario(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
 							<a href="{{equipamento_list.action}}"    id="status-value"  data-status="{{ equipamento_list.status }}" data-id="{{ equipamento_list.id }}"  class="edit" onclick="{{ equipamento_list.function }}" data-toggle="modal"><i class="{{ equipamento_list.class }}" id="block_bt"  title="{{ equipamento_list.title }}"></i></a>
 						</td>
 					</tr>
@@ -97,16 +88,16 @@
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text"> <span>Página {{ equipamento_inventario.number }} de {{ equipamento_inventario.paginator.num_pages }}</span></div>
+				<div class="hint-text"> <span>Página {{ equipamento.number }} de {{ equipamento.paginator.num_pages }}</span></div>
 				<ul class="pagination">
 
-					{% if equipamento_inventario.has_previous %}
+					{% if equipamento.has_previous %}
 					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ equipamento_inventario.previous_page_number }}" class="page-link">Anterior</a></li>
+					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
 					{% endif %}
 
-					{% if equipamento_inventario.has_next %}
-						<li class="page-item"><a href="?page={{ equipamento_inventario.next_page_number }}" class="page-link">Próxima</a></li>
+					{% if equipamento.has_next %}
+						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
 					{% endif %}
 					
 					
@@ -116,7 +107,10 @@
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
+
+
+
+<div id="addEmployeeModal" class="modal fade" >
 	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
@@ -124,44 +118,52 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Inventario Equipamento</h4>
+					<h4 class="modal-title">Novo Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				
+				<div class="modal-body">	
 					<div class="form-group">
-						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="provinencia" class="form-control">
+						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
+						<input type="date" id="data_entrada" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>				
+					<div class="form-group">
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="descricao" class="form-control" required>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
 					<div class="form-group">
-						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
-						<input id="equipamento" class="form-control" type="text" onclick="toggleDropdownequipamento()"></input>
-						<div id="dropdownMenuequipamento" class="dropdown-content">
-						  <input type="text"  id="dropdownInputequipamento" placeholder="Type to filter..." onkeyup="filterDropdownequipamento()">
-						  {% for equipamento_list in equipamento %}
-							  <div  data-id="{{ equipamento_list.id }}" class="dropdown-item" onclick="selectItequipamento(this)">{{equipamento_list.descricao}}</div>
-							{% endfor %}
-					  </div>
+						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="marca" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao">
-					</div>		
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="modelo" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Serial Number</strong></label></label>
+						<input type="text" id="serial_number" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Mac Address</strong></span></label></label>
+						<input type="text" id="mac_address" class="form-control" required>
+					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
-					</div>	
+					 </div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  onclick="add_inventario_equipamanto()" class="btn btn-success" value="Guardar" readonly>
+					<input class="btn btn-success" onclick="add_equipamanto()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="seeEmployeeModal" class="modal fade">
+<div id="editEmployeeModal" class="modal fade">
 	<div id="alerta_edit" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
@@ -169,47 +171,101 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Editar Inventario</h4>
+					<h4 class="modal-title">Editar Equipamento</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">	
 					<div class="form-group">
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
 						<input type="date" id="data_entrada_edit" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="id_inventario_equipamento" class="form-control">
+					</div>					
+					<div class="form-group">
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="descricao_edit" class="form-control" required>
+						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+						<input type="hidden" id="equipamento_id" class="form-control">
 					</div>
 					<div class="form-group">
-						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="provinencia_edit" class="form-control">
+						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="marca_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label for="opcao"><strong>Equipamentos</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="equipamento_edit">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for equipamento_list in equipamento %}
-							  <option value="{{equipamento_list.id}}">{{equipamento_list.descricao}}</option>
-							  {% endfor %}
-						</select>
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="modelo_edit" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao_edit">
-					</div>		
+						<label><strong>Serial Number</strong></label></label>
+						<input type="text" id="serial_number_edit" class="form-control" required>
+					</div>
 					<div class="form-group">
-						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
-						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+						<label><strong>Mac Address</strong></span></label></label>
+						<input type="text" id="mac_address_edit" class="form-control" required>
 					</div>	
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong></label>
+						<textarea id="obs_edit" name="obs_edit" rows="4" cols="40"></textarea>
+					 </div>
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-info" onclick="edit_equipamento_inventario()" value="Alterar" readonly>
+					<input class="btn btn-info" onclick="edit_equipamanto()" value="Alterar" readonly>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <!-- Delete Modal HTML -->
+<div id="deleteEmployeeModal" class="modal fade">
+	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="equipamento_delete" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-danger" onclick="delete_equipamanto()" value="Apagar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteEmployeeModalcheekbox" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+		
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  id="id_deleteCk"  class="btn btn-danger" value="Apagar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 <div id="blockEmployeeModal" class="modal fade">
 	<div id="alerta_delete" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
@@ -261,7 +317,7 @@
 	</div>
 </div>
 <div id="checkboxdeleteEmployeeModal" class="modal fade">
-	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	<div id="alerta_lock_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
 	<div class="modal-dialog">
@@ -279,7 +335,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="id_deleteCk" class="btn btn-danger" value="Continuar">
+					<input id="id_deleteCk_equip_lock" class="btn btn-danger" value="Continuar">
 				</div>
 			</form>
 		</div>
@@ -310,6 +366,7 @@
 		</div>
 	</div>
 </div>
+
 {% endblock %}
 
 {% block extra_jscript %}
@@ -328,7 +385,7 @@
 		});
 	});
 </script>
-<script src="{%static 'Diretor/equipamento_inventario.js'%}"></script>
+<script src="{%static 'Diretor/equipamento.js'%}"></script>
 {% endblock %}
 
 
