@@ -353,6 +353,26 @@ def bloquear_mobiliario_eleitoral_checkbox(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
+def bloquear_equipamento_eleitoral(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+              
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         inventario_equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                      
+                         message='Equipamento bloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
 def desbloquear_mobiliario_eleitoral_checkbox(request):
   
   if request.method == "POST":
@@ -754,5 +774,16 @@ def desbloquear_equipamento_eleitoral_inventario(request):
 
             except Exception as e:
                 return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+def gestao_equipamento_eleitoral(request):
+
+                      
+
+                      equipamento_list = equipamento_eleitoral.objects.all().filter(status=1)
+                      paginator = Paginator(equipamento_list, 7)
+                      page_number = request.GET.get("page")  
+                      paginator_equipamento = paginator.get_page(page_number)
+                  
+                      return render(request, 'Diretor_eleitoral_equipamento/index.html',{"equipamento":paginator_equipamento})
 
 
