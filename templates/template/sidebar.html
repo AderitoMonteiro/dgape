@@ -95,6 +95,29 @@
           </ul>
         </ul>
       </li>
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO ELEITORAL</a>
+        <ul class="list-unstyled collapse">
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuinventariodgape(event)" class="dropdown-toggle">Consultar Inventario</a>
+          <ul class="list-unstyled collapse">
+            <li>
+                <a onclick="window.location.href='/diretor/eleitoral/inventario_equipamento/'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+            </li>
+            <li>
+                <a onclick="window.location.href='diretor/eleitoral/inventario_mobiliario/'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+            </li>
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Consultar Patrimonial</a>
+          <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="window.location.href='/gestao_equipamento/equipamento_eleitoral_index'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
+              </li>
+              <li>
+                <a onclick="window.location.href='/gestao_mobiliario/mobiliario_eleitoral_index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
+              </li>
+          </ul>
+        </ul>
+      </li>
      <li>  
         <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>
      </li>
