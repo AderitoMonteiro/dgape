@@ -8,8 +8,7 @@ function slowReload() {
     }, 2000); // 2 segundos
 }
 
-
-document.getElementById("id_deleteCk_equip_lock").addEventListener("click", function () {
+document.getElementById("id_deleteCk_mob_lock").addEventListener("click", function () {
 
     let checkboxes = document.querySelectorAll(".mobiliario-checkbox:checked");
     if (checkboxes.length === 0) {
@@ -27,20 +26,20 @@ document.getElementById("id_deleteCk_equip_lock").addEventListener("click", func
         return;
     } else {
 
-        let equipamento_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
+        let mobiliario_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
         let user_id = document.getElementById('id_user').value;
         let url;
 
        
 
         const data = {
-            "id": equipamento_ids,
+            "id": mobiliario_ids,
             "id_user":user_id,
             "X-CSRFToken": getCSRFToken()
         };
         // Configuração da requisição
         jqOld.ajax({
-            url: "lock_equipamento_checkbox/",
+            url: "lock_mobiliario_checkbox/",
             type: 'POST',
             data: data,
             success: function (data) {
@@ -86,9 +85,9 @@ document.getElementById("id_deleteCk_equip_lock").addEventListener("click", func
 
 });
 
-document.getElementById("id_deleteCkunlok").addEventListener("click", function () {
+document.getElementById("id_deleteCk_mob_unlock").addEventListener("click", function () {
 
-    let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
+    let checkboxes = document.querySelectorAll(".mobiliario-checkbox:checked");
     if (checkboxes.length === 0) {
 
             let divPai = document.getElementById("alerta_unlock_cheekbox");
@@ -98,26 +97,26 @@ document.getElementById("id_deleteCkunlok").addEventListener("click", function (
             divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
             divalert.setAttribute("class","alert alert-danger");
             divalert.setAttribute( "role","alert");
-            divalert.innerHTML = "Selecione pelo menos um para desbloquear.";
+            divalert.innerHTML = "Selecione pelo menos um para bloquear.";
             divPai.appendChild(divalert);
 
         return;
     } else {
 
-        let equipamento_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
+        let mobiliario_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
         let user_id = document.getElementById('id_user').value;
         let url;
 
        
 
         const data = {
-            "id": equipamento_ids,
+            "id": mobiliario_ids,
             "id_user":user_id,
             "X-CSRFToken": getCSRFToken()
         };
         // Configuração da requisição
         jqOld.ajax({
-            url: "unlock_equipamento_checkbox/",
+            url: "unlock_mobiliario_checkbox/",
             type: 'POST',
             data: data,
             success: function (data) {
@@ -137,6 +136,7 @@ document.getElementById("id_deleteCkunlok").addEventListener("click", function (
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
                 slowReload()
+
             } else {
 
                 divPai.innerHTML = ''
@@ -162,43 +162,38 @@ document.getElementById("id_deleteCkunlok").addEventListener("click", function (
 
 });
 
-function get_equipamento(button){
+function get_mobiliario_block(button){
 
-    let quipamento_inventario_id=button.getAttribute("data-id");
+    document.getElementById('id_lock_mobiliario').value=button.getAttribute("data-id");
+ 
+ }
+
+ function get_mobiliario(button){
+
+    let mobiliario_id=button.getAttribute("data-id");
  
     const data = {
-     "equipamento_id":quipamento_inventario_id,
-     "X-CSRFToken": getCSRFToken()
+     "mobiliario_id":mobiliario_id
      };
  
      jqOld.ajax({
-         url: '../get/equipamento_editar/',
+         url: '../get/mobiliario_editar/',
          type: 'POST',
          data: data,
          success: function (data) {
  
-           
- 
-            const datajs = JSON.parse(data);
+             const datajs = JSON.parse(data);
              
-            document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
-            document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
-            document.getElementById("obs_edit").value= datajs[0].fields.obs;
-            document.getElementById("marca_edit").value=datajs[0].fields.marca;
-            document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
-            document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
-            document.getElementById("mac_address_edit").value=datajs[0].fields.mac_address;
+             document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
+             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
+             document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
+             document.getElementById("obs_edit").value=datajs[0].fields.obs;
+             document.getElementById("mobiliario_id").value=mobiliario_id;
+            
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("obs_edit").disabled=true;
 
-
-            document.getElementById("descricao_edit").disabled=true;
-            document.getElementById("data_entrada_edit").disabled=true;
-            document.getElementById("marca_edit").disabled=true;
-            document.getElementById("modelo_edit").disabled=true;
-            document.getElementById("serial_number_edit").disabled=true;
-            document.getElementById("mac_address_edit").disabled=true;
-            document.getElementById("obs_edit").disabled=true;
- 
- 
           },
          error: function (xhr, status, error) {
  
@@ -207,32 +202,25 @@ function get_equipamento(button){
      });
  }
 
- function get_equipamento_block(button){
+ function bloquear_mobiliario(){
 
-    document.getElementById('id_lock_equipamento').value=button.getAttribute("data-id");
- 
- }
-
- 
- function bloquear_equipamento(){
-
-    let id_lock_equipamento= document.getElementById('id_lock_equipamento').value;
+    let id_lock_mobiliario= document.getElementById('id_lock_mobiliario').value;
     let user_update= document.getElementById('id_user').value;
  
     const data = {
-     "id_lock_equipamento":id_lock_equipamento,
+     "id_lock_mobiliario":id_lock_mobiliario,
      "user_update":user_update,
      "X-CSRFToken": getCSRFToken()
      };
  
      jqOld.ajax({
-         url: 'lock_equipamento/',
+         url: 'lock_mobiliario/',
          type: 'POST',
          data: data,
          success: function (data) {
             
  
-            let divPai = document.getElementById("lock_equipamento_alert");
+            let divPai = document.getElementById("lock_mobiliario_alert");
             let divalert = document.createElement("div");
 
 
@@ -273,31 +261,31 @@ function get_equipamento(button){
      });
  }
 
- function get_equipamento_unblock(button){
+ function get_mobiliario_unblock(button){
 
-    document.getElementById('id_unlok_equipamento').value=button.getAttribute("data-id");
+    document.getElementById('id_unlok_mobiliario').value=button.getAttribute("data-id");
  
  }
 
- function desbloquear_equipamento(){
+ function desbloquear_mobiliario(){
 
-    let id_unlok_equipamento= document.getElementById('id_unlok_equipamento').value;
+    let id_unlok_mobiliario= document.getElementById('id_unlok_mobiliario').value;
     let user_update= document.getElementById('id_user').value;
  
     const data = {
-     "id_unlok_equipamento":id_unlok_equipamento,
+     "id":id_unlok_mobiliario,
      "user_update":user_update,
      "X-CSRFToken": getCSRFToken()
      };
  
      jqOld.ajax({
-         url: 'unlock_equipamento/',
+         url: 'unlock_mobiliario/',
          type: 'POST',
          data: data,
          success: function (data) {
             
  
-            let divPai = document.getElementById("alerta_unlok");
+            let divPai = document.getElementById("unlock_mobiliario_alert");
             let divalert = document.createElement("div");
 
 
