@@ -353,7 +353,7 @@ def bloquear_mobiliario_eleitoral_checkbox(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
-def bloquear_equipamento_eleitoral(request):
+def bloquear_equipamento_eleitoral_checkbox(request):
   
   if request.method == "POST":
             try:
@@ -362,7 +362,7 @@ def bloquear_equipamento_eleitoral(request):
               
                    if id_eq:
                          id_eqs = id_eq.split(",") 
-                         inventario_equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                         equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
                                                                       
                          message='Equipamento bloqueado com sucesso!!'
                          status= 'success'
@@ -371,6 +371,28 @@ def bloquear_equipamento_eleitoral(request):
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def desbloquear_equipamento_eleitoral_check(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+              
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=1,user_update=id_user,dateupdate=datetime.now())
+                                                                      
+                         message='Equipamento desbloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
 
 @csrf_exempt
 def desbloquear_mobiliario_eleitoral_checkbox(request):
@@ -432,6 +454,26 @@ def bloquear_mobiliario_checkbox(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
+@csrf_exempt
+def bloquear_mobiliario_eleitoral_checkbox(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+              
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         mobiliario_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                      
+                         message='Mobiliario bloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 
 @csrf_exempt
 def bloquear_mobiliario(request):
@@ -454,6 +496,26 @@ def bloquear_mobiliario(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
+def bloquear_mobiliario_eleitoral(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id_lock_mobiliario")
+                   id_user= request.POST.get("id_user")
+              
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         mobiliario_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                      
+                         message='Mobiliario bloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
 def unbloquear_mobiliario_checkbox(request):
   
   if request.method == "POST":
@@ -466,6 +528,27 @@ def unbloquear_mobiliario_checkbox(request):
                          mobiliario.objects.filter(id__in=id_eqs).update(status=1,user_update=id_user,dateupdate=datetime.now())
                                                                       
                          message='Inventario desbloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+@csrf_exempt
+def unbloquear_mobiliario_eleitoral_checkbox(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+              
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         mobiliario_eleitoral.objects.filter(id__in=id_eqs).update(status=1,user_update=id_user,dateupdate=datetime.now())
+                                                                      
+                         message='Mobiliario desbloqueado com sucesso!!'
                          status= 'success'
                          return JsonResponse({'status':status, 'message': message })
          
@@ -775,15 +858,125 @@ def desbloquear_equipamento_eleitoral_inventario(request):
             except Exception as e:
                 return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
+@csrf_exempt
+def desbloquear_equipamento_eleitoral(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("equipamento_id")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=1,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                         message='Equipamento desbloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def bloquear_equipamento_eleitoral(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("equipamento_id")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         equipamento_eleitoral.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                         message='Equipamento desbloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 def gestao_equipamento_eleitoral(request):
 
-                      
+                      query = '''
+                            SELECT 
+                                   id,
+                                   descricao,
+                                   data_entrada,
+                                   mac_address,
+                                   marca,
+                                   modelo,
+                                   obs,
+                                   serial_number,
+                                   CASE
+                                   WHEN status !=2 THEN "fa fa-unlock"
+                                   ELSE "fa fa-lock" 
+                            END as class,
+                            CASE
+                                   WHEN status=1 THEN "Bloquear"
+                                   ELSE "Desbloquear" 
+                                   END as title, 
+                            CASE
+                                   WHEN status=1 THEN "#blockEmployeeModal"
+                                   ELSE "#unblockEmployeeModal" 
+                            END as action,
+                            CASE
+                                   WHEN status=1 THEN "get_equipamento_block(this)"
+                                   ELSE "get_equipamento_unblock(this)" 
+                            END as function
+                            FROM 
+                            departamentos_equipamento_eleitoral
+                            '''
+                      with connection.cursor() as cursor:
+                           cursor.execute(query)
+                           colunas = [col[0] for col in cursor.description] 
 
-                      equipamento_list = equipamento_eleitoral.objects.all().filter(status=1)
-                      paginator = Paginator(equipamento_list, 7)
-                      page_number = request.GET.get("page")  
-                      paginator_equipamento = paginator.get_page(page_number)
+                           equipamento_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                           paginator = Paginator(equipamento_list, 7)
+                           page_number = request.GET.get("page")  
+                           paginator_equipamento = paginator.get_page(page_number)
                   
                       return render(request, 'Diretor_eleitoral_equipamento/index.html',{"equipamento":paginator_equipamento})
+
+def gestao_mobiliario_eleitoral(request):
+
+                      query = '''
+                                   SELECT 
+                                   id,
+                                   data_entrada,
+                                   descricao,
+                                   obs,
+                                   serial_number,
+                                   CASE
+                                   WHEN status !=2 THEN "fa fa-unlock"
+                                   ELSE "fa fa-lock" 
+                            END as class,
+                            CASE
+                                   WHEN status=1 THEN "Bloquear"
+                                   ELSE "Desbloquear" 
+                                   END as title, 
+                            CASE
+                                   WHEN status=1 THEN "#blockEmployeeModal"
+                                   ELSE "#unblockEmployeeModal" 
+                            END as action,
+                            CASE
+                                   WHEN status=1 THEN "get_mobiliario_block(this)"
+                                   ELSE "get_mobiliario_unblock(this)" 
+                            END as function
+                            FROM 
+                            departamentos_mobiliario_eleitoral
+                            '''
+                      with connection.cursor() as cursor:
+                           cursor.execute(query)
+                           colunas = [col[0] for col in cursor.description] 
+
+                           mobiliario_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                           paginator = Paginator(mobiliario_list, 7)
+                           page_number = request.GET.get("page")  
+                           paginator_mobiliario = paginator.get_page(page_number)
+                  
+                      return render(request, 'Diretor_eleitoral_mobiliario/index.html',{"mobiliario":paginator_mobiliario})
 
 

@@ -20,7 +20,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 {% endblock %}
 
-
 {% block content %}
 <div class="container-xl">
 	<div class="table-responsive">
@@ -28,7 +27,7 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 style="color: #fff;">GESTÃO DE <b>EQUIPAMENTOS ELEITORAL</b></h2>
+						<h2 style="color: #fff;">GESTÃO DE <b>MOBILIARIO ELEITORAL</b></h2>
 					</div>
 					<div class="col-sm-6">
 						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
@@ -47,57 +46,51 @@
 							</span>
 						</th>
 						<th>Nome</th>
-						<th>Marca</th>
-						<th>Modelo</th>
 						<th>Data Entrada</th>
-						<th>serial Number</th>
-						<th>Mac Address</th>
+						<th>Serial Number</th>
 						<th>OBS</th>
 						<th>Acões</th>
 					</tr>
 				</thead>
 				<tbody>
 				
-					{% for equipamento_list in equipamento %}
+					{% for mobiliario_list in mobiliario %}
 
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ equipamento_list.id }}" class="equipamento-checkbox" name="options[]" value="{{ equipamento_list.id }}">
-								<label for="checkbox{{ equipamento_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ mobiliario_list.id }}" class="mobiliario-checkbox" name="options[]" value="{{ mobiliario_list.id }}">
+								<label for="checkbox{{ mobiliario_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{equipamento_list.descricao}}</td>
-						<td>{{equipamento_list.marca}}</td>
-						<td>{{equipamento_list.modelo}}</td>
-						<td>{{equipamento_list.data_entrada}}</td>
-						<td>{{equipamento_list.serial_number}}</td>
-						<td>{{equipamento_list.mac_address}}</td>
-						<td>{{equipamento_list.obs}}</td>
+						<td>{{mobiliario_list.descricao}}</td>
+						<td>{{mobiliario_list.data_entrada}}</td>
+						<td>{{mobiliario_list.serial_number}}</td>
+						<td>{{mobiliario_list.obs}}</td>
 						<td>
-							<a href="#seeEmployeeModal"    data-id="{{ equipamento_list.id }}"   class="edit" onclick="get_equipamento_eleitoral(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
-							<a href="{{equipamento_list.action}}"    id="status-value"  data-status="{{ equipamento_list.status }}" data-id="{{ equipamento_list.id }}"  class="edit" onclick="{{ equipamento_list.function }}" data-toggle="modal"><i class="{{ equipamento_list.class }}" id="block_bt"  title="{{ equipamento_list.title }}"></i></a>
+							<a href="#seeEmployeeModal"    data-id="{{ mobiliario_list.id }}"   class="edit" onclick="get_mobiliario(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
+							<a href="{{mobiliario_list.action}}"    id="status-value"  data-status="{{ mobiliario_list.status }}" data-id="{{ mobiliario_list.id }}"  class="edit" onclick="{{ mobiliario_list.function }}" data-toggle="modal"><i class="{{ mobiliario_list.class }}" id="block_bt"  title="{{ mobiliario_list.title }}"></i></a>
 						</td>
 					</tr>
 					{% empty %}
 					<tr>
-					   <td colspan="4">Nenhum equipamento  encontrado.</td>
+					   <td colspan="4">Nenhum mobiliario  encontrado.</td>
 					</tr>
 				{% endfor %}
 
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text"> <span>Página {{ equipamento.number }} de {{ equipamento.paginator.num_pages }}</span></div>
+				<div class="hint-text"> <span>Página {{ mobiliario.number }} de {{ mobiliario.paginator.num_pages }}</span></div>
 				<ul class="pagination">
 
-					{% if equipamento.has_previous %}
+					{% if mobiliario.has_previous %}
 					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
+					<li class="page-item"><a href="?page={{ mobiliario.previous_page_number }}" class="page-link">Anterior</a></li>
 					{% endif %}
 
-					{% if equipamento.has_next %}
-						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
+					{% if mobiliario.has_next %}
+						<li class="page-item"><a href="?page={{ mobiliario.next_page_number }}" class="page-link">Próxima</a></li>
 					{% endif %}
 					
 					
@@ -107,7 +100,6 @@
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-
 <div id="addEmployeeModal" class="modal fade" >
 	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
@@ -116,14 +108,15 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Novo Equipamento</h4>
+					<h4 class="modal-title">Novo Mobiliario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
-				<div class="modal-body">		
+				<div class="modal-body">	
 					<div class="form-group">
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
 						<input type="date" id="data_entrada" readonly>
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>			
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
@@ -131,29 +124,17 @@
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
 					<div class="form-group">
-						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="marca" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="modelo" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label>
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Mac Address</strong></span></label></label>
-						<input type="text" id="mac_address" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
-					</div>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-success" onclick="add_equipamanto_eleitoral()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
+					<input class="btn btn-success" onclick="add_mobiliario()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
 				</div>
 			</form>
 		</div>
@@ -168,76 +149,90 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Editar Equipamento</h4>
+					<h4 class="modal-title">Editar mobiliario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">		
+				<div class="modal-body">	
 					<div class="form-group">
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
 						<input type="date" id="data_entrada_edit" readonly>
-					</div>						
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>					
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao_edit" class="form-control" required>
 						<input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
-						<input type="hidden" id="equipamento_id" class="form-control">
+						<input type="hidden" id="mobiliario_id" class="form-control">
 					</div>
 					<div class="form-group">
-						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="marca_edit" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="modelo_edit" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label>
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number_edit" class="form-control" required>
 					</div>
-					<div class="form-group">
-						<label><strong>Mac Address</strong></span></label></label>
-						<input type="text" id="mac_address_edit" class="form-control" required>
-					</div>	
-					<div class="form-group">
+					 <div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs_edit" name="obs_edit" rows="4" cols="40"></textarea>
-					</div>
+					 </div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="editar_equipamento" class="btn btn-info" onclick="edit_equipamanto_eleitoral()" value="Alterar" readonly>
+					<input id="id_edit" class="btn btn-info" onclick="edit_mobiliario()" value="Alterar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Delete Modal HTML -->
+<div id="deleteEmployeeModalcheekbox" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+		
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  id="id_deleteCk"  class="btn btn-danger" value="Apagar" readonly>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <div id="blockEmployeeModal" class="modal fade">
-	<div id="lock_equipamento_alert" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	<div id="lock_mobiliario_alert" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Bloquear Equipamento</h4>
+					<h4 class="modal-title">Bloquear Inventario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<p>Tem a certeza de que pretende bloquear esse registo?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
 					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="id_lock_equipamento" class="form-control">
+					<input type="hidden" id="id_lock_mobiliario" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-danger" onclick="bloquear_equipamento_eleitoral()" value="Bloquear" readonly>
+					<input  class="btn btn-danger" onclick="bloquear_mobiliario()" value="Bloquear" readonly>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <div id="unblockEmployeeModal" class="modal fade">
-	<div id="alerta_unlok" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	<div id="unlock_mobiliario_alert" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
 	
     </div>
 	<div class="modal-dialog">
@@ -251,11 +246,11 @@
 					<p>Tem a certeza de que pretende desbloquear esse registo?</p>
 					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
 					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					<input type="hidden" id="id_unlock_equipamento" class="form-control">
+					<input type="hidden" id="id_unlok_mobiliario" class="form-control">
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input  class="btn btn-success" onclick="desbloquear_equipamento_eleitoral()" value="Desbloquear" readonly>
+					<input  class="btn btn-success" onclick="desbloquear_mobiliario()" value="Desbloquear" readonly>
 				</div>
 			</form>
 		</div>
@@ -280,7 +275,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="id_deleteCk_equip_lock" class="btn btn-danger" value="Continuar">
+					<input id="id_deleteCk_mob_lock" class="btn btn-danger" value="Continuar">
 				</div>
 			</form>
 		</div>
@@ -305,7 +300,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input id="id_deleteCkunlok" class="btn btn-success" value="Continuar">
+					<input id="id_deleteCk_mob_unlock" class="btn btn-danger" value="Continuar">
 				</div>
 			</form>
 		</div>
@@ -322,6 +317,7 @@
 			locale: "pt"
 		});
 	});
+
 	document.addEventListener("DOMContentLoaded", function() {
 		flatpickr("#data_entrada_edit", {
 			dateFormat: "Y-m-d",
@@ -329,7 +325,7 @@
 		});
 	});
 </script>
-<script src="{%static 'Diretor/equipamento_eleitoral.js'%}"></script>
+<script src="{%static 'Diretor/mobiliario_eleitoral.js'%}"></script>
 {% endblock %}
 
 
