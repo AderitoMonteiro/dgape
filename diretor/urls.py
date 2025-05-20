@@ -1,14 +1,17 @@
 from django.urls import path
 
-from .views import bloquear_mobiliario_eleitoral,unbloquear_mobiliario_eleitoral_checkbox,bloquear_mobiliario_eleitoral_checkbox,gestao_mobiliario_eleitoral,desbloquear_equipamento_eleitoral_check,bloquear_equipamento_eleitoral,desbloquear_equipamento_eleitoral,bloquear_equipamento_eleitoral,gestao_equipamento_eleitoral,desbloquear_mobiliario_eleitoral_inventario,bloquear_mobiliario_eleitoral_inventario,desbloquear_mobiliario_eleitoral_checkbox,bloquear_mobiliario_eleitoral_checkbox,inventario_mobiliario_eleitoral_home,desbloquear_equipamento_eleitoral_inventario,bloquear_equipamento_eleitoral_inventario,desbloquear_equipamento_eleitoral_checkbox,bloquear_equipamento_eleitoral_checkbox,inventario_equipamento_eleitoral_home,unbloquear_mobiliario,bloquear_mobiliario,unbloquear_mobiliario_checkbox,bloquear_mobiliario_checkbox,gestao_mobiliario,desbloquear_equipamento_checkbox,bloquear_equipamento_checkbox,desbloquear_equipamento,bloquear_equipamento,desbloquear_equipamento,bloquear_equipamento,gestao_equipamento,desbloquear_mobiliario_inventario,bloquear_mobiliario_inventario,desbloquear_mobiliario_inventario,bloquear_mobiliario_inventario_checkbox,inventario_mobiliario_home,desbloquear_equipamento_inventario,bloquear_equipamento_inventario,desbloquear_equipamento_inventario_checkbox,inventario_equipamento_home,bloquear_equipamento_inventario_checkbox
+from .views import desbloquear_kit,bloquear_kit,desbloquear_kit,bloquear_kit_checkbox,gestao_kit_eleitoral,bloquear_mobiliario_eleitoral,unbloquear_mobiliario_eleitoral_checkbox,bloquear_mobiliario_eleitoral_checkbox,gestao_mobiliario_eleitoral,desbloquear_equipamento_eleitoral_check,bloquear_equipamento_eleitoral,desbloquear_equipamento_eleitoral,bloquear_equipamento_eleitoral,gestao_equipamento_eleitoral,desbloquear_mobiliario_eleitoral_inventario,bloquear_mobiliario_eleitoral_inventario,desbloquear_mobiliario_eleitoral_checkbox,bloquear_mobiliario_eleitoral_checkbox,inventario_mobiliario_eleitoral_home,desbloquear_equipamento_eleitoral_inventario,bloquear_equipamento_eleitoral_inventario,desbloquear_equipamento_eleitoral_checkbox,bloquear_equipamento_eleitoral_checkbox,inventario_equipamento_eleitoral_home,unbloquear_mobiliario,bloquear_mobiliario,unbloquear_mobiliario_checkbox,bloquear_mobiliario_checkbox,gestao_mobiliario,desbloquear_equipamento_checkbox,bloquear_equipamento_checkbox,desbloquear_equipamento,bloquear_equipamento,desbloquear_equipamento,bloquear_equipamento,gestao_equipamento,desbloquear_mobiliario_inventario,bloquear_mobiliario_inventario,desbloquear_mobiliario_inventario,bloquear_mobiliario_inventario_checkbox,inventario_mobiliario_home,desbloquear_equipamento_inventario,bloquear_equipamento_inventario,desbloquear_equipamento_inventario_checkbox,inventario_equipamento_home,bloquear_equipamento_inventario_checkbox
 from departamentos.views import get_mobiliario_eleitoral,get_equipamento_eleitoral,get_mobiliario_eleitoral_inventario,get_equipamento_eleitoral_inventario,get_mobiliario,get_equipamento,get_mobiliario_inventario,get_equipamento_inventario
+from kit_eleitoral.views import get_kit 
 app_name = "diretor"
 urlpatterns = [
-     path('index/', inventario_equipamento_home, name='gestao_kit_eleitoral'),
+     path('index/', inventario_equipamento_home, name='inventario_equipamento_home'),
      path('eleitoral/inventario_equipamento/', inventario_equipamento_eleitoral_home, name='inventario_equipamento_eleitoral_home'),
      path('eleitoral/inventario_mobiliario/', inventario_mobiliario_eleitoral_home, name='inventario_equipamento_eleitoral_home'),
      path('eleitoral/equipamento/', gestao_equipamento_eleitoral, name='gestao_equipamento_eleitoral'),
      path('eleitoral/mobiliario/', gestao_mobiliario_eleitoral, name='gestao_equipamento_eleitoral'),
+     path('eleitoral/kit_eleitoral/', gestao_kit_eleitoral, name='gestao_kit_eleitoral'),
+     path('eleitoral/get/kit_editar/', get_kit, name='gestao_kit_eleitoral'),
      path('dgape/inventario_mobiliario/', inventario_mobiliario_home, name='inventario_mobiliario_home'),
      path('dgape/equipamento/', gestao_equipamento, name='gestao_equipamento'),
      path('dgape/mobiliario/', gestao_mobiliario, name='gestao_equipamento'),
@@ -27,6 +30,11 @@ urlpatterns = [
      path('index/lock_inventario_equipamento/', bloquear_equipamento_inventario, name='bloquear_equipamento_inventario'),
      path('dgape/inventario_mobiliario/checkbox_inventario_mobiliario/', bloquear_equipamento_inventario, name='bloquear_equipamento_inventario'),
      path('eleitoral/inventario_equipamento/lock_equipamento_eleitoral_inventario/', bloquear_equipamento_eleitoral_inventario, name='bloquear_equipamento_eleitoral_inventario'),
+     path('eleitoral/kit_eleitoral/lock_bloquear_kit_checkbox/', bloquear_kit_checkbox, name='bloquear_kit_checkbox'),
+        path('eleitoral/kit_eleitoral/lock_kit/', bloquear_kit, name='bloquear_kit'),
+        path('eleitoral/kit_eleitoral/unlock_kit/', desbloquear_kit, name='desbloquear_kit'),
+
+     path('eleitoral/kit_eleitoral/unlock_bloquear_kit_checkbox/', desbloquear_kit, name='desbloquear_kit'),
      path('eleitoral/inventario_mobiliario/lock_mobiliario_eleitoral_inventario/', bloquear_mobiliario_eleitoral_inventario, name='bloqbloquear_mobiliario_eleitoral_inventariouear_equipamento_eleitoral_inventario'),
      path('eleitoral/inventario_mobiliario/unlock_mobiliario_eleitoral_inventario/', desbloquear_mobiliario_eleitoral_inventario, name='desbloquear_mobiliario_eleitoral_inventario'),
      path('eleitoral/inventario_equipamento/unlock_equipamento_eleitoral_inventario/', desbloquear_equipamento_eleitoral_inventario, name='desbloquear_equipamento_eleitoral_inventario'),

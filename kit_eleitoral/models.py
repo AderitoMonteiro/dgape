@@ -4,7 +4,7 @@ from django.db import models
 class kit_eleit(models.Model):
     id = models.AutoField(primary_key=True)
     cres_id = models.IntegerField()
-    status = models.BooleanField(default=1)
+    status = models.IntegerField(null=True)
     malas = models.CharField(max_length=100)
     obs = models.CharField(max_length=100,null=True)
     portatel_id = models.IntegerField(null=True)

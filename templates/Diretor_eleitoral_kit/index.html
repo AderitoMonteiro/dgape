@@ -1,0 +1,496 @@
+
+
+{% extends "../departamento/index.html" %}
+
+{% block title %}SDGAPE{% endblock %}
+{% block extra_styles %}
+{% load static %} 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static 'Departamento/inventario/style.css' %}">
+<link rel="stylesheet" href="{% static 'Kit/kit.css' %}">
+
+<script src="{%static 'Departamento/inventario/jscript.js'%}"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+	<div class="table-responsive">
+		<div class="table-wrapper">
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2 style="color: #fff;">GESTÃO DE <b>KIT ELEITORAL</b></h2>
+					</div>
+					<div class="col-sm-6">
+						<a onclick="window.location.href='/inventario/exportar_inventario_equipamento/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
+						<a href="#checkboxdeleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Bloquear</span></a>
+						<a href="#checkboxunlockEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-unlock"></i> <span>Desbloquear</span></a>			
+					</div>
+				</div>
+			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="selectAll">
+								<label for="selectAll"></label>
+							</span>
+						</th>
+						<th>CRES</th>
+						<th>Malas</th>
+						<th>Portatel</th>
+						<th>Impressora</th>
+						<th>Scaner Impresão Digital</th>
+						<th>Capitura Assinatura</th>
+						<th>Camara Fotografica</th>
+						<th>guia Entrega</th>	
+						<th>Data Saida</th>
+						<th>Acões</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					{% for paginator_kit_list in kit_eleitoral %}
+
+					<tr>
+						<td>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="checkbox{{ paginator_kit_list.id }}" class="kit-checkbox" name="options[]" value="{{ paginator_kit_list.id }}">
+								<label for="checkbox{{ paginator_kit_list.id }}"></label>
+							</span>
+						</td>
+						<td>{{paginator_kit_list.descricao}}</td>
+						<td>{{paginator_kit_list.malas_descricao}}</td>
+						<td>{{paginator_kit_list.equipamento}}</td>
+						<td>{{paginator_kit_list.impressora}}</td>
+						<td>{{paginator_kit_list.scaner_impresao_digital}}</td>
+						<td>{{paginator_kit_list.capitura_assinatura}}</td>
+						<td>{{paginator_kit_list.camara_fotografica}}</td>
+						<td>{{paginator_kit_list.guia_entrega}}</td>
+						<td>{{paginator_kit_list.data_saida}}</td>
+						<td>
+							<a href="#seeEmployeeModal"    data-id="{{ paginator_kit_list.id }}"   class="edit" onclick="get_kit(this)"  data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" style="color: blue;"title="Ver"></i></a>
+							<a href="{{paginator_kit_list.action}}"    id="status-value"  data-status="{{ paginator_kit_list.status }}" data-id="{{ paginator_kit_list.id }}"  class="edit" onclick="{{ paginator_kit_list.function }}" data-toggle="modal"><i class="{{ paginator_kit_list.class }}" id="block_bt"  title="{{ paginator_kit_list.title }}"></i></a>
+						</td>
+					</tr>
+					{% empty %}
+					<tr>
+					   <td colspan="4">Nenhum Kit encontrado.</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+
+			</table>
+			<div class="clearfix">
+				<div class="hint-text"> <span>Página {{ kit_eleitoral.number }} de {{ kit_eleitoral.paginator.num_pages }}</span></div>
+				<ul class="pagination">
+
+					{% if kit_eleitoral.has_previous %}
+					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
+					<li class="page-item"><a href="?page={{ kit_eleitoral.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% endif %}
+
+					{% if kit_eleitoral.has_next %}
+						<li class="page-item"><a href="?page={{ kit_eleitoral.next_page_number }}" class="page-link">Próxima</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>        
+</div>
+<!-- Edit Modal HTML -->
+
+<div id="addEmployeeModal" class="modal fade" >
+	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Novo Kit</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				
+				<div class="modal-body">				
+					
+					<div class="form-group">
+						    <label><strong>Conselho</strong><span style="color: red;">*</span></label>
+							<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
+							<div id="dropdownMenu" class="dropdown-content">
+							  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
+							    {% for conselho_list in conselho %}
+							      <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+								{% endfor %}
+								<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+						  </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Mala</strong><span style="color: red;">*</span></label>
+					    <input id="malas" class="form-control" type="text" onclick="toggleDropdownmala()"></input>
+							<div id="dropdownMenumala" class="dropdown-content">
+							  <input type="text"  id="dropdownInputmala" placeholder="Type to filter..." onkeyup="filterDropdownmala()">
+							    {% for mala_list in mala %}
+							      <div  data-id="{{ mala_list.id }}" class="dropdown-item" onclick="selectItemmala(this)">{{mala_list.descricao}}</div>
+								{% endfor %}
+						  </div>
+					</div>
+					<div class="form-group">
+	
+					   <label><strong>Portatel</strong><span style="color: red;">*</span></label>
+					    <input id="portatel" class="form-control" type="text" onclick="toggleDropdownportatel()"></input>
+							<div id="dropdownMenuportatel" class="dropdown-content">
+							  <input type="text"  id="dropdownInputportatel" placeholder="Type to filter..." onkeyup="filterDropdownportatel()">
+							    {% for portatel_list in portatel %}
+							      <div  data-id="{{ portatel_list.id }}" class="dropdown-item" onclick="selectIteportatel(this)">{{portatel_list.descricao}}</div>
+								{% endfor %}
+						  </div>				
+					</div>
+					<div class="form-group">
+					   <label><strong>Impressora</strong><span style="color: red;">*</span></label>
+					    <input id="impressora" class="form-control" type="text" onclick="toggleDropdownimpressora()"></input>
+							<div id="dropdownMenuimpressora" class="dropdown-content">
+							  <input type="text"  id="dropdownInputimpressora" placeholder="Type to filter..." onkeyup="filterDropdownimpressora()">
+							  {% for impressora_list in impressora %}
+							      <div  data-id="{{ impressora_list.id }}" class="dropdown-item" onclick="selectItimpressora(this)">{{impressora_list.descricao}}</div>
+								{% endfor %}
+						    </div>	
+					</div>
+					<div class="form-group">
+					   <label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+					   <input id="Scaner_impresao_digital" class="form-control" type="text" onclick="toggleDropdownscanner()"></input>
+						   <div id="dropdownMenuscaner" class="dropdown-content">
+							 <input type="text"  id="dropdownInputscaner" placeholder="Type to filter..." onkeyup="filterDropdownscaner()">
+							 {% for scaner_list in scaner %}
+								 <div  data-id="{{ scaner_list.id }}" class="dropdown-item" onclick="selectItscaner(this)">{{scaner_list.descricao}}</div>
+							   {% endfor %}
+						   </div>	
+					</div>
+					<div class="form-group">
+					
+					   <label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
+					   <input id="capitura_assinatura" class="form-control" type="text" onclick="toggleDropdowncapitura()"></input>
+						   <div id="dropdownMenucapitura" class="dropdown-content">
+							 <input type="text"  id="dropdownInputcapitura" placeholder="Type to filter..." onkeyup="filterDropdown()">
+							 {% for assinatura_list in assinatura %}
+								 <div  data-id="{{ assinatura_list.id }}" class="dropdown-item" onclick="selectItcapitura(this)">{{assinatura_list.descricao}}</div>
+							   {% endfor %}
+						   </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
+					    <input id="cama_fotografia" class="form-control" type="text" onclick="toggleDropdowncamera()"></input>
+						   <div id="dropdownMenucamera" class="dropdown-content">
+							 <input type="text"  id="dropdownInputcamera" placeholder="Type to filter..." onkeyup="filterDropdowncapitura()">
+							 {% for camera_list in camera %}
+								 <div  data-id="{{ camera_list.id }}" class="dropdown-item" onclick="selectItcamera(this)">{{camera_list.descricao}}</div>
+							   {% endfor %}
+						   </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
+						<input type="text" id="guia_entrega" class="form-control" >
+					</div>
+
+					<div class="form-group">
+						<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
+						<input type="date" id="data_saida" >
+					</div>
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong></label>
+						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input class="btn btn-success" onclick="add_kit()" data-mdb-button-init id="danger" data-mdb-ripple-init class="btn btn-danger m-1" value="Guardar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Edit Modal HTML -->
+<div id="seeEmployeeModal" class="modal fade">
+	<div id="alerta_edit" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Editar Kit</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+						
+						<div class="form-group">
+							<label for="opcao"><strong>Conselho</strong><span style="color: red;">*</span></label>
+							
+							<select class="form-control" id="conselho_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for conselho_list in conselho %}
+								 <option value="{{conselho_list.id}}">{{conselho_list.descricao}}</option>
+								 {% endfor %}
+						   </select>
+						   <input type="hidden" id="id_user_edit" class="form-control" value="{{ request.user.id }}">
+						   <input type="hidden" id="kit_el_id" class="form-control">
+						</div>
+						<div class="form-group">
+							
+						<label><strong>Mala</strong><span style="color: red;">*</span></label>
+					    <input id="malas_edit" class="form-control" type="text" onclick="toggleDropdownmalas_edit()"></input>
+							<div id="dropdownMenumalas_edit" class="dropdown-content">
+							  <input type="text"  id="dropdownInputmalas_edit" placeholder="Type to filter..." onkeyup="filterDropdownmala_edit()">
+							    {% for mala_list in mala %}
+							      <div  data-id="{{ mala_list.id }}" class="dropdown-item" onclick="selectItmalas_edit(this)">{{mala_list.descricao}}</div>
+								{% endfor %}
+						  </div>
+						</div>
+						<div class="form-group">
+							<label><strong>Portatel</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="portatel_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+									{% for portatel_list in portatel %}
+								<option value="{{portatel_list.id}}">{{portatel_list.descricao}} / {{portatel_list.serial_number}}</option>
+									{% endfor %}
+						   </select>						
+						</div>
+						<div class="form-group">
+							<label><strong>Impressora</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="impressora_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for impressora_list in impressora %}
+								<option value="{{impressora_list.id}}">{{impressora_list.descricao}} / {{impressora_list.serial_number}}</option>
+								{% endfor %}
+						   </select>		
+						</div>
+						<div class="form-group">
+								<label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
+								<select class="form-control" id="Scaner_impresao_digital_edit">
+									<option value="">--Por favor, escolha uma opção--</option>
+									{% for scaner_list in scaner %}
+									 <option value="{{scaner_list.id}}">{{scaner_list.descricao}} / {{scaner_list.serial_number}}</option>
+									 {% endfor %}
+							   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="capitura_assinatura_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for assinatura_list in assinatura %}
+								 <option value="{{assinatura_list.id}}">{{assinatura_list.descricao}} / {{assinatura_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="cama_fotografia_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for camera_list in camera %}
+								 <option value="{{camera_list.id}}">{{camera_list.descricao}} / {{camera_list.serial_number}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
+							<input type="text" id="guia_entrega_edit" class="form-control" required>
+						</div>
+	
+						<div class="form-group">
+							<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
+							<input type="date" id="data_saida_edit" readonly>
+						</div>
+						<div class="form-group">
+							<label><strong>Obs/Estado</strong></label>
+							<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+						</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input id="editar_kit" class="btn btn-info" onclick="edit_kit()" value="Alterar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Delete Modal HTML -->
+
+<!-- Delete Modal HTML -->
+<div id="deleteEmployeeModalcheekbox" class="modal fade">
+	<div id="alerta_delete_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+		
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Apagar Equipamento</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende eliminar esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user_delete" class="form-control" value="{{ request.user.id }}">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  id="id_deleteCk"  class="btn btn-danger" value="Apagar" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="blockEmployeeModal" class="modal fade">
+	<div id="lock_kit_alert" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Bloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende bloquear esse registo?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="id_kit_lock" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-danger" onclick="bloquear_kit()" value="Bloquear" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="unblockEmployeeModal" class="modal fade">
+	<div id="unlock_mobiliario_alert" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Desbloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende desbloquear esse registo?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="id_kit_unlock" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input  class="btn btn-success" onclick="desbloquear_kit()" value="Desbloquear" readonly>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="checkboxdeleteEmployeeModal" class="modal fade">
+	<div id="alerta_lock_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Bloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende bloquear esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input id="id_deleteCk_kit_lock" class="btn btn-danger" value="Continuar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="checkboxunlockEmployeeModal" class="modal fade">
+	<div id="alerta_unlock_cheekbox" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
+	
+    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Desbloquear Inventario</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende desbloquear esses registos?</p>
+					<p class="text-warning"><small>Esta ação não pode ser anulada.</small></p>
+					<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					<input type="hidden" id="delete_inventario_equipamento" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input id="id_deleteCk_mob_unlock" class="btn btn-danger" value="Continuar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_jscript %}
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_aquisicao", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_saida", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_saida_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	
+	});
+
+	document.addEventListener("DOMContentLoaded", function() {
+		flatpickr("#data_aquisicao_edit", {
+			dateFormat: "Y-m-d",
+			locale: "pt"
+		});
+	
+	});
+</script>
+<script src="{%static 'Diretor/kit.js'%}"></script>
+
+{% endblock %}
+
+

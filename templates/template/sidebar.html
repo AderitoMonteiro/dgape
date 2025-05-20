@@ -10,8 +10,9 @@
       <li>
         <a href="#"></a>
       </li>
-       <!--
+     
       {% if perms.departamentos %}
+
       <li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO DGAPE</a>
         <ul class="list-unstyled collapse">
@@ -24,7 +25,7 @@
                 <a onclick="window.location.href='/inventario/mobiliario/index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
             </li> 
           </ul>
-          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Lançamento Patrimonial</a>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Gestão Patrimonial</a>
           <ul class="list-unstyled collapse">
               <li>
                 <a onclick="window.location.href='/gestao_equipamento/equipamento_index'">&nbsp;&nbsp;&nbsp;Equipamentos</a>
@@ -35,7 +36,7 @@
           </ul>
         </ul>
       </li>
-      
+       <!--
       <li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO ELEITORAL</a>
         <ul class="list-unstyled collapse">
@@ -58,7 +59,7 @@
               </li>
           </ul>
           </ul>
-      </li>
+      </li>-->
       <li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">GESTÃO KIT</a>
 
@@ -66,13 +67,15 @@
           <li>
             <a onclick="window.location.href='/gestao_kit_eleitoral/index'" >&nbsp;&nbsp;&nbsp;Registar KIT</a>
           </li>
-          <li>
-            <a onclick="window.location.href='/gestao_kit_eleitoral/equipamento'">&nbsp;&nbsp;&nbsp;Lançamento de Itens</a>
-          </li>
+           <!--
+            <li>
+              <a onclick="window.location.href='/gestao_kit_eleitoral/equipamento'">&nbsp;&nbsp;&nbsp;Lançamento de Itens</a>
+            </li>
+          -->
         </ul>
       </li>
       {% endif %}
-     -->
+     <!-- 
       <li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenuDGAPE(event)" class="dropdown-toggle">GESTÃO DGAPE</a>
         <ul class="list-unstyled collapse">
@@ -119,6 +122,18 @@
           </ul>
         </ul>
       </li>
+      <li>
+        <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">GESTÃO KIT</a>
+
+        <ul class="list-unstyled collapse">
+          <li>
+            <a onclick="window.location.href='/diretor/eleitoral/kit_eleitoral/'" >&nbsp;&nbsp;&nbsp;Registar KIT</a>
+          </li>
+          <li>
+            <a onclick="window.location.href='/gestao_kit_eleitoral/equipamento'">&nbsp;&nbsp;&nbsp;Lançamento de Itens</a>
+          </li>
+        </ul>
+      </li>-->
      <li>  
         <a  onclick="window.location.href='/auth/logout'"><span class="fa fa-sign-out mr-3"></span> Sign Out </a>
      </li>

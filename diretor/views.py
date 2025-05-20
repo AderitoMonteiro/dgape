@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from departamentos.models import inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,equipamento,mobiliario,inventario_equipamento
+from kit_eleitoral.models import conselho, equipamento as equipamento_kit,kit_eleit
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -798,6 +799,65 @@ def bloquear_equipamento_eleitoral_inventario(request):
                 return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
+def bloquear_kit_checkbox(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         kit_eleit.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                         message='Kit bloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def bloquear_kit(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id_lock")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         kit_eleit.objects.filter(id__in=id_eqs).update(status=2,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                         message='Kit bloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+@csrf_exempt
+def desbloquear_kit(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id_unlock")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         kit_eleit.objects.filter(id__in=id_eqs).update(status=1,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                         message='Kit desbloqueado com sucesso!!'
+                         status= 'success'
+                         return JsonResponse({'status':status, 'message': message })
+         
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
 def bloquear_mobiliario_eleitoral_inventario(request):
   
   if request.method == "POST":
@@ -978,5 +1038,74 @@ def gestao_mobiliario_eleitoral(request):
                            paginator_mobiliario = paginator.get_page(page_number)
                   
                       return render(request, 'Diretor_eleitoral_mobiliario/index.html',{"mobiliario":paginator_mobiliario})
+
+
+def gestao_kit_eleitoral(request):
+
+            conselho_lis = conselho.objects.all().filter(status=1)  
+            portatel  = equipamento_kit.objects.all().filter(tipo_item="Portatel",status=1)
+            impressora  = equipamento_kit.objects.all().filter(tipo_item="Impressora",status=1) 
+            mala  = equipamento_kit.objects.all().filter(tipo_item="Mala",status=1) 
+            scaner  = equipamento_kit.objects.all().filter(tipo_item="Scaner Impresão Digital",status=1)
+            camera  = equipamento_kit.objects.all().filter(tipo_item="Camara Fotografica",status=1) 
+            assinatura  = equipamento_kit.objects.all().filter(tipo_item="Capitura Assinatura",status=1)     
+
+            try:
+                query = '''     SELECT 
+                                KE.id as id, 
+                                KE.cres_id as cres_id, 
+                                KE.status as status, 
+                                KE.malas as malas, 
+                                ml.descricao as malas_descricao,
+                                scaner.descricao as scaner_impresao_digital,
+                                KE.impresora_id as impresora, 
+                                KE.guia_entrega as guia_entrega,
+                                KE.data_saida as data_saida,
+                                kec.descricao as descricao,
+                                eq.descricao as equipamento,
+                                imp.descricao as impressora,
+                                eq.serial_number as serial_number_portatel,
+                                imp.serial_number as serial_number_impressora,
+                                ass.descricao as capitura_assinatura,
+                                cm.descricao as camara_fotografica,
+                                   CASE
+                                          WHEN KE.status !=2 THEN "fa fa-unlock"
+                                          ELSE "fa fa-lock" 
+                                   END as class,
+                                   CASE
+                                          WHEN KE.status=1 THEN "Bloquear"
+                                          ELSE "Desbloquear" 
+                                          END as title, 
+                                   CASE
+                                          WHEN KE.status=1 THEN "#blockEmployeeModal"
+                                          ELSE "#unblockEmployeeModal" 
+                                   END as action,
+                                   CASE
+                                          WHEN KE.status=1 THEN "get_kit_block(this)"
+                                          ELSE "get_kit_unblock(this)" 
+                                   END as function
+                                FROM kit_eleitoral_kit_eleit as KE
+                                INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
+                                INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
+                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
+                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
+                                INNER JOIN kit_eleitoral_equipamento as ml on KE.malas=ml.id
+                            '''
+                with connection.cursor() as cursor:
+                 cursor.execute(query)
+                
+                 colunas = [col[0] for col in cursor.description] 
+                 resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                 paginator = Paginator(resultados, 5)
+                 page_number = request.GET.get("page")  
+                 paginator_kit_list = paginator.get_page(page_number)
+             
+
+                return render(request, 'Diretor_eleitoral_kit/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura})
+
+            except Exception as e:
+                  return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 
