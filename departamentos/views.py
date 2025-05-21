@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
-from .models import inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,equipamento,mobiliario,inventario_equipamento
+from .models import sala,inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,equipamento,mobiliario,inventario_equipamento
+from kit_eleitoral.models import conselho
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -147,14 +148,40 @@ def inventario_mobiliario_eleitoral_home(request):
     return render(request, 'Inventario_mobiliario_eleitoral/index.html',{"mobiliario":mobiliario_list,"mobiliario_inventario":paginator_equipamento_mobiliario})
 def gestao_equipamento(request):
 
-                      
-
+                      conselho_lis = conselho.objects.all().filter(status=1)
+                      sala_lis = sala.objects.all().filter(status=1)  
                       equipamento_list = equipamento.objects.all().filter(status=1)
-                      paginator = Paginator(equipamento_list, 7)
-                      page_number = request.GET.get("page")  
-                      paginator_equipamento = paginator.get_page(page_number)
+
+                      query = '''
+                            SELECT 
+                            departamentos_equipamento.id,
+                            departamentos_equipamento.descricao,
+                            mac_address,
+                            data_entrada,
+                            marca,
+                            modelo,
+                            obs,
+                            serial_number,
+                            tipo,
+                            IFNULL(departamentos_sala.descricao,'') as sala,
+                            kit_eleitoral_conselho.descricao as conselho
+                            FROM 
+                            departamentos_equipamento
+                            left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
+                            left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                            where departamentos_equipamento.status=1
+
+                    '''
+                      with connection.cursor() as cursor:
+                          cursor.execute(query)
+
+                          colunas = [col[0] for col in cursor.description] 
+                          equipamento_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                          paginator = Paginator(equipamento_list, 7)
+                          page_number = request.GET.get("page")  
+                          paginator_equipamento = paginator.get_page(page_number)
                   
-                      return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento})
+                      return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento,"conselho":conselho_lis,"sala":sala_lis})
 
 def gestao_equipamento_eleitoral(request):
 
@@ -176,6 +203,9 @@ def add_equipamento(request):
                     obs= request.POST.get("obs")
                     marca= request.POST.get("marca")
                     modelo= request.POST.get("modelo")
+                    tipo_item= request.POST.get("tipo_item")
+                    sala_id= request.POST.get("sala_id")
+                    conselho= request.POST.get("conselho")
                     serial_number= request.POST.get("serial_number")
                     mac_address= request.POST.get("mac_address")
                     user_create= request.POST.get("user_create")
@@ -183,26 +213,55 @@ def add_equipamento(request):
                     validate=equipamento.objects.filter(descricao=descricao,marca=marca,modelo=modelo).count()
 
                     if validate==0:
-                          if descricao !="" and marca !="" and modelo !="" and data_entrada !="":
+                            if conselho!="23":
+                                      if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="":
 
-                                    equipamento.objects.create(
-                                                                descricao=descricao,
-                                                                data_entrada=data_entrada,
-                                                                obs=obs,
-                                                                marca=marca,
-                                                                modelo=modelo,
-                                                                serial_number=serial_number,
-                                                                mac_address=mac_address,
-                                                                user_create=user_create
-                                                                  )
-                                    message='Equipamento registado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
+                                                equipamento.objects.create(
+                                                                            descricao=descricao,
+                                                                            data_entrada=data_entrada,
+                                                                            obs=obs,
+                                                                            marca=marca,
+                                                                            modelo=modelo,
+                                                                            conselho=conselho,
+                                                                            tipo=tipo_item,
+                                                                            serial_number=serial_number,
+                                                                            mac_address=mac_address,
+                                                                            user_create=user_create
+                                                                              )
+                                                message='Equipamento registado com sucesso!!'
+                                                status= 'success'
+                                                return JsonResponse({'status':status, 'message': message })
 
-                          else:
-                            message='Erro, tem que preencher todos os campos obrigatorios!!'
-                            status= 'error'
-                            return JsonResponse({'status':status, 'message': message })
+                                      else:
+                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                        status= 'error'
+                                        return JsonResponse({'status':status, 'message': message })
+                            else:
+                                if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="":
+
+                                                  equipamento.objects.create(
+                                                                              descricao=descricao,
+                                                                              data_entrada=data_entrada,
+                                                                              obs=obs,
+                                                                              marca=marca,
+                                                                              modelo=modelo,
+                                                                              conselho=conselho,
+                                                                              tipo=tipo_item,
+                                                                              sala=sala_id,
+                                                                              serial_number=serial_number,
+                                                                              mac_address=mac_address,
+                                                                              user_create=user_create
+                                                                                )
+                                                  message='Equipamento registado com sucesso!!'
+                                                  status= 'success'
+                                                  return JsonResponse({'status':status, 'message': message })
+
+                                else:
+                                      message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                      status= 'error'
+                                      return JsonResponse({'status':status, 'message': message })
+
+                            
                     else:
                       message='Erro, este equipamento já está registado!!'
                       status= 'error'
@@ -265,8 +324,32 @@ def get_equipamento(request):
 
     if request.method == "POST":
       try:
+        
                       equipamento_id = request.POST.get("equipamento_id")
-                      equipament= equipamento.objects.filter(id=equipamento_id)
+
+                      query = ''' select 
+                                  departamentos_equipamento.id,
+                                  departamentos_equipamento.descricao,
+                                  mac_address,
+                                  data_entrada,
+                                  marca,
+                                  modelo,
+                                  obs,
+                                  serial_number,
+                                  tipo,
+                                  IFNULL(departamentos_sala.descricao,'') as sala,
+                                  kit_eleitoral_conselho.descricao as conselho
+                                  from 
+                                  departamentos_equipamento
+                                  left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
+                                  left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                                  where departamentos_equipamento.id=%s'''
+                      with connection.cursor() as cursor:
+                          cursor.execute(query,[equipamento_id])
+                          
+                          colunas = [col[0] for col in cursor.description] 
+                          equipament = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                          print(equipament)
                      
                       return JsonResponse(serialize("json", equipament),safe=False)
 

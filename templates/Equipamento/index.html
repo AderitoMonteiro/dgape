@@ -50,6 +50,9 @@
 						<th>Data Entrada</th>
 						<th>serial Number</th>
 						<th>Mac Address</th>
+						<th>Conselho</th>
+						<th>Tipo Item</th>
+						<th>Sala</th>
 						<th>OBS</th>
 						<th>Acões</th>
 					</tr>
@@ -71,6 +74,9 @@
 						<td>{{equipamento_list.data_entrada}}</td>
 						<td>{{equipamento_list.serial_number}}</td>
 						<td>{{equipamento_list.mac_address}}</td>
+						<td>{{equipamento_list.conselho}}</td>
+						<td>{{equipamento_list.tipo}}</td>
+						<td>{{equipamento_list.sala}}</td>
 						<td>{{equipamento_list.obs}}</td>
 
 						<td>
@@ -126,7 +132,31 @@
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
 						<input type="date" id="data_entrada" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					</div>				
+					</div>			
+					<div class="form-group">
+						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
+						<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
+						<div id="dropdownMenu" class="dropdown-content">
+						  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
+							{% for conselho_list in conselho %}
+							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+							{% endfor %}
+							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					  </div>
+				    </div>
+					<div id="saladiv" class="form-group" style="display: none;">
+						<label for="opcao"><strong>Sala</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="ac-aa-select" required>
+
+							<option value="">--Por favor, escolha uma opção--</option>
+
+							{% for sala_lis in sala %}
+
+							 <option value="{{sala_lis.id}}">{{sala_lis.descricao}}</option>
+
+							{% endfor %}
+						</select>
+					</div>	
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao" class="form-control" required>
@@ -149,9 +179,21 @@
 						<input type="text" id="mac_address" class="form-control" required>
 					</div>
 					<div class="form-group">
+						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
+						<select class="form-control" id="tipo_item">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="Portatel">Portatel</option>
+							 <option value="Impressora">Impressora</option>
+							 <option value="Scaner Impresão Digital">Scaner Impresão Digital</option>
+							 <option value="Camara Fotografica">Camara Fotografica</option>
+							 <option value="Capitura Assinatura">Capitura Assinatura</option>
+					   </select>
+					</div>
+					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
 					 </div>	
+					
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -186,6 +228,23 @@
 						<input type="hidden" id="equipamento_id" class="form-control">
 					</div>
 					<div class="form-group">
+						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
+						<input id="conselho_edit" class="form-control" type="text"></input>
+					  </div>
+					  <div id="saladiv_edit" class="form-group" style="display: none;">
+						<label for="opcao"><strong>Sala</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="ac-aa-select" required>
+
+							<option value="">--Por favor, escolha uma opção--</option>
+
+							{% for sala_lis in sala %}
+
+							 <option value="{{sala_lis.id}}">{{sala_lis.descricao}}</option>
+
+							{% endfor %}
+						</select>
+					</div>	
+					<div class="form-group">
 						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="marca_edit" class="form-control" required>
 					</div>
@@ -201,6 +260,17 @@
 						<label><strong>Mac Address</strong></span></label></label>
 						<input type="text" id="mac_address_edit" class="form-control" required>
 					</div>	
+					<div class="form-group">
+						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
+						<select class="form-control" id="tipo_item_edit">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="Portatel">Portatel</option>
+							 <option value="Impressora">Impressora</option>
+							 <option value="Scaner Impresão Digital">Scaner Impresão Digital</option>
+							 <option value="Camara Fotografica">Camara Fotografica</option>
+							 <option value="Capitura Assinatura">Capitura Assinatura</option>
+					   </select>
+					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs_edit" name="obs_edit" rows="4" cols="40"></textarea>
@@ -284,7 +354,7 @@
 		});
 	});
 </script>
-<script src="{%static 'equipamento/equipamento.js'%}"></script>
+<script src="{%static 'Equipamento/equipamento.js'%}"></script>
 {% endblock %}
 
 

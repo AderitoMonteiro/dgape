@@ -85,82 +85,7 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
 
 });
 
-document.getElementById("id_equipamento_eleitoral_deleteCk").addEventListener("click", function () {
 
-    let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
-    if (checkboxes.length === 0) {
-
-            let divPai = document.getElementById("alerta_delete_cheekbox");
-            let divalert = document.createElement("div");
-
-            divPai.innerHTML = ''
-            divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
-            divalert.setAttribute("class","alert alert-danger");
-            divalert.setAttribute( "role","alert");
-            divalert.innerHTML = "Selecione pelo menos um para eliminar.";
-            divPai.appendChild(divalert);
-
-        return;
-    } else {
-
-        let equipamento_ids = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
-        let user_id = document.getElementById('id_user_delete').value;
-        let url;
-
-       
-
-        const data = {
-            "id": equipamento_ids,
-            "id_user":user_id,
-            "X-CSRFToken": getCSRFToken()
-        };
-        // Configuração da requisição
-        jqOld.ajax({
-            url: "checkbox/",
-            type: 'POST',
-            data: data,
-            success: function (data) {
-                    
-
-            let divPai = document.getElementById("alerta_delete_cheekbox");
-            let divalert = document.createElement("div");
-
-
-            if (data.status == 'success') {
-                
-                divPai.innerHTML = ''
-
-                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
-                divalert.setAttribute("class","alert alert-success");
-                divalert.setAttribute( "role","alert");
-                divalert.innerHTML = data.message;
-                divPai.appendChild(divalert);
-                slowReload()
-
-            } else {
-
-                divPai.innerHTML = ''
-                
-                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
-                divalert.setAttribute("class","alert alert-danger");
-                divalert.setAttribute( "style","text-align;");
-                divalert.setAttribute( "role","alert");
-                divalert.innerHTML = data.message;
-                divPai.appendChild(divalert);
-
-                setTimeout(() => {
-                    divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
-                }, 9000);
-            }
-
-            },
-            error: function (xhr, status, error) {
-                alert('Erro: ' + xhr.responseJSON.message);
-            }
-        });
-    }
-
-});
 
 function get_equipamento(button){
 
@@ -524,6 +449,11 @@ function add_equipamanto() {
     const serial_number = document.getElementById('serial_number').value;
     const mac_address = document.getElementById('mac_address').value;
     const id_user = document.getElementById('id_user').value;
+    const sala_id = document.getElementById('ac-aa-select').value;
+    const tipo_item = document.getElementById('tipo_item').value;
+    const conselho = document.getElementById('conselho').getAttribute("data-id");
+
+
 
     // Dados para enviar
     const data = {
@@ -535,6 +465,9 @@ function add_equipamanto() {
         "serial_number": serial_number,
         "mac_address": mac_address,
         "user_create": id_user,
+        "conselho":conselho,
+        "sala_id":sala_id,
+        "tipo_item":tipo_item,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -660,3 +593,46 @@ function add_equipamanto_eleitoral() {
 
 }
 
+// filtragem drop conselho start
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInput").value = "";
+    filterDropdown(); // show all items when opening
+    document.getElementById("dropdownInput").focus();
+  }
+
+  function filterDropdown() {
+    const input = document.getElementById("dropdownInput").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho").value = selectedValue;
+    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu").style.display = "none";
+    const div = document.getElementById('saladiv');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop conselho
