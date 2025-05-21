@@ -171,7 +171,7 @@
 						<input type="text" id="modelo" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label><strong>Serial Number</strong></label></label>
+						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number" class="form-control" required>
 					</div>
 					<div class="form-group">
@@ -191,7 +191,7 @@
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
-						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
+						<textarea id="obs" name="obs" rows="4" class="form-control"></textarea>
 					 </div>	
 					
 				</div>
@@ -229,11 +229,18 @@
 					</div>
 					<div class="form-group">
 						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
-						<input id="conselho_edit" class="form-control" type="text"></input>
+						<input id="conselho_edit" class="form-control" type="text" onclick="toggleDropdown_edit()"></input>
+						<div id="dropdownMenu_edit" class="dropdown-content">
+						  <input type="text" id="dropdownInput_edit" placeholder="Type to filter..." onkeyup="filterDropdown_edit()">
+							{% for conselho_list in conselho %}
+							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item-edit" onclick="selectItem_edit(this)">{{conselho_list.descricao}}</div>
+							{% endfor %}
+							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					  </div>
+					</div>
 					  <div id="saladiv_edit" class="form-group" style="display: none;">
 						<label for="opcao"><strong>Sala</strong><span style="color: red;">*</span></label>
-						<select class="form-control" id="ac-aa-select" required>
+						<select class="form-control" id="saladiv_edit-select" required>
 
 							<option value="">--Por favor, escolha uma opção--</option>
 
@@ -273,7 +280,7 @@
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
-						<textarea id="obs_edit" name="obs_edit" rows="4" cols="40"></textarea>
+						<textarea id="obs_edit" name="obs_edit" rows="4" class="form-control"></textarea>
 					 </div>
 				</div>
 				<div class="modal-footer">

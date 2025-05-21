@@ -12,7 +12,6 @@ function add_inventario_equipamanto() {
 
     const provinencia = document.getElementById('provinencia').value;
     const equipamento = document.getElementById('equipamento').getAttribute("data-id");
-    const localizacao = document.getElementById('localizacao').value;
     const estado = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
@@ -20,7 +19,6 @@ function add_inventario_equipamanto() {
     const data = {
         "provinencia": provinencia,
         "equipamento": equipamento,
-        "localizacao": localizacao,
         "estado": estado,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
@@ -159,7 +157,6 @@ function get_equipamento_inventario(button){
             document.getElementById('data_entrada_edit').value=data.resultado[0].data_entrada
             document.getElementById('provinencia_edit').value=data.resultado[0].provinencia
             document.getElementById('equipamento_edit').value=data.resultado[0].equipamento_id
-            document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
             document.getElementById('id_inventario_equipamento').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
            
@@ -342,13 +339,11 @@ function get_equipamento_inventario(button){
  }
  function edit_equipamento_inventario(){
 
-   let localizacao_edit = document.getElementById('localizacao_edit').value
    let id_inventario_equipamento = document.getElementById('id_inventario_equipamento').value
    let obs_edit = document.getElementById('obs_edit').value
    let user_update = document.getElementById('id_user').value
  
     const data = {
-     "localizacao":localizacao_edit,
      "id":id_inventario_equipamento,
      "obs":obs_edit,
      "user_update":user_update,
@@ -511,8 +506,6 @@ function get_equipamento_inventario(button){
   document.addEventListener("click", function (e) {
      const dropdown = document.querySelector(".form-group");
 
-    if (!dropdown.contains(e.target)) {
-      document.getElementById("dropdownMenu").style.display = "none";
-    }
+  
   });
   // close filtragem drop equipamento start

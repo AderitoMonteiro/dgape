@@ -24,7 +24,7 @@
 {% block content %}
 <div class="container-xl">
 	<div class="table-responsive">
-		<div class="table-wrapper">
+		<div class="table-wrapper" style="WIDTH: 105%!important;">
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
@@ -49,12 +49,13 @@
 						</th>
 						<th>Data Entrada</th>
 						<th>Equipamento</th>
-						<th>Localização</th>
+						<th>Conselho</th>
 						<th>Modelo</th>
 						<th>serial Number</th>
 						<th>Mac Address</th>
-						<th>provinçia</th>
+						<th>Provinçia</th>
 						<th>Marca</th>
+						<th>Sala</th>
 						<th>Obs</th>
 						<th>Acões</th>
 					</tr>
@@ -72,12 +73,13 @@
 						</td>
 						<td>{{equipamento_list.data_entrada}}</td>
 						<td>{{equipamento_list.descricao}}</td>
-						<td>{{equipamento_list.localizacao}}</td>
+						<td>{{equipamento_list.conselho}}</td>
 						<td>{{equipamento_list.modelo}}</td>
 						<td>{{equipamento_list.serial_number}}</td>
 						<td>{{equipamento_list.mac_address}}</td>
 						<td>{{equipamento_list.provinencia}}</td>
 						<td>{{equipamento_list.marca}}</td>
+						<td>{{equipamento_list.sala}}</td>
 						<td>{{equipamento_list.obs}}</td>
 
 						<td>
@@ -136,17 +138,13 @@
 						<div id="dropdownMenuequipamento" class="dropdown-content">
 						  <input type="text"  id="dropdownInputequipamento" placeholder="Type to filter..." onkeyup="filterDropdownequipamento()">
 						  {% for equipamento_list in equipamento %}
-							  <div  data-id="{{ equipamento_list.id }}" class="dropdown-item" onclick="selectItequipamento(this)">{{equipamento_list.descricao}}</div>
+							  <div  data-id="{{ equipamento_list.id }}" class="dropdown-item" onclick="selectItequipamento(this)">{{equipamento_list.descricao}} / {{equipamento_list.serial_number}}</div>
 							{% endfor %}
 					  </div>
-					</div>
-					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao">
-					</div>		
+					</div>	
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
-						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
+						<textarea id="obs" name="obs" rows="4" class="form-control"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
@@ -190,12 +188,8 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao_edit">
-					</div>		
-					<div class="form-group">
 						<label><strong>Obs/Estado</strong><span style="color: red;">*</span></label></label>
-						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+						<textarea id="obs_edit" name="obs" rows="4" class="form-control"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">

@@ -48,8 +48,9 @@
 						</th>
 						<th>Data Entrada</th>
 						<th>Mobiliario</th>
-						<th>Localização</th>
+						<th>Conselho</th>
 						<th>provinçia</th>
+						<th>Sala</th>
 						<th>Obs</th>
 						<th>Acões</th>
 					</tr>
@@ -69,6 +70,7 @@
 						<td>{{mobiliario_list.descricao}}</td>
 						<td>{{mobiliario_list.localizacao}}</td>
 						<td>{{mobiliario_list.provinencia}}</td>
+						<td>{{mobiliario_list.sala}}</td>
 						<td>{{mobiliario_list.obs}}</td>
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario_inventario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -131,11 +133,7 @@
 						  <div  data-id="{{ mobiliario_list.id }}" class="dropdown-item" onclick="selectItmobiliario(this)">{{mobiliario_list.descricao}}</div>
 							{% endfor %}
 					  </div>
-					</div>
-					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao">
-					</div>		
+					</div>	
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" cols="40"></textarea>
@@ -182,14 +180,10 @@
 							  <option value="{{mobiliario_list.id}}">{{mobiliario_list.descricao}}</option>
 							  {% endfor %}
 						</select>
-					</div>
-					<div class="form-group">
-						<label><strong>Localização</strong><span style="color: red;">*</span></label></label>
-						<input type="text" class="form-control" id="localizacao_edit">
-					</div>		
+					</div>	
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
-						<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+						<textarea id="obs_edit" name="obs" rows="4" class="form-control"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">

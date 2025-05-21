@@ -101,16 +101,24 @@ function get_equipamento(button){
          data: data,
          success: function (data) {
  
-             const datajs = JSON.parse(data);
              
-             document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
-             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
-             document.getElementById("obs_edit").value= datajs[0].fields.obs;
-             document.getElementById("marca_edit").value=datajs[0].fields.marca;
-             document.getElementById("modelo_edit").value=datajs[0].fields.modelo;
-             document.getElementById("serial_number_edit").value=datajs[0].fields.serial_number;
-             document.getElementById("mac_address_edit").value=datajs[0].fields.mac_address;
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("obs_edit").value= data.resultado[0].obs;
+             document.getElementById("marca_edit").value=data.resultado[0].marca;
+             document.getElementById("modelo_edit").value=data.resultado[0].modelo;
+             document.getElementById("serial_number_edit").value=data.resultado[0].serial_number;
+             document.getElementById("mac_address_edit").value=data.resultado[0].mac_address;
+             document.getElementById("conselho_edit").value=data.resultado[0].descricao_conselho;
+             document.getElementById("conselho_edit").setAttribute("data-id", data.resultado[0].conselho_id)
+             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
              document.getElementById("equipamento_id").value=equipamento_id;
+
+             if(data.resultado[0].descricao_conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+             }
 
 
              document.getElementById("descricao_edit").disabled=true;
@@ -119,6 +127,7 @@ function get_equipamento(button){
              document.getElementById("modelo_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("mac_address_edit").disabled=true;
+             document.getElementById("tipo_item_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {
@@ -188,6 +197,10 @@ function get_equipamento_eleitoral(button){
      const obs = document.getElementById('obs_edit').value;
      const id_user = document.getElementById('id_user_edit').value;
      const equipamento_id = document.getElementById('equipamento_id').value;
+     const conselho = document.getElementById('conselho_edit').getAttribute("data-id");
+     const sala_id = document.getElementById('saladiv_edit-select').value;
+
+     
  
  
      // Dados para enviar
@@ -195,6 +208,8 @@ function get_equipamento_eleitoral(button){
          "obs": obs,
          "user_create": id_user,
          "equipamento_id": equipamento_id,
+         "conselho_edit": conselho,
+         "sala_id": sala_id,
          "X-CSRFToken": getCSRFToken()
      };
  
@@ -617,6 +632,56 @@ function toggleDropdown() {
     document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
     document.getElementById("dropdownMenu").style.display = "none";
     const div = document.getElementById('saladiv');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop conselho
+
+  // filtragem drop conselho start
+function toggleDropdown_edit() {
+    
+    console.log("01")
+
+    const dropdown = document.getElementById("dropdownMenu_edit");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+
+    console.log(dropdown.style.display)
+
+    document.getElementById("dropdownInput_edit").value = "";
+    filterDropdown_edit(); // show all items when opening
+    document.getElementById("dropdownInput_edit").focus();
+  }
+
+  function filterDropdown_edit() {
+    const input = document.getElementById("dropdownInput_edit").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item-edit");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem_edit(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho_edit").value = selectedValue;
+    document.getElementById("conselho_edit").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu_edit").style.display = "none";
+    const div = document.getElementById('saladiv_edit');
 
     if(selectedValue=='DGAPE')
     {

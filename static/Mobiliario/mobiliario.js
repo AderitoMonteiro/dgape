@@ -104,6 +104,9 @@ function add_mobiliario() {
     const descricao = document.getElementById('descricao').value;
     const data_entrada = document.getElementById('data_entrada').value;
     const serial_number = document.getElementById('serial_number').value;
+    const conselho = document.getElementById('conselho').getAttribute('data-id');
+    const sala = document.getElementById('sala_id').value;
+    const tipo = document.getElementById('tipo_item').value;
     const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
@@ -113,6 +116,9 @@ function add_mobiliario() {
         "serial_number":serial_number,
         "data_entrada":data_entrada,
         "obs": obs,
+        "conselho": conselho,
+        "tipo": tipo,
+        "sala": sala,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
     };
@@ -247,16 +253,26 @@ function get_mobiliario(button){
          data: data,
          success: function (data) {
  
-             const datajs = JSON.parse(data);
              
-             document.getElementById("descricao_edit").value= datajs[0].fields.descricao;
-             document.getElementById("data_entrada_edit").value= datajs[0].fields.data_entrada;
-             document.getElementById("serial_number_edit").value= datajs[0].fields.serial_number;
-             document.getElementById("obs_edit").value=datajs[0].fields.obs;
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("serial_number_edit").value= data.resultado[0].serial_number;
+             document.getElementById("obs_edit").value=data.resultado[0].obs;
              document.getElementById("mobiliario_id").value=mobiliario_id;
+             document.getElementById("conselho_edit").value=data.resultado[0].conselho;
+             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
+
+             if(data.resultado[0].conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+
+             }
             
              document.getElementById("data_entrada_edit").disabled=true;
              document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
           },
          error: function (xhr, status, error) {
@@ -304,6 +320,8 @@ function get_mobiliario(button){
     
     const descricao = document.getElementById('descricao_edit').value;
     const obs = document.getElementById('obs_edit').value;
+    const conselho_edit = document.getElementById('conselho_edit').getAttribute("data-id");
+    const sala_id = document.getElementById('saladiv_edit-select').value;
     const id_user = document.getElementById('id_user_edit').value;
     const mobiliario_id = document.getElementById('mobiliario_id').value;
 
@@ -311,6 +329,8 @@ function get_mobiliario(button){
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "conselho_edit":conselho_edit,
+        "sala_id":sala_id,
         "obs": obs,
         "user_update": id_user,
         "mobiliario_id": mobiliario_id,
@@ -432,7 +452,6 @@ function edit_mobiliario_eleitoral() {
     });
 
 }
-
 
 function delete_mobiliario() {
 
@@ -560,3 +579,97 @@ function delete_mobiliario_eleitoral() {
     });
 
 }
+
+// filtragem drop conselho start
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInput").value = "";
+    filterDropdown(); // show all items when opening
+    document.getElementById("dropdownInput").focus();
+  }
+
+  function filterDropdown() {
+    const input = document.getElementById("dropdownInput").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho").value = selectedValue;
+    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu").style.display = "none";
+    const div = document.getElementById('saladiv');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop conselho
+
+    // filtragem drop conselho start
+function toggleDropdown_edit() {
+    
+    console.log("01")
+
+    const dropdown = document.getElementById("dropdownMenu_edit");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+
+    console.log(dropdown.style.display)
+
+    document.getElementById("dropdownInput_edit").value = "";
+    filterDropdown_edit(); // show all items when opening
+    document.getElementById("dropdownInput_edit").focus();
+  }
+
+  function filterDropdown_edit() {
+    const input = document.getElementById("dropdownInput_edit").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item-edit");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem_edit(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho_edit").value = selectedValue;
+    document.getElementById("conselho_edit").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu_edit").style.display = "none";
+    const div = document.getElementById('saladiv_edit');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
+
+  // close filtragem drop conselho

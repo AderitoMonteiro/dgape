@@ -24,17 +24,20 @@ def inventario_equipamento_home(request):
                     SELECT 
                     die.id,
                     de.data_entrada,
-                    die.localizacao,
+                    kec.descricao as conselho,
                     die.obs,
                     die.provinencia,
                     de.descricao,
                     de.modelo,
-                    de.marca,
+                     IFNULL(de.marca,'') as marca,
                     de.mac_address,
-                    de.serial_number
+                    de.serial_number,
+                    IFNULL(sa.descricao,'') as sala
                     FROM 
                     departamentos_inventario_equipamento as die
-                    inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                    left join departamentos_equipamento as de on die.equipamento_id=de.id
+                    left join kit_eleitoral_conselho as kec on de.conselho=kec.id  
+                    left join departamentos_sala as sa on de.sala=sa.id                  
                     where die.status=1
                 '''
     with connection.cursor() as cursor:
@@ -95,13 +98,16 @@ def inventario_mobiliario_home(request):
                     SELECT 
                     die.id,
                     de.data_entrada,
-                    die.localizacao,
+                    kec.descricao as localizacao,
                     die.obs,
                     die.provinencia,
-                    de.descricao
+                    de.descricao,
+                    ds.descricao as sala
                     FROM 
                     departamentos_inventario_mobiliario as die
                     inner join departamentos_mobiliario as de on die.mobiliario_id=de.id
+                    left join kit_eleitoral_conselho as kec on de.conselho=kec.id 
+                    left join departamentos_sala as ds on de.sala=ds.id
                     where die.status=1
                 '''
     with connection.cursor() as cursor:
@@ -210,11 +216,11 @@ def add_equipamento(request):
                     mac_address= request.POST.get("mac_address")
                     user_create= request.POST.get("user_create")
 
-                    validate=equipamento.objects.filter(descricao=descricao,marca=marca,modelo=modelo).count()
+                    validate=equipamento.objects.filter(serial_number=serial_number).count()
 
                     if validate==0:
                             if conselho!="23":
-                                      if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="":
+                                      if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="" and serial_number!="":
 
                                                 equipamento.objects.create(
                                                                             descricao=descricao,
@@ -237,7 +243,7 @@ def add_equipamento(request):
                                         status= 'error'
                                         return JsonResponse({'status':status, 'message': message })
                             else:
-                                if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="":
+                                if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="" and serial_number!="":
 
                                                   equipamento.objects.create(
                                                                               descricao=descricao,
@@ -263,7 +269,7 @@ def add_equipamento(request):
 
                             
                     else:
-                      message='Erro, este equipamento já está registado!!'
+                      message='Erro, este equipamento já foi registado!!'
                       status= 'error'
                       return JsonResponse({'status':status, 'message': message })
 
@@ -338,7 +344,10 @@ def get_equipamento(request):
                                   serial_number,
                                   tipo,
                                   IFNULL(departamentos_sala.descricao,'') as sala,
-                                  kit_eleitoral_conselho.descricao as conselho
+                                  departamentos_sala.id as sala_id,
+                                  kit_eleitoral_conselho.descricao as descricao_conselho,
+                                  kit_eleitoral_conselho.id as conselho_id,
+
                                   from 
                                   departamentos_equipamento
                                   left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
@@ -351,7 +360,7 @@ def get_equipamento(request):
                           equipament = [dict(zip(colunas, row)) for row in cursor.fetchall()]
                           print(equipament)
                      
-                          return JsonResponse(serialize("json", equipament),safe=False)
+                          return JsonResponse({'resultado': equipament})
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -377,18 +386,53 @@ def editar_equipamento(request):
                     equipamento_id = request.POST.get("equipamento_id")
                     obs= request.POST.get("obs")
                     serial_number= request.POST.get("serial_number")
+                    conselho= request.POST.get("conselho_edit")
+                    sala_id= request.POST.get("sala_id")
                     mac_address= request.POST.get("mac_address")
                     user_update= request.POST.get("user_create")
 
-                    equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
-                    equipamento_ob.obs=obs
-                    equipamento_ob.user_update=user_update
-                    equipamento_ob.dateupdate=datetime.now()
-                    equipamento_ob.save()
-                                                                  
-                    message='Equipamento alterado com sucesso!!'
-                    status= 'success'
-                    return JsonResponse({'status':status, 'message': message })
+                    if conselho=="23":
+
+                            if sala_id!="":
+
+                                  equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
+                                  equipamento_ob.obs=obs
+                                  equipamento_ob.sala=sala_id
+                                  equipamento_ob.conselho=conselho
+                                  equipamento_ob.user_update=user_update
+                                  equipamento_ob.dateupdate=datetime.now()
+                                  equipamento_ob.save()
+                                                                                
+                                  message='Equipamento alterado com sucesso!!'
+                                  status= 'success'
+                                  return JsonResponse({'status':status, 'message': message })
+                            else:
+                              message='Erro, tem que preencher os campos abrigatorio!!'
+                              status= 'error'
+                              return JsonResponse({'status':status, 'message': message })
+
+                    else:
+                          
+                          if conselho!="":
+
+                              equipamento_ob=get_object_or_404(equipamento,id=equipamento_id)
+                              equipamento_ob.obs=obs
+                              equipamento_ob.conselho=conselho
+                              equipamento_ob.sala=""
+                              equipamento_ob.user_update=user_update
+                              equipamento_ob.dateupdate=datetime.now()
+                              equipamento_ob.save()
+                                                                            
+                              message='Equipamento alterado com sucesso!!'
+                              status= 'success'
+                              return JsonResponse({'status':status, 'message': message })
+
+                          else:
+                              message='Erro, tem que preencher os campos abrigatorio!!'
+                              status= 'error'
+                              return JsonResponse({'status':status, 'message': message })
+
+
 
 
             except Exception as e:
@@ -503,12 +547,34 @@ def delete_equipamento_eleitoral_checkbox(request):
 
 def gestao_mobiliario(request):
    
-    mobiliario_list = mobiliario.objects.all().filter(status=1)
-    paginator = Paginator(mobiliario_list, 7)
-    page_number = request.GET.get("page")  
-    paginator_mobiliario = paginator.get_page(page_number)
+    conselho_list = conselho.objects.all().filter(status=1)
+    sala_list = sala.objects.all().filter(status=1)
 
-    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario})
+    query = '''
+                    SELECT 
+                    dm.id,
+                    dm.descricao,
+                    dm.data_entrada,
+                    dm.serial_number,
+                    dm.obs,
+                    dm.tipo,
+                    kec.descricao as conselho,
+                    IFNULL(ds.descricao,'') as sala
+                    FROM departamentos_mobiliario dm
+                    left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                    left join departamentos_sala as ds on dm.sala=ds.id
+                    WHERE dm.STATUS=1
+                '''
+    with connection.cursor() as cursor:
+          cursor.execute(query)
+          colunas = [col[0] for col in cursor.description] 
+          mobiliario_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+
+          paginator = Paginator(mobiliario_list, 7)
+          page_number = request.GET.get("page")  
+          paginator_mobiliario = paginator.get_page(page_number)
+
+    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list})
 
 def gestao_mobiliario_eleitoral(request):
    
@@ -528,35 +594,71 @@ def add_mobiliario(request):
                     data_entrada= request.POST.get("data_entrada_edit")
                     data_entrada= request.POST.get("data_entrada")
                     serial_number= request.POST.get("serial_number")
+                    sala= request.POST.get("sala")
+                    tipo= request.POST.get("tipo")
+                    conselho= request.POST.get("conselho")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
+                    if conselho!="23":
+                                    if descricao !="" and serial_number !="" and data_entrada !="":
+                                      
+                                          validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                          if validate==0:
 
-                    if descricao !="" and serial_number !="" and data_entrada !="":
-                      
-                          validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
-                          if validate==0:
+                                                    mobiliario.objects.create(
+                                                                                descricao=descricao,
+                                                                                data_entrada=data_entrada,
+                                                                                serial_number=serial_number,
+                                                                                conselho=conselho,
+                                                                                tipo=tipo,
+                                                                                obs=obs,
+                                                                                user_create=user_create
+                                                                                  )
+                                                    message='Mobiliario registado com sucesso!!'
+                                                    status= 'success'
+                                                    return JsonResponse({'status':status, 'message': message })
 
-                                    mobiliario.objects.create(
-                                                                descricao=descricao,
-                                                                data_entrada=data_entrada,
-                                                                serial_number=serial_number,
-                                                                obs=obs,
-                                                                user_create=user_create
-                                                                  )
-                                    message='Mobiliario registado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
-
-                          else:
-                           
-                            message='Erro, este mobiliario já foi registado!!'
-                            status= 'error'
-                            return JsonResponse({'status':status, 'message': message })
+                                          else:
+                                          
+                                            message='Erro, este mobiliario já foi registado!!'
+                                            status= 'error'
+                                            return JsonResponse({'status':status, 'message': message })
+                                    else:
+                                      message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                      status= 'error'
+                                      return JsonResponse({'status':status, 'message': message })
                     else:
-                      message='Erro, tem que preencher todos os campos obrigatorios!!'
-                      status= 'error'
-                      return JsonResponse({'status':status, 'message': message })
+
+                                if descricao !="" and serial_number !="" and data_entrada !="" and sala !="":
+                                                
+                                                    validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                                    if validate==0:
+
+                                                              mobiliario.objects.create(
+                                                                                          descricao=descricao,
+                                                                                          data_entrada=data_entrada,
+                                                                                          serial_number=serial_number,
+                                                                                          conselho=conselho,
+                                                                                          sala=sala,
+                                                                                          tipo=tipo,
+                                                                                          obs=obs,
+                                                                                          user_create=user_create
+                                                                                            )
+                                                              message='Mobiliario registado com sucesso!!'
+                                                              status= 'success'
+                                                              return JsonResponse({'status':status, 'message': message })
+
+                                                    else:
+                                                    
+                                                      message='Erro, este mobiliario já foi registado!!'
+                                                      status= 'error'
+                                                      return JsonResponse({'status':status, 'message': message })
+                                else:
+                                 message='Erro, tem que preencher todos os campos obrigatorio'
+                                 status= 'error'
+                                 return JsonResponse({'status':status, 'message': message })
+
 
                     
 
@@ -612,9 +714,30 @@ def get_mobiliario(request):
     if request.method == "POST":
       try:
                       mobiliario_id = request.POST.get("mobiliario_id")
-                      mobiliar= mobiliario.objects.filter(id=mobiliario_id)
+
+                      query = '''
+                                      SELECT 
+                                      dm.id,
+                                      dm.descricao,
+                                      dm.data_entrada,
+                                      dm.serial_number,
+                                      dm.obs,
+                                      dm.tipo,
+                                      kec.descricao as conselho,
+                                      kec.id as conselho_id,
+                                      IFNULL(ds.descricao,'') as sala,
+                                      ds.id as sala_id
+                                      FROM departamentos_mobiliario dm
+                                      left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                                      left join departamentos_sala as ds on dm.sala=ds.id
+                                      WHERE dm.STATUS=1 and dm.id=%s
+                                  '''
+                      with connection.cursor() as cursor:
+                            cursor.execute(query,[mobiliario_id])
+                            colunas = [col[0] for col in cursor.description] 
+                            mobiliar = [dict(zip(colunas, row)) for row in cursor.fetchall()]
                      
-                      return JsonResponse(serialize("json", mobiliar),safe=False)
+                      return JsonResponse({'resultado': mobiliar})
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -639,14 +762,40 @@ def editar_mobiliario(request):
             try:
                     mobiliario_id = request.POST.get("mobiliario_id")
                     descricao= request.POST.get("descricao")
+                    conselh= request.POST.get("conselho_edit")
+                    sala_id= request.POST.get("sala_id")
                     obs= request.POST.get("obs")
                     user_update= request.POST.get("user_update")
 
-                    if descricao !="":
+                    if conselh!="23":
 
+                                if conselh!="":
+                                        mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
+                                        mobiliario_ob.descricao=descricao
+                                        mobiliario_ob.obs=obs
+                                        mobiliario_ob.conselho=conselh
+                                        mobiliario_ob.user_update=user_update
+                                        mobiliario_ob.dateupdate=datetime.now()
+                                        mobiliario_ob.save()
+                                                                      
+                                        message='Mobiliario alterado com sucesso!!'
+                                        status= 'success'
+                                        return JsonResponse({'status':status, 'message': message })
+                                else:
+                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                        status= 'error'
+                                        return JsonResponse({'status':status, 'message': message })
+
+
+
+                    else:
+                               if conselh!="" and sala_id!="":
+                                
                                     mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
                                     mobiliario_ob.descricao=descricao
                                     mobiliario_ob.obs=obs
+                                    mobiliario_ob.sala=sala_id
+                                    mobiliario_ob.conselho=conselh
                                     mobiliario_ob.user_update=user_update
                                     mobiliario_ob.dateupdate=datetime.now()
                                     mobiliario_ob.save()
@@ -654,11 +803,13 @@ def editar_mobiliario(request):
                                     message='Mobiliario alterado com sucesso!!'
                                     status= 'success'
                                     return JsonResponse({'status':status, 'message': message })
+                               else:
+                                    message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                    status= 'error'
+                                    return JsonResponse({'status':status, 'message': message })
+                        
 
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
+                  
          
 
             except Exception as e:
@@ -776,15 +927,13 @@ def add_inventario_equipamento(request):
             try:
                     provinencia= request.POST.get("provinencia")
                     equipamento= request.POST.get("equipamento")
-                    localizacao= request.POST.get("localizacao")
                     estado= request.POST.get("estado")
                     user_create= request.POST.get("user_create")
 
-                    if provinencia !="" and equipamento !="" and localizacao !="":
+                    if provinencia !="" and equipamento !="":
 
                                     inventario_equipamento.objects.create(
                                                                 equipamento_id=equipamento,
-                                                                localizacao=localizacao,
                                                                 provinencia=provinencia,
                                                                 obs=estado,
                                                                 user_create=user_create
@@ -838,14 +987,13 @@ def add_inventario_mobiliario(request):
             try:
                     provinencia= request.POST.get("provinencia")
                     mobiliario= request.POST.get("mobiliario")
-                    localizacao= request.POST.get("localizacao")
                     user_create= request.POST.get("user_create")
+                    estado= request.POST.get("estado")
 
-                    if provinencia !="" and equipamento !="" and localizacao !="":
+                    if provinencia !="" and equipamento !="":
 
                                     inventario_mobiliario.objects.create(
                                                                 mobiliario_id=mobiliario,
-                                                                localizacao=localizacao,
                                                                 provinencia=provinencia,
                                                                 obs=estado,
                                                                 user_create=user_create
@@ -906,7 +1054,7 @@ def get_equipamento_inventario(request):
                             SELECT 
                             die.id,
                             de.data_entrada,
-                            die.localizacao,
+                            kec.descricao as conselho,
                             die.obs,
                             die.provinencia,
                             de.descricao,
@@ -918,6 +1066,7 @@ def get_equipamento_inventario(request):
                             FROM 
                             departamentos_inventario_equipamento as die
                             inner join departamentos_equipamento as de on die.equipamento_id=de.id
+                            inner join kit_eleitoral_conselho as kec on de.conselho=kec.id    
                             where die.id=%s
                     '''
                   with connection.cursor() as cursor:
@@ -1040,16 +1189,12 @@ def edit_inventario_equipamento(request):
   
   if request.method == "POST":
             try:
-                    id= request.POST.get("id")
-                    localizacao= request.POST.get("localizacao")
-                    estado= request.POST.get("obs")
-                    user_update= request.POST.get("user_update")
+                                    id= request.POST.get("id")
+                                    estado= request.POST.get("obs")
+                                    user_update= request.POST.get("user_update")
 
-                    if equipamento !="" and localizacao !="" :
 
                                     inventario_equipament=get_object_or_404(inventario_equipamento,id=id)
-                                  
-                                    inventario_equipament.localizacao=localizacao
                                     inventario_equipament.obs=estado
                                     inventario_equipament.dateupdate=datetime.now()
                                     inventario_equipament.user_update=user_update
@@ -1059,10 +1204,7 @@ def edit_inventario_equipamento(request):
                                     status= 'success'
                                     return JsonResponse({'status':status, 'message': message })
 
-                    else:
-                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                        status= 'error'
-                        return JsonResponse({'status':status, 'message': message })
+                  
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 

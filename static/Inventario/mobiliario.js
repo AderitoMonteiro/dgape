@@ -12,7 +12,6 @@ function add_inventario_mobiliario() {
     
     const provinencia = document.getElementById('provinencia').value;
     const mobiliario = document.getElementById('mobiliario').getAttribute("data-id");;
-    const localizacao = document.getElementById('localizacao').value;
     const estado = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
 
@@ -20,7 +19,6 @@ function add_inventario_mobiliario() {
     const data = {
         "provinencia": provinencia,
         "mobiliario": mobiliario,
-        "localizacao": localizacao,
         "estado": estado,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
@@ -163,7 +161,6 @@ function get_mobiliario_inventario(button){
             document.getElementById('data_entrada_edit').value=data.resultado[0].data_entrada
             document.getElementById('provinencia_edit').value=data.resultado[0].provinencia
             document.getElementById('mobiliario_edit').value=data.resultado[0].mobiliario_id
-            document.getElementById('localizacao_edit').value=data.resultado[0].localizacao
             document.getElementById('id_inventario_mobiliario').value=data.resultado[0].id
             document.getElementById('obs_edit').value=data.resultado[0].obs
 
