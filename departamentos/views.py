@@ -351,7 +351,7 @@ def get_equipamento(request):
                           equipament = [dict(zip(colunas, row)) for row in cursor.fetchall()]
                           print(equipament)
                      
-                      return JsonResponse(serialize("json", equipament),safe=False)
+                          return JsonResponse(serialize("json", equipament),safe=False)
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
