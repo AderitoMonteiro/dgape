@@ -384,6 +384,148 @@ function toggleDropdown() {
     document.getElementById("conselho").value = selectedValue;
     document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
     document.getElementById("dropdownMenu").style.display = "none";
+
+    const dropdownInputmala = document.getElementById("dropdownInputmala");
+
+    jqOld.ajax({
+        url: "get_all_patrimonio/",
+        type: 'POST',
+        data: {"conselho_id":el.getAttribute("data-id")},
+        success: function (data) {  
+
+          let dropdownMenu = document.getElementById("dropdownMenumala");
+          let inputmala = document.createElement("input");
+          inputmala.setAttribute("type",'Text');
+          inputmala.setAttribute("id",'dropdownInputmala');
+          inputmala.setAttribute("placeholder","Descrição / Serial Number");
+          dropdownMenu.appendChild(inputmala);
+
+          const arraymala = JSON.parse(data.mala);
+            
+          for (const item of arraymala) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItemmala(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenu.appendChild(div);
+          
+           }
+
+
+           let dropdownMenuportatel = document.getElementById("dropdownMenuportatel");
+           let inputportatel = document.createElement("input");
+           inputportatel.setAttribute("type",'Text');
+           inputportatel.setAttribute("id",'dropdownInputportatel');
+           inputportatel.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuportatel.appendChild(inputportatel);
+
+           const arrayportatel = JSON.parse(data.portatel);
+            
+          for (const item of arrayportatel) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectIteportatel(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenuportatel.appendChild(div);
+          
+           }
+
+           let dropdownMenuimpressora = document.getElementById("dropdownMenuimpressora");
+           let inputimpressora = document.createElement("input");
+           inputimpressora.setAttribute("type",'Text');
+           inputimpressora.setAttribute("id",'dropdownInputimpressora');
+           inputimpressora.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuimpressora.appendChild(inputimpressora);
+
+           const arrayimpressora = JSON.parse(data.impressora);
+            
+          for (const item of arrayimpressora) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItimpressora(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenuimpressora.appendChild(div);
+          
+           }
+
+          
+           let dropdownMenuscaner = document.getElementById("dropdownMenuscaner");
+           let inputscaner_impresao_digital = document.createElement("input");
+           inputscaner_impresao_digital.setAttribute("type",'Text');
+           inputscaner_impresao_digital.setAttribute("id",'dropdownInputscaner');
+           inputscaner_impresao_digital.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuscaner.appendChild(inputscaner_impresao_digital);
+
+          const arrayscaner_impresao_digital = JSON.parse(data.scaner_impresao_digital);
+            
+          for (const item of arrayscaner_impresao_digital) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItscaner(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenuscaner.appendChild(div);
+          
+           }
+
+           let dropdownMenucapitura = document.getElementById("dropdownMenucapitura");
+           let inputscaner_capitura_assinatura = document.createElement("input");
+           inputscaner_capitura_assinatura.setAttribute("type",'Text');
+           inputscaner_capitura_assinatura.setAttribute("id",'dropdownInputcapitura');
+           inputscaner_capitura_assinatura.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenucapitura.appendChild(inputscaner_capitura_assinatura);
+
+          const arrayscaner_capitura_assinatura = JSON.parse(data.capitura_assinatura);
+            
+          for (const item of arrayscaner_capitura_assinatura) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItcapitura(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenucapitura.appendChild(div);
+          
+           }
+
+           let dropdownMenucamera = document.getElementById("dropdownMenucamera");
+           let inputscaner_camara_fotografica = document.createElement("input");
+           inputscaner_camara_fotografica.setAttribute("type",'Text');
+           inputscaner_camara_fotografica.setAttribute("id",'dropdownInputcamera');
+           inputscaner_camara_fotografica.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenucamera.appendChild(inputscaner_camara_fotografica);
+
+          const arrayscaner_camara_fotografica = JSON.parse(data.camara_fotografica);
+            
+          for (const item of arrayscaner_camara_fotografica) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItcamera(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenucamera.appendChild(div);
+          
+           }
+          
+
+        },
+        error: function (xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+
   }
 
   // Close dropdown when clicking outside
@@ -639,3 +781,4 @@ function toggleDropdown() {
         }
       });
       // close filtragem drop scanner start
+

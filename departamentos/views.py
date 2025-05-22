@@ -346,7 +346,7 @@ def get_equipamento(request):
                                   IFNULL(departamentos_sala.descricao,'') as sala,
                                   departamentos_sala.id as sala_id,
                                   kit_eleitoral_conselho.descricao as descricao_conselho,
-                                  kit_eleitoral_conselho.id as conselho_id,
+                                  kit_eleitoral_conselho.id as conselho_id
 
                                   from 
                                   departamentos_equipamento

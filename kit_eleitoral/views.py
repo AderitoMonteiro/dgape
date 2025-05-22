@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento,kit_eleit,conselho
+from departamentos.models import mobiliario, equipamento as equipamento_departamento
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
@@ -453,3 +454,23 @@ def exportar_kit_excel(request):
                     workbook.save(response)
 
     return response
+
+@csrf_exempt
+def get_all_patrimonio(request):
+
+   if request.method == "POST":
+      try:
+                      conselho_id = request.POST.get("conselho_id")
+                      mobiliario_list= mobiliario.objects.filter(conselho=conselho_id,tipo="Mala")
+                      equipamento_p= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Portatel")
+                      equipamento_i= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Impressora")
+                      scaner_impresao_digital= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Scaner Impresão Digital")
+                      capitura_assinatura= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Capitura Assinatura")
+                      camara_fotografica= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Camara Fotografica")
+
+
+                     
+                      return JsonResponse({'mala': serialize("json", mobiliario_list),'portatel': serialize("json", equipamento_p),'impressora': serialize("json", equipamento_i),'scaner_impresao_digital': serialize("json", scaner_impresao_digital),'capitura_assinatura': serialize("json", capitura_assinatura),'camara_fotografica': serialize("json", camara_fotografica)})
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
