@@ -405,7 +405,7 @@ function toggleDropdown() {
           for (const item of arraymala) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectItemmala(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
@@ -427,7 +427,7 @@ function toggleDropdown() {
           for (const item of arrayportatel) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectIteportatel(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
@@ -448,7 +448,7 @@ function toggleDropdown() {
           for (const item of arrayimpressora) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectItimpressora(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
@@ -470,7 +470,7 @@ function toggleDropdown() {
           for (const item of arrayscaner_impresao_digital) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectItscaner(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
@@ -490,7 +490,7 @@ function toggleDropdown() {
           for (const item of arrayscaner_capitura_assinatura) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectItcapitura(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
@@ -510,7 +510,7 @@ function toggleDropdown() {
           for (const item of arrayscaner_camara_fotografica) {
 
             let div = document.createElement("div");
-            div.setAttribute("data-id",item.fields.id)
+            div.setAttribute("data-id",item.pk)
             div.setAttribute("class",'dropdown-item')
             div.setAttribute("onclick",'selectItcamera(this)')
             div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number

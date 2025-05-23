@@ -112,6 +112,8 @@ function get_equipamento(button){
              document.getElementById("conselho_edit").value=data.resultado[0].descricao_conselho;
              document.getElementById("conselho_edit").setAttribute("data-id", data.resultado[0].conselho_id)
              document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+
              document.getElementById("equipamento_id").value=equipamento_id;
 
              if(data.resultado[0].descricao_conselho=="DGAPE"){
@@ -128,6 +130,7 @@ function get_equipamento(button){
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("mac_address_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {
@@ -460,6 +463,7 @@ function add_equipamanto() {
     const data_entrada = document.getElementById('data_entrada').value;
     const obs = document.getElementById('obs').value;
     const marca = document.getElementById('marca').value;
+    const provinencia = document.getElementById('provinencia').value;
     const modelo = document.getElementById('modelo').value;
     const serial_number = document.getElementById('serial_number').value;
     const mac_address = document.getElementById('mac_address').value;
@@ -483,6 +487,7 @@ function add_equipamanto() {
         "conselho":conselho,
         "sala_id":sala_id,
         "tipo_item":tipo_item,
+        "provinencia":provinencia,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -636,6 +641,7 @@ function toggleDropdown() {
     if(selectedValue=='DGAPE')
     {
         div.style.display = 'block';
+        document.getElementById("ac-aa-select").value = 6;
     }else{
         div.style.display = 'none';
     }
@@ -701,3 +707,19 @@ function toggleDropdown_edit() {
   });
 
   // close filtragem drop conselho
+
+  
+  function mac_active(){
+
+    mac = document.getElementById("tipo_item").value
+    const div = document.getElementById('mac_ads_id');
+
+    if(mac=="Portatel"){
+
+        div.style.display = 'block';
+    }else{
+
+        div.style.display = 'none';
+    }
+
+ }
