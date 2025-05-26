@@ -20,7 +20,7 @@ def inventario_equipamento_home(request):
                     SELECT 
                     die.id,
                     de.data_entrada,
-                    die.localizacao,
+                    de.localizacao,
                     die.obs,
                     die.provinencia,
                     de.descricao,

@@ -462,12 +462,12 @@ def get_all_patrimonio(request):
    if request.method == "POST":
       try:
                       conselho_id = request.POST.get("conselho_id")
-                      mobiliario_list= mobiliario.objects.filter(conselho=conselho_id,tipo="Mala")
-                      equipamento_p= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Portatel")
-                      equipamento_i= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Impressora")
-                      scaner_impresao_digital= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Scaner Impresão Digital")
-                      capitura_assinatura= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Capitura Assinatura")
-                      camara_fotografica= equipamento_departamento.objects.filter(conselho=conselho_id,tipo="Camara Fotografica")
+                      mobiliario_list= mobiliario.objects.filter(tipo="Mala")
+                      equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel")
+                      equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora")
+                      scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital")
+                      capitura_assinatura= equipamento_departamento.objects.filter(tipo="Capitura Assinatura")
+                      camara_fotografica= equipamento_departamento.objects.filter(tipo="Camara Fotografica")
 
 
                      

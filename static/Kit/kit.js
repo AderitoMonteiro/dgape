@@ -363,6 +363,14 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
 
 // filtragem drop conselho start
 function toggleDropdown() {
+
+    document.getElementById("dropdownMenumala").style.display = "none";
+    document.getElementById("dropdownMenuportatel").style.display = "none";
+    document.getElementById("dropdownMenuimpressora").style.display = "none";
+    document.getElementById("dropdownMenuscaner").style.display = "none";
+    document.getElementById("dropdownMenucapitura").style.display = "none";
+    document.getElementById("dropdownMenucamera").style.display = "none";
+
     const dropdown = document.getElementById("dropdownMenu");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInput").value = "";
@@ -542,6 +550,14 @@ function toggleDropdown() {
   // filtragem drop mala start
 
   function toggleDropdownmala() {
+
+    document.getElementById("dropdownMenu").style.display = "none";
+    document.getElementById("dropdownMenuportatel").style.display = "none";
+    document.getElementById("dropdownMenuimpressora").style.display = "none";
+    document.getElementById("dropdownMenuscaner").style.display = "none";
+    document.getElementById("dropdownMenucapitura").style.display = "none";
+    document.getElementById("dropdownMenucamera").style.display = "none";
+    
     const dropdown = document.getElementById("dropdownMenumala");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInputmala").value = "";
@@ -570,7 +586,7 @@ function toggleDropdown() {
      const dropdown = document.querySelector(".form-group");
 
     if (!dropdown.contains(e.target)) {
-      document.getElementById("dropdownMenu").style.display = "none";
+     // document.getElementById("dropdownMenumala").style.display = "none";
     }
   });
 
@@ -579,6 +595,14 @@ function toggleDropdown() {
  // filtragem drop portatel start
 
     function toggleDropdownportatel() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenuportatel");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputportatel").value = "";
@@ -611,11 +635,20 @@ function toggleDropdown() {
         }
       });
     
+      
       // close filtragem drop portatel start
 
     // filtragem drop impressora start
 
     function toggleDropdownimpressora() {
+       
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenuimpressora");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputimpressora").value = "";
@@ -654,7 +687,15 @@ function toggleDropdown() {
      // filtragem drop scanner start
 
        function toggleDropdownscanner() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
         const dropdown = document.getElementById("dropdownMenuscaner");
+
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputscaner").value = "";
         filterDropdownscaner();
@@ -689,6 +730,14 @@ function toggleDropdown() {
       // filtragem drop scanner start
 
       function toggleDropdowncapitura() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenucapitura");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputcamera").value = "";
@@ -724,6 +773,14 @@ function toggleDropdown() {
       // filtragem drop scanner start
 
       function toggleDropdowncamera() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenucamera");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputcamera").value = "";
@@ -777,7 +834,7 @@ function toggleDropdown() {
          const dropdown = document.querySelector(".form-group");
 
         if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
+       //   document.getElementById("dropdownMenu").style.display = "none";
         }
       });
       // close filtragem drop scanner start

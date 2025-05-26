@@ -29,7 +29,7 @@ def inventario_equipamento_home(request):
                     die.provinencia,
                     de.descricao,
                     de.modelo,
-                     IFNULL(de.marca,'') as marca,
+                    IFNULL(de.marca,'') as marca,
                     de.mac_address,
                     de.serial_number,
                     IFNULL(sa.descricao,'') as sala
@@ -662,9 +662,9 @@ def add_mobiliario(request):
                     user_create= request.POST.get("user_create")
 
                     if conselho!="23":
-                                    if descricao !="" and serial_number !="" and data_entrada !="":
+                                    if descricao !="" and data_entrada !="":
                                       
-                                          validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                          validate=mobiliario.objects.filter(descricao=descricao).count()
                                           if validate==0:
 
                                                     mobiliario.objects.create(
@@ -692,9 +692,9 @@ def add_mobiliario(request):
                                       return JsonResponse({'status':status, 'message': message })
                     else:
 
-                                if descricao !="" and serial_number !="" and data_entrada !="" and sala !="":
+                                if descricao !="" and data_entrada !="" and sala !="":
                                                 
-                                                    validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                                    validate=mobiliario.objects.filter(descricao=descricao).count()
                                                     if validate==0:
 
                                                               mobiliario.objects.create(
