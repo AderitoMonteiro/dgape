@@ -463,6 +463,7 @@ def get_all_patrimonio(request):
       try:
                       conselho_id = request.POST.get("conselho_id")
                       mobiliario_list= mobiliario.objects.filter(tipo="Mala")
+                      tripe_list= mobiliario.objects.filter(tipo="Tripe")
                       equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel")
                       equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora")
                       scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital")
@@ -471,7 +472,7 @@ def get_all_patrimonio(request):
 
 
                      
-                      return JsonResponse({'mala': serialize("json", mobiliario_list),'portatel': serialize("json", equipamento_p),'impressora': serialize("json", equipamento_i),'scaner_impresao_digital': serialize("json", scaner_impresao_digital),'capitura_assinatura': serialize("json", capitura_assinatura),'camara_fotografica': serialize("json", camara_fotografica)})
+                      return JsonResponse({'tripe': serialize("json", tripe_list),'mala': serialize("json", mobiliario_list),'portatel': serialize("json", equipamento_p),'impressora': serialize("json", equipamento_i),'scaner_impresao_digital': serialize("json", scaner_impresao_digital),'capitura_assinatura': serialize("json", capitura_assinatura),'camara_fotografica': serialize("json", camara_fotografica)})
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
