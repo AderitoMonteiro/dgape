@@ -93,6 +93,7 @@ def add_kit(request):
                                                                 capitura_assinatura = capitura_assinatura,
                                                                 camera_fotografia = cama_fotografia,
                                                                 guia_entrega = guia_entrega,
+                                                                status=1,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
                                                                 obs=obs,

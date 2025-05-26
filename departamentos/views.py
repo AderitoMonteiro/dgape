@@ -346,8 +346,7 @@ def get_equipamento(request):
                                   IFNULL(departamentos_sala.descricao,'') as sala,
                                   departamentos_sala.id as sala_id,
                                   kit_eleitoral_conselho.descricao as descricao_conselho,
-                                  kit_eleitoral_conselho.id as conselho_id,
-
+                                  kit_eleitoral_conselho.id as conselho_id
                                   from 
                                   departamentos_equipamento
                                   left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
@@ -756,7 +755,7 @@ def get_mobiliario_eleitoral(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
-def editar_mobiliario(request):
+def editar_mobiliario(request): 
   
   if request.method == "POST":
             try:
@@ -773,6 +772,7 @@ def editar_mobiliario(request):
                                         mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
                                         mobiliario_ob.descricao=descricao
                                         mobiliario_ob.obs=obs
+                                        mobiliario_ob.sala=0
                                         mobiliario_ob.conselho=conselh
                                         mobiliario_ob.user_update=user_update
                                         mobiliario_ob.dateupdate=datetime.now()
