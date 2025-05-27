@@ -23,7 +23,7 @@
 {% block content %}
 <div class="container-xl">
 	<div class="table-responsive">
-		<div class="table-wrapper">
+		<div class="table-wrapper" style="WIDTH: 120%!important;">
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
@@ -46,6 +46,7 @@
 						</th>
 						<th>Nome</th>
 						<th>Marca</th>
+						<th>Provinencia</th>
 						<th>Modelo</th>
 						<th>Data Entrada</th>
 						<th>serial Number</th>
@@ -70,6 +71,7 @@
 						</td>
 						<td>{{equipamento_list.descricao}}</td>
 						<td>{{equipamento_list.marca}}</td>
+						<td>{{equipamento_list.provinencia}}</td>
 						<td>{{equipamento_list.modelo}}</td>
 						<td>{{equipamento_list.data_entrada}}</td>
 						<td>{{equipamento_list.serial_number}}</td>
@@ -130,9 +132,14 @@
 				<div class="modal-body">	
 					<div class="form-group">
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
-						<input type="date" id="data_entrada" class="form-control"readonly>
+						<input type="date" id="data_entrada" class="form-control" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>			
+					<div class="form-group">
+						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="provinencia" class="form-control">
+						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
+					</div>
 					<div class="form-group">
 						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
 						<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
@@ -174,13 +181,10 @@
 						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="serial_number" class="form-control" required>
 					</div>
-					<div class="form-group">
-						<label><strong>Mac Address</strong></span></label></label>
-						<input type="text" id="mac_address" class="form-control" required>
-					</div>
+					
 					<div class="form-group">
 						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
-						<select class="form-control" id="tipo_item">
+						<select class="form-control" id="tipo_item" onclick="mac_active()">
 							 <option value="">--Por favor, escolha uma opção--</option>
 							 <option value="Portatel">Portatel</option>
 							 <option value="Impressora">Impressora</option>
@@ -188,6 +192,10 @@
 							 <option value="Camara Fotografica">Camara Fotografica</option>
 							 <option value="Capitura Assinatura">Capitura Assinatura</option>
 					   </select>
+					</div>
+					<div id="mac_ads_id" class="form-group" style="display: none;">
+						<label><strong>Mac Address</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="mac_address" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
@@ -218,9 +226,13 @@
 				<div class="modal-body">	
 					<div class="form-group">
 						<label><strong>Data Entrada</strong><span style="color: red;">*</span></label></label>
-						<input type="date" id="data_entrada_edit" class="form-control" readonly>
+						<input type="date" id="data_entrada_edit"  class="form-control" readonly>
 						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
-					</div>					
+					</div>		
+					<div class="form-group">
+						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="provinencia_edit" class="form-control">
+					</div>			
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao_edit" class="form-control" required>

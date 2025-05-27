@@ -23,6 +23,9 @@ function add_kit() {
     const data_saida = document.getElementById('data_saida').value;
     const obs = document.getElementById('obs').value;
     const id_user = document.getElementById('id_user').value;
+    const tripe = document.getElementById('tripe').getAttribute('data-id');
+    const cabo = document.getElementById('cabo').getAttribute('data-id');
+    const banquinho = document.getElementById('banquinho').getAttribute('data-id');
     
 
 
@@ -38,6 +41,9 @@ function add_kit() {
         "guia_entrega": guia_entrega,
         "data_saida": data_saida,
         "user_create": id_user,
+        "tripe": tripe,
+        "cabo": cabo,
+        "banquinho": banquinho,
         "obs": obs,
         "X-CSRFToken": getCSRFToken()
     };
@@ -363,6 +369,18 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
 
 // filtragem drop conselho start
 function toggleDropdown() {
+
+    document.getElementById("dropdownMenumala").style.display = "none";
+    document.getElementById("dropdownMenuportatel").style.display = "none";
+    document.getElementById("dropdownMenuimpressora").style.display = "none";
+    document.getElementById("dropdownMenuscaner").style.display = "none";
+    document.getElementById("dropdownMenucapitura").style.display = "none";
+    document.getElementById("dropdownMenucamera").style.display = "none";
+    document.getElementById("dropdowntripe").style.display = "none";
+    document.getElementById("dropdownMenucabo").style.display = "none";
+    document.getElementById("dropdownMenubanquinho").style.display = "none";
+
+
     const dropdown = document.getElementById("dropdownMenu");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInput").value = "";
@@ -384,6 +402,210 @@ function toggleDropdown() {
     document.getElementById("conselho").value = selectedValue;
     document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
     document.getElementById("dropdownMenu").style.display = "none";
+
+    const dropdownInputmala = document.getElementById("dropdownInputmala");
+
+    jqOld.ajax({
+        url: "get_all_patrimonio/",
+        type: 'POST',
+        data: {"conselho_id":el.getAttribute("data-id")},
+        success: function (data) {  
+
+          let dropdownMenu = document.getElementById("dropdownMenumala");
+          let inputmala = document.createElement("input");
+          inputmala.setAttribute("type",'Text');
+          inputmala.setAttribute("id",'dropdownInputmala');
+          inputmala.setAttribute("placeholder","Descrição / Serial Number");
+          dropdownMenu.appendChild(inputmala);
+
+          const arraymala = JSON.parse(data.mala);
+            
+          for (const item of arraymala) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItemmala(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenu.appendChild(div);
+          
+           }
+
+
+           let dropdownMenuportatel = document.getElementById("dropdownMenuportatel");
+           let inputportatel = document.createElement("input");
+           inputportatel.setAttribute("type",'Text');
+           inputportatel.setAttribute("id",'dropdownInputportatel');
+           inputportatel.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuportatel.appendChild(inputportatel);
+
+           const arrayportatel = JSON.parse(data.portatel);
+            
+          for (const item of arrayportatel) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectIteportatel(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenuportatel.appendChild(div);
+          
+           }
+
+           let dropdownMenuimpressora = document.getElementById("dropdownMenuimpressora");
+           let inputimpressora = document.createElement("input");
+           inputimpressora.setAttribute("type",'Text');
+           inputimpressora.setAttribute("id",'dropdownInputimpressora');
+           inputimpressora.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuimpressora.appendChild(inputimpressora);
+
+           const arrayimpressora = JSON.parse(data.impressora);
+            
+          for (const item of arrayimpressora) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItimpressora(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+
+            dropdownMenuimpressora.appendChild(div);
+          
+           }
+
+          
+           let dropdownMenuscaner = document.getElementById("dropdownMenuscaner");
+           let inputscaner_impresao_digital = document.createElement("input");
+           inputscaner_impresao_digital.setAttribute("type",'Text');
+           inputscaner_impresao_digital.setAttribute("id",'dropdownInputscaner');
+           inputscaner_impresao_digital.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenuscaner.appendChild(inputscaner_impresao_digital);
+
+          const arrayscaner_impresao_digital = JSON.parse(data.scaner_impresao_digital);
+            
+          for (const item of arrayscaner_impresao_digital) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItscaner(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenuscaner.appendChild(div);
+          
+           }
+
+           let dropdownMenucapitura = document.getElementById("dropdownMenucapitura");
+           let inputscaner_capitura_assinatura = document.createElement("input");
+           inputscaner_capitura_assinatura.setAttribute("type",'Text');
+           inputscaner_capitura_assinatura.setAttribute("id",'dropdownInputcamera');
+           inputscaner_capitura_assinatura.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenucapitura.appendChild(inputscaner_capitura_assinatura);
+
+          const arrayscaner_capitura_assinatura = JSON.parse(data.capitura_assinatura);
+            
+          for (const item of arrayscaner_capitura_assinatura) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItcapitura(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenucapitura.appendChild(div);
+          
+           }
+
+           let dropdownMenucamera = document.getElementById("dropdownMenucamera");
+           let inputscaner_camara_fotografica = document.createElement("input");
+           inputscaner_camara_fotografica.setAttribute("type",'Text');
+           inputscaner_camara_fotografica.setAttribute("id",'dropdownInputcamera');
+           inputscaner_camara_fotografica.setAttribute("placeholder","Descrição / Serial Number");
+           dropdownMenucamera.appendChild(inputscaner_camara_fotografica);
+
+          const arrayscaner_camara_fotografica = JSON.parse(data.camara_fotografica);
+            
+          for (const item of arrayscaner_camara_fotografica) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItcamera(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdownMenucamera.appendChild(div);
+          
+           }
+
+           let dropdowntripe = document.getElementById("dropdowntripe");
+           let inputscaner_tripe = document.createElement("input");
+           inputscaner_tripe.setAttribute("type",'Text');
+           inputscaner_tripe.setAttribute("id",'dropdownInputtripe');
+           inputscaner_tripe.setAttribute("placeholder","Descrição / Serial Number");
+           dropdowntripe.appendChild(inputscaner_tripe);
+
+          const arrayscaner_tripe = JSON.parse(data.tripe);
+            
+          for (const item of arrayscaner_tripe) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItemtripe(this)')
+            div.innerHTML=item.fields.descricao+' / '+item.fields.serial_number
+            dropdowntripe.appendChild(div);
+          
+           }
+
+           let dropdownMenucabo = document.getElementById("dropdownMenucabo");
+           let inputscaner_cabo = document.createElement("input");
+           inputscaner_cabo.setAttribute("type",'Text');
+           inputscaner_cabo.setAttribute("id",'dropdownInpucabo');
+           inputscaner_cabo.setAttribute("placeholder","Descrição..");
+           dropdownMenucabo.appendChild(inputscaner_cabo);
+
+          const arrayscaner_cabo = JSON.parse(data.Acessorios_eletronicos);
+            
+          for (const item of arrayscaner_cabo) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItemcabo(this)')
+            div.innerHTML=item.fields.descricao
+            dropdownMenucabo.appendChild(div);
+          
+           }
+
+
+           let dropdownMenubanquinho = document.getElementById("dropdownMenubanquinho");
+           let inputscaner_banquinho = document.createElement("input");
+           inputscaner_banquinho.setAttribute("type",'Text');
+           inputscaner_banquinho.setAttribute("id",'dropdownInputbanquinho');
+           inputscaner_banquinho.setAttribute("placeholder","Descrição..");
+           dropdownMenubanquinho.appendChild(inputscaner_banquinho);
+
+          const arrayscaner_banquinho = JSON.parse(data.banquinho);
+            
+          for (const item of arrayscaner_banquinho) {
+
+            let div = document.createElement("div");
+            div.setAttribute("data-id",item.pk)
+            div.setAttribute("class",'dropdown-item')
+            div.setAttribute("onclick",'selectItembanquinho(this)')
+            div.innerHTML=item.fields.descricao
+            dropdownMenubanquinho.appendChild(div);
+          
+           }
+
+          
+
+        },
+        error: function (xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+
   }
 
   // Close dropdown when clicking outside
@@ -400,6 +622,17 @@ function toggleDropdown() {
   // filtragem drop mala start
 
   function toggleDropdownmala() {
+
+    document.getElementById("dropdownMenu").style.display = "none";
+    document.getElementById("dropdownMenuportatel").style.display = "none";
+    document.getElementById("dropdownMenuimpressora").style.display = "none";
+    document.getElementById("dropdownMenuscaner").style.display = "none";
+    document.getElementById("dropdownMenucapitura").style.display = "none";
+    document.getElementById("dropdownMenucamera").style.display = "none";
+    document.getElementById("dropdowntripe").style.display = "none";
+    document.getElementById("dropdownMenubanquinho").style.display = "none";
+
+    
     const dropdown = document.getElementById("dropdownMenumala");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInputmala").value = "";
@@ -428,7 +661,7 @@ function toggleDropdown() {
      const dropdown = document.querySelector(".form-group");
 
     if (!dropdown.contains(e.target)) {
-      document.getElementById("dropdownMenu").style.display = "none";
+     // document.getElementById("dropdownMenumala").style.display = "none";
     }
   });
 
@@ -437,6 +670,16 @@ function toggleDropdown() {
  // filtragem drop portatel start
 
     function toggleDropdownportatel() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+        document.getElementById("dropdowntripe").style.display = "none";
+        document.getElementById("dropdownMenubanquinho").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenuportatel");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputportatel").value = "";
@@ -469,11 +712,22 @@ function toggleDropdown() {
         }
       });
     
+      
       // close filtragem drop portatel start
 
     // filtragem drop impressora start
 
     function toggleDropdownimpressora() {
+       
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+        document.getElementById("dropdowntripe").style.display = "none";
+        document.getElementById("dropdownMenubanquinho").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenuimpressora");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputimpressora").value = "";
@@ -512,7 +766,18 @@ function toggleDropdown() {
      // filtragem drop scanner start
 
        function toggleDropdownscanner() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+        document.getElementById("dropdownMenubanquinho").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenuscaner");
+        document.getElementById("dropdowntripe").style.display = "none";
+
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputscaner").value = "";
         filterDropdownscaner();
@@ -547,6 +812,16 @@ function toggleDropdown() {
       // filtragem drop scanner start
 
       function toggleDropdowncapitura() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucamera").style.display = "none";
+        document.getElementById("dropdowntripe").style.display = "none";
+        document.getElementById("dropdownMenubanquinho").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenucapitura");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputcamera").value = "";
@@ -582,6 +857,16 @@ function toggleDropdown() {
       // filtragem drop scanner start
 
       function toggleDropdowncamera() {
+
+        document.getElementById("dropdownMenumala").style.display = "none";
+        document.getElementById("dropdownMenu").style.display = "none";
+        document.getElementById("dropdownMenuportatel").style.display = "none";
+        document.getElementById("dropdownMenuimpressora").style.display = "none";
+        document.getElementById("dropdownMenuscaner").style.display = "none";
+        document.getElementById("dropdownMenucapitura").style.display = "none";
+        document.getElementById("dropdowntripe").style.display = "none";
+        document.getElementById("dropdownMenubanquinho").style.display = "none";
+
         const dropdown = document.getElementById("dropdownMenucamera");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         document.getElementById("dropdownInputcamera").value = "";
@@ -635,7 +920,119 @@ function toggleDropdown() {
          const dropdown = document.querySelector(".form-group");
 
         if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
+       //   document.getElementById("dropdownMenu").style.display = "none";
         }
       });
       // close filtragem drop scanner start
+  
+// filtragem drop mala start
+
+function toggleDropdowntripe() {
+
+  document.getElementById("dropdownMenu").style.display = "none";
+  document.getElementById("dropdownMenuportatel").style.display = "none";
+  document.getElementById("dropdownMenuimpressora").style.display = "none";
+  document.getElementById("dropdownMenuscaner").style.display = "none";
+  document.getElementById("dropdownMenucapitura").style.display = "none";
+  document.getElementById("dropdownMenucamera").style.display = "none";
+  document.getElementById("dropdownMenubanquinho").style.display = "none";
+  
+  const dropdown = document.getElementById("dropdowntripe");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  document.getElementById("dropdownInputripe").value = "";
+  filterDropdownmala();
+  document.getElementById("dropdownInputripe").focus();
+}
+
+function filterDropdown() {
+  const input = document.getElementById("dropdownInputripe").value.toLowerCase();
+  const items = document.querySelectorAll(".dropdown-item");
+
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+
+function selectItemtripe(el) {
+  const selectedValue = el.textContent;
+  document.getElementById("tripe").value = selectedValue;
+  document.getElementById("tripe").setAttribute("data-id", el.getAttribute("data-id"));
+  document.getElementById("dropdowntripe").style.display = "none";
+}
+
+// Close dropdown when clicking outside
+// filtragem drop mala start
+
+function toggleDropdowncabo() {
+
+  document.getElementById("dropdownMenu").style.display = "none";
+  document.getElementById("dropdownMenuportatel").style.display = "none";
+  document.getElementById("dropdownMenuimpressora").style.display = "none";
+  document.getElementById("dropdownMenuscaner").style.display = "none";
+  document.getElementById("dropdownMenucapitura").style.display = "none";
+  document.getElementById("dropdownMenucamera").style.display = "none";
+  document.getElementById("dropdowntripe").style.display = "none";
+  document.getElementById("dropdownMenubanquinho").style.display = "none";
+  
+  const dropdown = document.getElementById("dropdownMenucabo");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  document.getElementById("dropdownInpucabo").value = "";
+  filterDropdowncabo();
+  document.getElementById("dropdownInpucabo").focus();
+}
+
+function filterDropdowncabo() {
+  const input = document.getElementById("dropdownInpucabo").value.toLowerCase();
+  const items = document.querySelectorAll(".dropdown-item");
+
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+
+function selectItemcabo(el) {
+  const selectedValue = el.textContent;
+  document.getElementById("cabo").value = selectedValue;
+  document.getElementById("cabo").setAttribute("data-id", el.getAttribute("data-id"));
+  document.getElementById("dropdownMenucabo").style.display = "none";
+}
+
+// Close dropdown when clicking outside
+
+// filtragem drop mala start
+
+function toggleDropdownbanquinho() {
+
+  document.getElementById("dropdownMenu").style.display = "none";
+  document.getElementById("dropdownMenuportatel").style.display = "none";
+  document.getElementById("dropdownMenuimpressora").style.display = "none";
+  document.getElementById("dropdownMenuscaner").style.display = "none";
+  document.getElementById("dropdownMenucapitura").style.display = "none";
+  document.getElementById("dropdownMenucamera").style.display = "none";
+  document.getElementById("dropdowntripe").style.display = "none";
+  document.getElementById("dropdownMenucabo").style.display = "none";
+  
+  const dropdown = document.getElementById("dropdownMenubanquinho");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  document.getElementById("dropdownInputbanquinho").value = "";
+  filterDropdownbanquinho();
+  document.getElementById("dropdownInputbanquinho").focus();
+}
+
+function filterDropdownbanquinho() {
+  const input = document.getElementById("dropdownInputbanquinho").value.toLowerCase();
+  const items = document.querySelectorAll(".dropdown-item");
+
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+
+function selectItembanquinho(el) {
+  const selectedValue = el.textContent;
+  document.getElementById("banquinho").value = selectedValue;
+  document.getElementById("banquinho").setAttribute("data-id", el.getAttribute("data-id"));
+  document.getElementById("dropdownMenubanquinho").style.display = "none";
+}
+
+// Close dropdown when clicking outside

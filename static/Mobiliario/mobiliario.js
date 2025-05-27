@@ -108,6 +108,7 @@ function add_mobiliario() {
     const sala = document.getElementById('sala_id').value;
     const tipo = document.getElementById('tipo_item').value;
     const obs = document.getElementById('obs').value;
+    const carateristica = document.getElementById('carateristica').value;
     const id_user = document.getElementById('id_user').value;
 
     // Dados para enviar
@@ -119,6 +120,7 @@ function add_mobiliario() {
         "conselho": conselho,
         "tipo": tipo,
         "sala": sala,
+        "carateristica":carateristica,
         "user_create": id_user,
         "X-CSRFToken": getCSRFToken()
     };
@@ -262,6 +264,7 @@ function get_mobiliario(button){
              document.getElementById("conselho_edit").value=data.resultado[0].conselho;
              document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
+             document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
 
              if(data.resultado[0].conselho=="DGAPE"){
 
@@ -274,6 +277,7 @@ function get_mobiliario(button){
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("carateristica_edit").disabled=true;
           },
          error: function (xhr, status, error) {
  
@@ -608,6 +612,7 @@ function toggleDropdown() {
     if(selectedValue=='DGAPE')
     {
         div.style.display = 'block';
+        document.getElementById("sala_id").value = 6;
     }else{
         div.style.display = 'none';
     }

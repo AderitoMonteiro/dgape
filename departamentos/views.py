@@ -29,7 +29,7 @@ def inventario_equipamento_home(request):
                     die.provinencia,
                     de.descricao,
                     de.modelo,
-                     IFNULL(de.marca,'') as marca,
+                    IFNULL(de.marca,'') as marca,
                     de.mac_address,
                     de.serial_number,
                     IFNULL(sa.descricao,'') as sala
@@ -164,6 +164,7 @@ def gestao_equipamento(request):
                             departamentos_equipamento.descricao,
                             mac_address,
                             data_entrada,
+                            provinencia,
                             marca,
                             modelo,
                             obs,
@@ -208,6 +209,7 @@ def add_equipamento(request):
                     data_entrada= request.POST.get("data_entrada")
                     obs= request.POST.get("obs")
                     marca= request.POST.get("marca")
+                    provinencia= request.POST.get("provinencia")
                     modelo= request.POST.get("modelo")
                     tipo_item= request.POST.get("tipo_item")
                     sala_id= request.POST.get("sala_id")
@@ -219,61 +221,117 @@ def add_equipamento(request):
                     validate=equipamento.objects.filter(serial_number=serial_number).count()
 
                     if validate==0:
-                            if conselho!="23":
-                                      if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="" and serial_number!="":
+                       
+                            if tipo_item =="Portatel":
+                                            if conselho!="23":
+                                                          if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="" and serial_number!="" and mac_address !="":
 
-                                                equipamento.objects.create(
-                                                                            descricao=descricao,
-                                                                            data_entrada=data_entrada,
-                                                                            obs=obs,
-                                                                            marca=marca,
-                                                                            modelo=modelo,
-                                                                            conselho=conselho,
-                                                                            tipo=tipo_item,
-                                                                            serial_number=serial_number,
-                                                                            mac_address=mac_address,
-                                                                            user_create=user_create
-                                                                              )
-                                                message='Equipamento registado com sucesso!!'
-                                                status= 'success'
-                                                return JsonResponse({'status':status, 'message': message })
+                                                                    equipamento.objects.create(
+                                                                                                descricao=descricao,
+                                                                                                data_entrada=data_entrada,
+                                                                                                obs=obs,
+                                                                                                marca=marca,
+                                                                                                modelo=modelo,
+                                                                                                provinencia=provinencia,
+                                                                                                conselho=conselho,
+                                                                                                tipo=tipo_item,
+                                                                                                serial_number=serial_number,
+                                                                                                mac_address=mac_address,
+                                                                                                user_create=user_create
+                                                                                                  )
+                                                                    message='Equipamento registado com sucesso!!'
+                                                                    status= 'success'
+                                                                    return JsonResponse({'status':status, 'message': message })
 
-                                      else:
-                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                                        status= 'error'
-                                        return JsonResponse({'status':status, 'message': message })
-                            else:
-                                if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="" and serial_number!="":
+                                                          else:
+                                                                      message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                                                      status= 'error'
+                                                                      return JsonResponse({'status':status, 'message': message })
+                                            else:
+                                                                if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="" and serial_number!="" and mac_address !="":
 
-                                                  equipamento.objects.create(
-                                                                              descricao=descricao,
-                                                                              data_entrada=data_entrada,
-                                                                              obs=obs,
-                                                                              marca=marca,
-                                                                              modelo=modelo,
-                                                                              conselho=conselho,
-                                                                              tipo=tipo_item,
-                                                                              sala=sala_id,
-                                                                              serial_number=serial_number,
-                                                                              mac_address=mac_address,
-                                                                              user_create=user_create
-                                                                                )
-                                                  message='Equipamento registado com sucesso!!'
-                                                  status= 'success'
-                                                  return JsonResponse({'status':status, 'message': message })
+                                                                                  equipamento.objects.create(
+                                                                                                              descricao=descricao,
+                                                                                                              data_entrada=data_entrada,
+                                                                                                              obs=obs,
+                                                                                                              marca=marca,
+                                                                                                              modelo=modelo,
+                                                                                                              conselho=conselho,
+                                                                                                              tipo=tipo_item,
+                                                                                                              provinencia=provinencia,
+                                                                                                              sala=sala_id,
+                                                                                                              serial_number=serial_number,
+                                                                                                              mac_address=mac_address,
+                                                                                                              user_create=user_create
+                                                                                                                )
+                                                                                  message='Equipamento registado com sucesso!!'
+                                                                                  status= 'success'
+                                                                                  return JsonResponse({'status':status, 'message': message })
 
+                                                                else:
+                                                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                                                        status= 'error'
+                                                                        return JsonResponse({'status':status, 'message': message })
+
+                                                
+                                        
+                            else: 
+
+                                if conselho!="23":
+                                                          if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!=""and tipo_item!="" and serial_number!="":
+
+                                                                    equipamento.objects.create(
+                                                                                                descricao=descricao,
+                                                                                                data_entrada=data_entrada,
+                                                                                                obs=obs,
+                                                                                                marca=marca,
+                                                                                                modelo=modelo,
+                                                                                                provinencia=provinencia,
+                                                                                                conselho=conselho,
+                                                                                                tipo=tipo_item,
+                                                                                                serial_number=serial_number,
+                                                                                                mac_address=mac_address,
+                                                                                                user_create=user_create
+                                                                                                  )
+                                                                    message='Equipamento registado com sucesso!!'
+                                                                    status= 'success'
+                                                                    return JsonResponse({'status':status, 'message': message })
+
+                                                          else:
+                                                            message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                                            status= 'error'
+                                                            return JsonResponse({'status':status, 'message': message })
                                 else:
-                                      message='Erro, tem que preencher todos os campos obrigatorios!!'
-                                      status= 'error'
-                                      return JsonResponse({'status':status, 'message': message })
+                                                    if descricao !="" and marca !="" and modelo !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="" and serial_number!="":
 
-                            
+                                                                      equipamento.objects.create(
+                                                                                                  descricao=descricao,
+                                                                                                  data_entrada=data_entrada,
+                                                                                                  obs=obs,
+                                                                                                  marca=marca,
+                                                                                                  modelo=modelo,
+                                                                                                  conselho=conselho,
+                                                                                                  tipo=tipo_item,
+                                                                                                  provinencia=provinencia,
+                                                                                                  sala=sala_id,
+                                                                                                  serial_number=serial_number,
+                                                                                                  mac_address=mac_address,
+                                                                                                  user_create=user_create
+                                                                                                    )
+                                                                      message='Equipamento registado com sucesso!!'
+                                                                      status= 'success'
+                                                                      return JsonResponse({'status':status, 'message': message })
+
+                                                    else:
+                                                          message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                                          status= 'error'
+                                                          return JsonResponse({'status':status, 'message': message })
+
+                                        
                     else:
-                      message='Erro, este equipamento já foi registado!!'
-                      status= 'error'
-                      return JsonResponse({'status':status, 'message': message })
-
-                    
+                             message='Erro, este equipamento já foi registado!!'
+                             status= 'error'
+                             return JsonResponse({'status':status, 'message': message })
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -340,6 +398,7 @@ def get_equipamento(request):
                                   data_entrada,
                                   marca,
                                   modelo,
+                                  provinencia,
                                   obs,
                                   serial_number,
                                   tipo,
@@ -347,6 +406,10 @@ def get_equipamento(request):
                                   departamentos_sala.id as sala_id,
                                   kit_eleitoral_conselho.descricao as descricao_conselho,
                                   kit_eleitoral_conselho.id as conselho_id
+<<<<<<< HEAD
+=======
+
+>>>>>>> bf3a995da84b0a8c687701a533895ff4d8c43e9b
                                   from 
                                   departamentos_equipamento
                                   left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
@@ -557,6 +620,7 @@ def gestao_mobiliario(request):
                     dm.serial_number,
                     dm.obs,
                     dm.tipo,
+                    dm.carateristica,
                     kec.descricao as conselho,
                     IFNULL(ds.descricao,'') as sala
                     FROM departamentos_mobiliario dm
@@ -594,15 +658,16 @@ def add_mobiliario(request):
                     data_entrada= request.POST.get("data_entrada")
                     serial_number= request.POST.get("serial_number")
                     sala= request.POST.get("sala")
+                    carateristica= request.POST.get("carateristica")
                     tipo= request.POST.get("tipo")
                     conselho= request.POST.get("conselho")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
                     if conselho!="23":
-                                    if descricao !="" and serial_number !="" and data_entrada !="":
+                                    if descricao !="" and data_entrada !="":
                                       
-                                          validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                          validate=mobiliario.objects.filter(descricao=descricao).count()
                                           if validate==0:
 
                                                     mobiliario.objects.create(
@@ -610,6 +675,7 @@ def add_mobiliario(request):
                                                                                 data_entrada=data_entrada,
                                                                                 serial_number=serial_number,
                                                                                 conselho=conselho,
+                                                                                carateristica=carateristica,
                                                                                 tipo=tipo,
                                                                                 obs=obs,
                                                                                 user_create=user_create
@@ -629,9 +695,9 @@ def add_mobiliario(request):
                                       return JsonResponse({'status':status, 'message': message })
                     else:
 
-                                if descricao !="" and serial_number !="" and data_entrada !="" and sala !="":
+                                if descricao !="" and data_entrada !="" and sala !="":
                                                 
-                                                    validate=mobiliario.objects.filter(descricao=descricao,serial_number=serial_number).count()
+                                                    validate=mobiliario.objects.filter(descricao=descricao).count()
                                                     if validate==0:
 
                                                               mobiliario.objects.create(
@@ -639,6 +705,7 @@ def add_mobiliario(request):
                                                                                           data_entrada=data_entrada,
                                                                                           serial_number=serial_number,
                                                                                           conselho=conselho,
+                                                                                          carateristica=carateristica,
                                                                                           sala=sala,
                                                                                           tipo=tipo,
                                                                                           obs=obs,
@@ -722,6 +789,7 @@ def get_mobiliario(request):
                                       dm.serial_number,
                                       dm.obs,
                                       dm.tipo,
+                                      carateristica,
                                       kec.descricao as conselho,
                                       kec.id as conselho_id,
                                       IFNULL(ds.descricao,'') as sala,

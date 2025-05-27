@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import exportar_kit_excel,gestao_impressora,delete_mobiliario_checkbox,delete_equipamento,editar_equipamento,get_equipamento,add_equipamento,gestao_equipamento,delete_kit_checkbox,delete_kit,editar_kit,get_kit,add_kit,gestao_kit_eleitoral
+from .views import get_all_patrimonio,exportar_kit_excel,gestao_impressora,delete_mobiliario_checkbox,delete_equipamento,editar_equipamento,get_equipamento,add_equipamento,gestao_equipamento,delete_kit_checkbox,delete_kit,editar_kit,get_kit,add_kit,gestao_kit_eleitoral
 app_name = "kit_eleitoral"
 urlpatterns = [
    path('index/', gestao_kit_eleitoral, name='gestao_kit_eleitoral'),
@@ -13,6 +13,7 @@ urlpatterns = [
    path('get/equipamento_editar/', get_equipamento, name='get_equipamento'),
    path('add/', add_kit, name='add_kit'),
    path('get/kit_editar/', get_kit, name='get_kit'),
+   path('index/get_all_patrimonio/', get_all_patrimonio, name='get_mala'),
    path('edit/', editar_kit, name='editar_kit'),
    path('delete/', delete_kit, name='delete_kit'),
    path('checkbox/', delete_kit_checkbox, name='delete_kit_checkbox'),

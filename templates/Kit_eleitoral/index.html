@@ -26,7 +26,7 @@
 {% block content %}
 <div class="container-xl">
 	<div class="table-responsive">
-		<div class="table-wrapper">
+		<div class="table-wrapper" style="WIDTH: 105%!important;">
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
@@ -141,10 +141,7 @@
 						<label><strong>Mala</strong><span style="color: red;">*</span></label>
 					    <input id="malas" class="form-control" type="text" onclick="toggleDropdownmala()"></input>
 							<div id="dropdownMenumala" class="dropdown-content">
-							  <input type="text"  id="dropdownInputmala" placeholder="Type to filter..." onkeyup="filterDropdownmala()">
-							    {% for mala_list in mala %}
-							      <div  data-id="{{ mala_list.id }}" class="dropdown-item" onclick="selectItemmala(this)">{{mala_list.descricao}}</div>
-								{% endfor %}
+							  
 						  </div>
 					</div>
 					<div class="form-group">
@@ -152,30 +149,21 @@
 					   <label><strong>Portatel</strong><span style="color: red;">*</span></label>
 					    <input id="portatel" class="form-control" type="text" onclick="toggleDropdownportatel()"></input>
 							<div id="dropdownMenuportatel" class="dropdown-content">
-							  <input type="text"  id="dropdownInputportatel" placeholder="Type to filter..." onkeyup="filterDropdownportatel()">
-							    {% for portatel_list in portatel %}
-							      <div  data-id="{{ portatel_list.id }}" class="dropdown-item" onclick="selectIteportatel(this)">{{portatel_list.descricao}}</div>
-								{% endfor %}
+							 
 						  </div>				
 					</div>
 					<div class="form-group">
 					   <label><strong>Impressora</strong><span style="color: red;">*</span></label>
 					    <input id="impressora" class="form-control" type="text" onclick="toggleDropdownimpressora()"></input>
 							<div id="dropdownMenuimpressora" class="dropdown-content">
-							  <input type="text"  id="dropdownInputimpressora" placeholder="Type to filter..." onkeyup="filterDropdownimpressora()">
-							  {% for impressora_list in impressora %}
-							      <div  data-id="{{ impressora_list.id }}" class="dropdown-item" onclick="selectItimpressora(this)">{{impressora_list.descricao}}</div>
-								{% endfor %}
+							 
 						    </div>	
 					</div>
 					<div class="form-group">
 					   <label><strong>Scaner Impresão Digital</strong><span style="color: red;">*</span></label>
 					   <input id="Scaner_impresao_digital" class="form-control" type="text" onclick="toggleDropdownscanner()"></input>
 						   <div id="dropdownMenuscaner" class="dropdown-content">
-							 <input type="text"  id="dropdownInputscaner" placeholder="Type to filter..." onkeyup="filterDropdownscaner()">
-							 {% for scaner_list in scaner %}
-								 <div  data-id="{{ scaner_list.id }}" class="dropdown-item" onclick="selectItscaner(this)">{{scaner_list.descricao}}</div>
-							   {% endfor %}
+							
 						   </div>	
 					</div>
 					<div class="form-group">
@@ -183,20 +171,35 @@
 					   <label><strong>Capitura Assinatura</strong><span style="color: red;">*</span></label>
 					   <input id="capitura_assinatura" class="form-control" type="text" onclick="toggleDropdowncapitura()"></input>
 						   <div id="dropdownMenucapitura" class="dropdown-content">
-							 <input type="text"  id="dropdownInputcapitura" placeholder="Type to filter..." onkeyup="filterDropdown()">
-							 {% for assinatura_list in assinatura %}
-								 <div  data-id="{{ assinatura_list.id }}" class="dropdown-item" onclick="selectItcapitura(this)">{{assinatura_list.descricao}}</div>
-							   {% endfor %}
+						
 						   </div>
 					</div>
 					<div class="form-group">
 						<label><strong>Camara Fotografica</strong><span style="color: red;">*</span></label>
 					    <input id="cama_fotografia" class="form-control" type="text" onclick="toggleDropdowncamera()"></input>
 						   <div id="dropdownMenucamera" class="dropdown-content">
-							 <input type="text"  id="dropdownInputcamera" placeholder="Type to filter..." onkeyup="filterDropdowncapitura()">
-							 {% for camera_list in camera %}
-								 <div  data-id="{{ camera_list.id }}" class="dropdown-item" onclick="selectItcamera(this)">{{camera_list.descricao}}</div>
-							   {% endfor %}
+							
+						   </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Tripe</strong><span style="color: red;">*</span></label>
+					    <input id="tripe" class="form-control" type="text" onclick="toggleDropdowntripe()"></input>
+						   <div id="dropdowntripe" class="dropdown-content">
+							
+						   </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Cabo</strong><span style="color: red;">*</span></label>
+					    <input id="cabo" class="form-control" type="text" onclick="toggleDropdowncabo()"></input>
+						   <div id="dropdownMenucabo" class="dropdown-content">
+							
+						   </div>
+					</div>
+					<div class="form-group">
+						<label><strong>Banquinho</strong><span style="color: red;">*</span></label>
+					    <input id="banquinho" class="form-control" type="text" onclick="toggleDropdownbanquinho()"></input>
+						   <div id="dropdownMenubanquinho" class="dropdown-content">
+							
 						   </div>
 					</div>
 					<div class="form-group">
@@ -206,7 +209,7 @@
 
 					<div class="form-group">
 						<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
-						<input type="date" id="data_saida" >
+						<input type="date" id="data_saida" class="form-control">
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
@@ -310,11 +313,11 @@
 	
 						<div class="form-group">
 							<label><strong>Data Saida</strong><span style="color: red;">*</span></label>
-							<input type="date" id="data_saida_edit" readonly>
+							<input type="date" id="data_saida_edit" class="form-control" readonly>
 						</div>
 						<div class="form-group">
 							<label><strong>Obs/Estado</strong></label>
-							<textarea id="obs_edit" name="obs" rows="4" cols="40"></textarea>
+							<textarea id="obs_edit" name="obs" rows="4" class="form-control"></textarea>
 						</div>
 				</div>
 				<div class="modal-footer">

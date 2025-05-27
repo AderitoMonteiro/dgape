@@ -23,7 +23,7 @@
 {% block content %}
 <div class="container-xl">
 	<div class="table-responsive">
-		<div class="table-wrapper">
+		<div class="table-wrapper" style="WIDTH: 120%!important;">
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
@@ -50,6 +50,7 @@
 						<th>Conselho</th>
 						<th>Sala</th>
 						<th>Tipo</th>
+						<th>Carateristica</th>
 						<th>OBS</th>
 						<th>Acões</th>
 					</tr>
@@ -71,6 +72,7 @@
 						<td>{{mobiliario_list.conselho}}</td>
 						<td>{{mobiliario_list.sala}}</td>
 						<td>{{mobiliario_list.tipo}}</td>
+						<td>{{mobiliario_list.carateristica}}</td>
 						<td>{{mobiliario_list.obs}}</td>
 						<td>
 							<a href="#editEmployeeModal" class="edit" data-id="{{ mobiliario_list.id }}" onclick="get_mobiliario(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -153,7 +155,7 @@
 						</select>
 					</div>	
 					<div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
+						<label><strong>Serial Number</strong></label>
 						<input type="text" id="serial_number" class="form-control" required>
 					</div>
 					<div class="form-group">
@@ -163,7 +165,14 @@
 							 <option value="Mala">Mala</option>
 							 <option value="Mesa">Mesa</option>
 							 <option value="Cadeira">Cadeira</option>
+							 <option value="Tripe">Tripé</option>
+							 <option value="Banquinho">Banquinho</option>
+							 <option value="Acessórios eletrônicos">Acessórios eletrônicos</option>
 					   </select>
+					</div>
+					<div class="form-group">
+						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="carateristica" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label><strong>Obs/Estado</strong></label>
@@ -237,7 +246,14 @@
 							 <option value="Mala">Mala</option>
 							 <option value="Mesa">Mesa</option>
 							 <option value="Cadeira">Cadeira</option>
+							 <option value="Tripe">Tripé</option>
+							 <option value="Banquinho">Banquinho</option>
+							 <option value="Acessórios eletrônicos">Acessórios eletrônicos</option>
 					   </select>
+					</div>
+					<div class="form-group">
+						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="carateristica_edit" class="form-control" required>
 					</div>
 					 <div class="form-group">
 						<label><strong>Obs/Estado</strong></label>

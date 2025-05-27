@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento,kit_eleit,conselho
+from departamentos.models import mobiliario, equipamento as equipamento_departamento
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
@@ -14,12 +15,12 @@ import openpyxl
 def gestao_kit_eleitoral(request):
 
             conselho_lis = conselho.objects.all().filter(status=1)  
-            portatel  = equipamento.objects.all().filter(tipo_item="Portatel",status=1)
-            impressora  = equipamento.objects.all().filter(tipo_item="Impressora",status=1) 
-            mala  = equipamento.objects.all().filter(tipo_item="Mala",status=1) 
-            scaner  = equipamento.objects.all().filter(tipo_item="Scaner Impresão Digital",status=1)
-            camera  = equipamento.objects.all().filter(tipo_item="Camara Fotografica",status=1) 
-            assinatura  = equipamento.objects.all().filter(tipo_item="Capitura Assinatura",status=1)     
+            portatel  = equipamento_departamento.objects.all().filter(tipo="Portatel",status=1)
+            impressora  = equipamento_departamento.objects.all().filter(tipo="Impressora",status=1) 
+            mala  = mobiliario.objects.all().filter(tipo="Mala",status=1) 
+            scaner  = equipamento_departamento.objects.all().filter(tipo="Scaner Impresão Digital",status=1)
+            camera  = equipamento_departamento.objects.all().filter(tipo="Camara Fotografica",status=1) 
+            assinatura  = equipamento_departamento.objects.all().filter(tipo="Capitura Assinatura",status=1)     
 
             try:
                 query = '''     SELECT 
@@ -40,13 +41,13 @@ def gestao_kit_eleitoral(request):
                                 ass.descricao as capitura_assinatura,
                                 cm.descricao as camara_fotografica
                                 FROM kit_eleitoral_kit_eleit as KE
-                                INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
-                                INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
-                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
-                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
-                                INNER JOIN kit_eleitoral_equipamento as ml on KE.malas=ml.id
+                                left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
+                                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
+                                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                left JOIN departamentos_equipamento as ml on KE.malas=ml.id
                                 where KE.status=1
                             '''
                 with connection.cursor() as cursor:
@@ -79,6 +80,9 @@ def add_kit(request):
                      guia_entrega = request.POST.get("guia_entrega")
                      data_saida = request.POST.get("data_saida")
                      obs = request.POST.get("obs")
+                     tripe = request.POST.get("tripe")
+                     cabo = request.POST.get("cabo")
+                     banquinho = request.POST.get("banquinho")
                      user_create = request.POST.get("user_create")
 
                      if conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
@@ -93,6 +97,9 @@ def add_kit(request):
                                                                 capitura_assinatura = capitura_assinatura,
                                                                 camera_fotografia = cama_fotografia,
                                                                 guia_entrega = guia_entrega,
+                                                                tripe_id = tripe,
+                                                                banquinho_id=banquinho,
+                                                                cabo_id=cabo,
                                                                 status=1,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
@@ -144,13 +151,13 @@ def get_kit(request):
                                 cm.id as camara_fotografica_id,
                                 KE.obs
                                 FROM kit_eleitoral_kit_eleit as KE
-                                INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
-                                INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
-                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
-                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
-                                INNER JOIN kit_eleitoral_equipamento as ml on KE.malas=ml.id
+                                left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
+                                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
+                                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                 where KE.id=%s
                             '''
                   with connection.cursor() as cursor:
@@ -454,3 +461,26 @@ def exportar_kit_excel(request):
                     workbook.save(response)
 
     return response
+
+@csrf_exempt
+def get_all_patrimonio(request):
+
+   if request.method == "POST":
+      try:
+                      conselho_id = request.POST.get("conselho_id")
+                      mobiliario_list= mobiliario.objects.filter(tipo="Mala")
+                      tripe_list= mobiliario.objects.filter(tipo="Tripe")
+                      equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel")
+                      equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora")
+                      scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital")
+                      capitura_assinatura= equipamento_departamento.objects.filter(tipo="Capitura Assinatura")
+                      camara_fotografica= equipamento_departamento.objects.filter(tipo="Camara Fotografica")
+                      Acessorios_eletronicos= mobiliario.objects.filter(tipo="Acessórios eletrônicos")
+                      banquinho= mobiliario.objects.filter(tipo="Banquinho")
+
+
+                     
+                      return JsonResponse({'banquinho': serialize("json", banquinho),'Acessorios_eletronicos': serialize("json", Acessorios_eletronicos),'tripe': serialize("json", tripe_list),'mala': serialize("json", mobiliario_list),'portatel': serialize("json", equipamento_p),'impressora': serialize("json", equipamento_i),'scaner_impresao_digital': serialize("json", scaner_impresao_digital),'capitura_assinatura': serialize("json", capitura_assinatura),'camara_fotografica': serialize("json", camara_fotografica)})
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
