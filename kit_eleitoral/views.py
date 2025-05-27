@@ -12,15 +12,20 @@ import openpyxl
 
 
 
+
 def gestao_kit_eleitoral(request):
 
             conselho_lis = conselho.objects.all().filter(status=1)  
-            portatel  = equipamento_departamento.objects.all().filter(tipo="Portatel",status=1)
+            portatel  = equipamento_departamento.objects.all().filter(tipo="Portatel")  
             impressora  = equipamento_departamento.objects.all().filter(tipo="Impressora",status=1) 
             mala  = mobiliario.objects.all().filter(tipo="Mala",status=1) 
+            tripe  = mobiliario.objects.all().filter(tipo="Tripe",status=1) 
             scaner  = equipamento_departamento.objects.all().filter(tipo="Scaner Impresão Digital",status=1)
             camera  = equipamento_departamento.objects.all().filter(tipo="Camara Fotografica",status=1) 
-            assinatura  = equipamento_departamento.objects.all().filter(tipo="Capitura Assinatura",status=1)     
+            assinatura  = equipamento_departamento.objects.all().filter(tipo="Capitura Assinatura",status=1) 
+            cabo  = mobiliario.objects.all().filter(tipo="Acessórios eletrônicos",status=1)   
+            banquinho  = mobiliario.objects.all().filter(tipo="Banquinho",status=1)   
+               
 
             try:
                 query = '''     SELECT 
@@ -60,7 +65,7 @@ def gestao_kit_eleitoral(request):
                  paginator_kit_list = paginator.get_page(page_number)
              
 
-                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura})
+                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
 
             except Exception as e:
                   return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -85,7 +90,7 @@ def add_kit(request):
                      banquinho = request.POST.get("banquinho")
                      user_create = request.POST.get("user_create")
 
-                     if conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
+                     if tripe !="" and cabo !="" and banquinho !="" and conselho !="" and malas !=""  and portatel !="" and impressora !=""and Scaner_impresao_digital !=""and capitura_assinatura !="" and cama_fotografia !=""and guia_entrega !="" and data_saida !="":
 
                     
                                     kit_eleit.objects.create(
@@ -149,6 +154,9 @@ def get_kit(request):
                                 ass.id as capitura_assinatura_id,
                                 cm.descricao as camara_fotografica,
                                 cm.id as camara_fotografica_id,
+                                tp.id as tripe_id,
+                                cb.id as cabo_id,
+                                bq.id as banquinho_id,
                                 KE.obs
                                 FROM kit_eleitoral_kit_eleit as KE
                                 left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
@@ -158,6 +166,9 @@ def get_kit(request):
                                 left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                                 left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
                                 left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
+                                left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
+                                left JOIN departamentos_mobiliario as cb on KE.cabo_id=cb.id
+                                left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id
                                 where KE.id=%s
                             '''
                   with connection.cursor() as cursor:
@@ -468,15 +479,15 @@ def get_all_patrimonio(request):
    if request.method == "POST":
       try:
                       conselho_id = request.POST.get("conselho_id")
-                      mobiliario_list= mobiliario.objects.filter(tipo="Mala")
-                      tripe_list= mobiliario.objects.filter(tipo="Tripe")
-                      equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel")
-                      equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora")
-                      scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital")
-                      capitura_assinatura= equipamento_departamento.objects.filter(tipo="Capitura Assinatura")
-                      camara_fotografica= equipamento_departamento.objects.filter(tipo="Camara Fotografica")
-                      Acessorios_eletronicos= mobiliario.objects.filter(tipo="Acessórios eletrônicos")
-                      banquinho= mobiliario.objects.filter(tipo="Banquinho")
+                      mobiliario_list= mobiliario.objects.filter(tipo="Mala",status=1)
+                      tripe_list= mobiliario.objects.filter(tipo="Tripe",status=1)
+                      equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel",status=1)
+                      equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora",status=1)
+                      scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital",status=1)
+                      capitura_assinatura= equipamento_departamento.objects.filter(tipo="Capitura Assinatura",status=1)
+                      camara_fotografica= equipamento_departamento.objects.filter(tipo="Camara Fotografica",status=1)
+                      Acessorios_eletronicos= mobiliario.objects.filter(tipo="Acessórios eletrônicos",status=1)
+                      banquinho= mobiliario.objects.filter(tipo="Banquinho",status=1)
 
 
                      

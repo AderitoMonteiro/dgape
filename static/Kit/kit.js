@@ -127,6 +127,9 @@ function get_kit(button){
             document.getElementById("data_saida_edit").value= result.resultado[0].data_saida;
             document.getElementById("kit_el_id").value= result.resultado[0].id;
             document.getElementById("obs_edit").value= result.resultado[0].obs;
+            document.getElementById("tripe_edit").value= result.resultado[0].tripe_id;
+            document.getElementById("cabo_edit").value= result.resultado[0].cabo_id;
+            document.getElementById("banquinho_edit").value= result.resultado[0].banquinho_id;
 
 
             document.getElementById("conselho_edit").disabled = true;
@@ -138,6 +141,10 @@ function get_kit(button){
             document.getElementById("cama_fotografia_edit").disabled = true;
             document.getElementById("guia_entrega_edit").disabled = true;
             document.getElementById("data_saida_edit").disabled = true;
+            document.getElementById("tripe_edit").disabled = true;
+            document.getElementById("cabo_edit").disabled = true;
+            document.getElementById("banquinho_edit").disabled = true;
+
 
           },
          error: function (xhr, status, error) {
@@ -940,11 +947,11 @@ function toggleDropdowntripe() {
   const dropdown = document.getElementById("dropdowntripe");
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
   document.getElementById("dropdownInputripe").value = "";
-  filterDropdownmala();
+  filterDropdowntripe();
   document.getElementById("dropdownInputripe").focus();
 }
 
-function filterDropdown() {
+function filterDropdowntripe() {
   const input = document.getElementById("dropdownInputripe").value.toLowerCase();
   const items = document.querySelectorAll(".dropdown-item");
 

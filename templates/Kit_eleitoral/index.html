@@ -307,6 +307,33 @@
 						   </select>
 						</div>
 						<div class="form-group">
+							<label><strong>Tripé</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="tripe_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for tripe_list in tripe %}
+								 <option value="{{tripe_list.id}}">{{tripe_list.descricao}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Cabo</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="cabo_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for cabo_list in Cabo %}
+								 <option value="{{cabo_list.id}}">{{cabo_list.descricao}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
+							<label><strong>Banquinho</strong><span style="color: red;">*</span></label>
+							<select class="form-control" id="banquinho_edit">
+								<option value="">--Por favor, escolha uma opção--</option>
+								{% for banquinho_list in Banquinho %}
+								 <option value="{{banquinho_list.id}}">{{banquinho_list.descricao}}</option>
+								 {% endfor %}
+						   </select>
+						</div>
+						<div class="form-group">
 							<label><strong>Guia Entrega</strong><span style="color: red;">*</span></label>
 							<input type="text" id="guia_entrega_edit" class="form-control" required>
 						</div>
