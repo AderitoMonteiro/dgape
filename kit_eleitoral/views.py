@@ -87,6 +87,7 @@ def add_kit(request):
                      obs = request.POST.get("obs")
                      tripe = request.POST.get("tripe")
                      cabo = request.POST.get("cabo")
+                     provinencia = request.POST.get("provinencia")
                      banquinho = request.POST.get("banquinho")
                      user_create = request.POST.get("user_create")
 
@@ -106,6 +107,7 @@ def add_kit(request):
                                                                 banquinho_id=banquinho,
                                                                 cabo_id=cabo,
                                                                 status=1,
+                                                                provinencia=provinencia,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
                                                                 obs=obs,
@@ -406,72 +408,6 @@ def gestao_impressora(request):
                   
                       return render(request, 'Impressora_kit/index.html',{"equipamento":paginator_equipamento})
 
-def exportar_kit_excel(request):
-    # Criar workbook e folha
-    workbook = openpyxl.Workbook()
-    folha = workbook.active
-    folha.title = 'Kit Eleitoral'
-
-    query = ''' 
-                                SELECT 
-                                KE.id, 
-                                KE.cres_id as cres_id, 
-                                KE.status as status, 
-                                KE.malas as malas, 
-                                scaner.descricao as scaner_impresao_digital,
-                                scaner.id as scaner_impresao_digital_id,
-                                KE.impresora_id as impresora_id, 
-                                KE.guia_entrega as guia_entrega,
-                                KE.data_saida as data_saida,
-                                kec.descricao as conselho,
-                                eq.descricao as portatel,
-                                eq.marca as marca_portatel,
-                                eq.modelo as modelo_portatel,
-                                eq.mac_address,
-                                eq.any_dask as any_dask_portatel,
-                                eq.id as portatel_id,
-                                imp.descricao as impressora,
-                                imp.marca as marca_impressora,
-                                imp.modelo as modelo_impressora,
-                                imp.any_dask as any_dask_impressora,
-                                eq.serial_number as serial_number_portatel,
-                                imp.serial_number as serial_number_impressora,
-                                ass.descricao as capitura_assinatura,
-                                ass.id as capitura_assinatura_id,
-                                cm.descricao as camara_fotografica,
-                                cm.id as camara_fotografica_id,
-                                eq.data_aquisicao as data_aquisicao_portatel,
-                                KE.obs
-                                FROM kit_eleitoral_kit_eleit as KE
-                                INNER JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                INNER JOIN kit_eleitoral_equipamento as eq on KE.portatel_id=eq.id
-                                INNER JOIN kit_eleitoral_equipamento as imp on KE.impresora_id=imp.id
-                                INNER JOIN kit_eleitoral_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                INNER JOIN kit_eleitoral_equipamento as ass on KE.capitura_assinatura=ass.id
-                                INNER JOIN kit_eleitoral_equipamento as cm on KE.camera_fotografia=cm.id
-                                where KE.status=1
-                            '''
-    with connection.cursor() as cursor:
-                    cursor.execute(query)
-
-                    colunas = [col[0] for col in cursor.description] 
-                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-
-                  # Cabeçalhos
-                    folha.append(['id', 'Conselho', 'Malas','Data Aquisicao','Portatel','Serial Number portatel','Marca Portatel','Modelo Portatel','Mac Address','Any Desk Portatel','Impressora','Marca Impressora','Modelo Impressora','Serial Number Impressora','Any Desk Impressora','Scanner Impressao Digital','Capitura Assinatura','Camara Fotografica','Guia Entrega','Data Saida'])
-
-                    # Dados
-                    for kit in resultados:
-                        folha.append([kit['id'], kit['conselho'], kit['malas'],kit['data_aquisicao_portatel'],kit['portatel'],kit['serial_number_portatel'],kit['marca_portatel'],kit['modelo_portatel'],kit['mac_address'],kit['any_dask_portatel'],kit['marca_impressora'],kit['modelo_impressora'],kit['serial_number_impressora'],kit['any_dask_impressora'],kit['scaner_impresao_digital'],kit['capitura_assinatura'],kit['camara_fotografica'],kit['camara_fotografica'],kit['guia_entrega'],kit['data_saida']])
-
-                    # Preparar resposta HTTP
-                    response = HttpResponse(
-                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                    )
-                    response['Content-Disposition'] = 'attachment; filename=Kit_eleitoral.xlsx'
-                    workbook.save(response)
-
-    return response
 
 @csrf_exempt
 def get_all_patrimonio(request):
@@ -495,3 +431,67 @@ def get_all_patrimonio(request):
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+def exportar_kit_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Kit'
+
+    query = '''
+                SELECT 
+                KE.id as id, 
+                KE.cres_id as cres_id, 
+                KE.status as status, 
+                KE.malas as malas, 
+                ml.descricao as malas_descricao,
+                scaner.descricao as scaner_impresao_digital,
+                KE.impresora_id as impresora, 
+                KE.guia_entrega as guia_entrega,
+                KE.data_saida as data_saida,
+                kec.descricao as descricao,
+                eq.descricao as equipamento,
+                imp.descricao as impressora,
+                eq.serial_number as serial_number_portatel,
+                imp.serial_number as serial_number_impressora,
+                ass.descricao as capitura_assinatura,
+                cm.descricao as camara_fotografica,
+                KE.obs,
+                tp.descricao as tripe,
+                acessorio.descricao as acessorio,
+                bq.descricao as banquinho
+                FROM kit_eleitoral_kit_eleit as KE
+                left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
+                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
+                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                left JOIN departamentos_equipamento as ml on KE.malas=ml.id
+                left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
+                left JOIN departamentos_mobiliario as acessorio on KE.cabo_id=acessorio.id
+                left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id
+                where KE.status=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','CRES', 'Mala','Portatel','Impressora','Scanner Impresão Digital','Capitura Assinatura','Camera Fotografica','Tripe','Cabo','Banquinho','Guia Entrega','Data Saida','Obs'])
+
+                    # Dados
+                    for kit in resultados:
+                        folha.append([kit['id'], kit['descricao'], kit['malas_descricao'],kit['equipamento'],kit['impressora'],kit['scaner_impresao_digital'],kit['capitura_assinatura'],kit['camara_fotografica'],kit['tripe'],kit['acessorio'],kit['banquinho'],kit['guia_entrega'],kit['data_saida'],kit['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Kit_Excel.xlsx'
+                    workbook.save(response)
+
+    return response

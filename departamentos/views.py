@@ -406,10 +406,6 @@ def get_equipamento(request):
                                   departamentos_sala.id as sala_id,
                                   kit_eleitoral_conselho.descricao as descricao_conselho,
                                   kit_eleitoral_conselho.id as conselho_id
-<<<<<<< HEAD
-=======
-
->>>>>>> bf3a995da84b0a8c687701a533895ff4d8c43e9b
                                   from 
                                   departamentos_equipamento
                                   left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
@@ -620,6 +616,8 @@ def gestao_mobiliario(request):
                     dm.serial_number,
                     dm.obs,
                     dm.tipo,
+                    dm.provinencia,
+                    dm.provinencia,
                     dm.carateristica,
                     kec.descricao as conselho,
                     IFNULL(ds.descricao,'') as sala
@@ -658,6 +656,7 @@ def add_mobiliario(request):
                     data_entrada= request.POST.get("data_entrada")
                     serial_number= request.POST.get("serial_number")
                     sala= request.POST.get("sala")
+                    provinencia= request.POST.get("provinencia")
                     carateristica= request.POST.get("carateristica")
                     tipo= request.POST.get("tipo")
                     conselho= request.POST.get("conselho")
@@ -676,6 +675,7 @@ def add_mobiliario(request):
                                                                                 serial_number=serial_number,
                                                                                 conselho=conselho,
                                                                                 carateristica=carateristica,
+                                                                                provinencia=provinencia,
                                                                                 tipo=tipo,
                                                                                 obs=obs,
                                                                                 user_create=user_create
@@ -706,6 +706,7 @@ def add_mobiliario(request):
                                                                                           serial_number=serial_number,
                                                                                           conselho=conselho,
                                                                                           carateristica=carateristica,
+                                                                                          provinencia=provinencia,
                                                                                           sala=sala,
                                                                                           tipo=tipo,
                                                                                           obs=obs,
@@ -789,6 +790,7 @@ def get_mobiliario(request):
                                       dm.serial_number,
                                       dm.obs,
                                       dm.tipo,
+                                      dm.provinencia,
                                       carateristica,
                                       kec.descricao as conselho,
                                       kec.id as conselho_id,
@@ -1709,6 +1711,146 @@ def exportar_inventario_equipamento_eleitoral_excel(request):
                         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     )
                     response['Content-Disposition'] = 'attachment; filename=Inventario_Equipamento_eleitoral.xlsx'
+                    workbook.save(response)
+
+    return response
+  
+def exportar_equipamento_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Equipamento'
+
+    query = '''
+                SELECT 
+                departamentos_equipamento.id,
+                departamentos_equipamento.descricao,
+                mac_address,
+                data_entrada,
+                provinencia,
+                marca,
+                modelo,
+                obs,
+                serial_number,
+                tipo,
+                IFNULL(departamentos_sala.descricao,'') as sala,
+                kit_eleitoral_conselho.descricao as conselho
+                FROM 
+                departamentos_equipamento
+                left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
+                left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                where departamentos_equipamento.status=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Equipamento','provinencia','Localização','Sala','Modelo','Serial Number','Mac Addres','Marca','Tipo Item','Obs'])
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['provinencia'],equipamento['conselho'],equipamento['sala'],equipamento['modelo'],equipamento['serial_number'],equipamento['mac_address'],equipamento['marca'],equipamento['tipo'],equipamento['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Equipamento_Excel.xlsx'
+                    workbook.save(response)
+
+    return response
+
+def exportar_Mobiliario_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Mobiliario'
+
+    query = '''
+                SELECT 
+                dm.id,
+                dm.descricao,
+                dm.data_entrada,
+                dm.serial_number,
+                dm.obs,
+                dm.tipo,
+                dm.provinencia,
+                dm.provinencia,
+                dm.carateristica,
+                kec.descricao as conselho,
+                IFNULL(ds.descricao,'') as sala
+                FROM departamentos_mobiliario dm
+                left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                left join departamentos_sala as ds on dm.sala=ds.id
+                WHERE dm.STATUS=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Mobiliario','provinencia','Localização','Sala','Serial Number','carateristica','Tipo Item','Obs'])
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['provinencia'],equipamento['conselho'],equipamento['sala'],equipamento['serial_number'],equipamento['carateristica'],equipamento['tipo'],equipamento['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Mobiliario_Excel.xlsx'
+                    workbook.save(response)
+
+    return response
+
+def exportar_kit_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Mobiliario'
+
+    query = '''
+                SELECT 
+                dm.id,
+                dm.descricao,
+                dm.data_entrada,
+                dm.serial_number,
+                dm.obs,
+                dm.tipo,
+                dm.provinencia,
+                dm.provinencia,
+                dm.carateristica,
+                kec.descricao as conselho,
+                IFNULL(ds.descricao,'') as sala
+                FROM departamentos_mobiliario dm
+                left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                left join departamentos_sala as ds on dm.sala=ds.id
+                WHERE dm.STATUS=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Mobiliario','provinencia','Localização','Sala','Serial Number','carateristica','Tipo Item','Obs'])
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['provinencia'],equipamento['conselho'],equipamento['sala'],equipamento['serial_number'],equipamento['carateristica'],equipamento['tipo'],equipamento['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Mobiliario_Excel.xlsx'
                     workbook.save(response)
 
     return response

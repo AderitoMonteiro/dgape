@@ -108,6 +108,7 @@ function add_mobiliario() {
     const sala = document.getElementById('sala_id').value;
     const tipo = document.getElementById('tipo_item').value;
     const obs = document.getElementById('obs').value;
+    const provinencia = document.getElementById('provinencia').value;
     const carateristica = document.getElementById('carateristica').value;
     const id_user = document.getElementById('id_user').value;
 
@@ -122,6 +123,7 @@ function add_mobiliario() {
         "sala": sala,
         "carateristica":carateristica,
         "user_create": id_user,
+        "provinencia": provinencia,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -265,6 +267,7 @@ function get_mobiliario(button){
              document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
              document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
 
              if(data.resultado[0].conselho=="DGAPE"){
 
@@ -278,6 +281,7 @@ function get_mobiliario(button){
              document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("carateristica_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
           },
          error: function (xhr, status, error) {
  
@@ -678,3 +682,43 @@ function toggleDropdown_edit() {
   });
 
   // close filtragem drop conselho
+ /** script.js **/
+ let input = document.getElementById('searchInput');
+ let table = document.getElementById('mobiliario_table');
+ let rows = table.getElementsByTagName('tr');
+ let noMatchMessage = document.getElementById('noMatch');
+ 
+ input.addEventListener('input', function () {
+     let filter = input
+         .value
+         .toLowerCase();
+     let matchFound = false;
+ 
+     for (let i = 1; i < rows.length; i++) {
+         let row = rows[i];
+         let cells = row
+             .getElementsByTagName('td');
+         let found = false;
+ 
+         for (let j = 0; j < cells.length; j++) {
+             let cell = cells[j];
+             if (cell.textContent.toLowerCase().indexOf(filter) > -1) {
+                 found = true;
+                 matchFound = true;
+                 break;
+             }
+         }
+ 
+         if (found) {
+             row.style.display = '';
+         } else {
+             row.style.display = 'none';
+         }
+     }
+ 
+     if (!matchFound) {
+         noMatchMessage.style.display = 'block';
+     } else {
+         noMatchMessage.style.display = 'none';
+     }
+ });
