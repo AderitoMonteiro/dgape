@@ -3,6 +3,7 @@ from .models import sala,inventario_mobiliario_eleitoral,inventario_equipamento_
 from kit_eleitoral.models import conselho
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from openpyxl.styles import Font
 from django.core.paginator import Paginator
 from django.core.serializers import serialize
 from datetime import datetime
@@ -202,6 +203,7 @@ def gestao_equipamento_eleitoral(request):
                       return render(request, 'Equipamento_eleitoral/index.html',{"equipamento":paginator_equipamento})
 @csrf_exempt
 def add_equipamento(request):
+  
   
   if request.method == "POST":
             try:
@@ -1750,6 +1752,7 @@ def exportar_equipamento_excel(request):
 
                   # Cabeçalhos
                     folha.append(['id','Data Entrada', 'Equipamento','provinencia','Localização','Sala','Modelo','Serial Number','Mac Addres','Marca','Tipo Item','Obs'])
+                    folha.font = Font(bold=True)
 
                     # Dados
                     for equipamento in resultados:
