@@ -153,11 +153,19 @@ def inventario_mobiliario_eleitoral_home(request):
 
 
     return render(request, 'Inventario_mobiliario_eleitoral/index.html',{"mobiliario":mobiliario_list,"mobiliario_inventario":paginator_equipamento_mobiliario})
+    
+def index(request):
+
+                    componente ='equipamento'
+                     
+                    return render(request, 'departamento/index.html',{'componente':componente})
+
 def gestao_equipamento(request):
 
                       conselho_lis = conselho.objects.all().filter(status=1)
                       sala_lis = sala.objects.all().filter(status=1)  
                       equipamento_list = equipamento.objects.all().filter(status=1)
+                      componente ='equipamento'
 
                       query = '''
                             SELECT 
@@ -189,7 +197,7 @@ def gestao_equipamento(request):
                           page_number = request.GET.get("page")  
                           paginator_equipamento = paginator.get_page(page_number)
                   
-                      return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento,"conselho":conselho_lis,"sala":sala_lis})
+                      return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento,"conselho":conselho_lis,"sala":sala_lis,"componente":componente})
 
 def gestao_equipamento_eleitoral(request):
 
@@ -609,6 +617,7 @@ def gestao_mobiliario(request):
    
     conselho_list = conselho.objects.all().filter(status=1)
     sala_list = sala.objects.all().filter(status=1)
+    componente ='equipamento'
 
     query = '''
                     SELECT 
@@ -637,7 +646,7 @@ def gestao_mobiliario(request):
           page_number = request.GET.get("page")  
           paginator_mobiliario = paginator.get_page(page_number)
 
-    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list})
+    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 
 def gestao_mobiliario_eleitoral(request):
    
