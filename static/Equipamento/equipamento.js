@@ -8,7 +8,7 @@ function slowReload() {
     }, 2000); // 2 segundos
 }
 
-document.getElementById("id_deleteCk").addEventListener("click", function () {
+document.getElementById("id_deleteCk_equipamento").addEventListener("click", function () {
 
     let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
     if (checkboxes.length === 0) {

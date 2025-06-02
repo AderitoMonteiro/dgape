@@ -1,12 +1,3 @@
-function getCSRFToken() {
-    return document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-}
-
-function slowReload() {
-    setTimeout(() => {
-        location.reload();
-    }, 2000); // 2 segundos
-}
 function get_mobiliario_delete(button){
 
     let equipamento_id=button.getAttribute("data-id");
