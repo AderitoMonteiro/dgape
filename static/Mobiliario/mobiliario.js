@@ -12,7 +12,7 @@ function get_mobiliario_delete(button){
  
  }
 
-document.getElementById("id_deleteCk").addEventListener("click", function () {
+function id_deleteCkmobiliario() {
 
     let checkboxes = document.querySelectorAll(".mobiliario-checkbox:checked");
     if (checkboxes.length === 0) {
@@ -43,7 +43,7 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
         };
         // Configuração da requisição
         jqOld.ajax({
-            url: "checkbox/",
+            url: "checkbox_mobiliario/",
             type: 'POST',
             data: data,
             success: function (data) {
@@ -87,7 +87,7 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
         });
     }
 
-});
+};
 
 function add_mobiliario() {
 

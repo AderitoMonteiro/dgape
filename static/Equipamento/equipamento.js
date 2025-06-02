@@ -8,8 +8,10 @@ function slowReload() {
     }, 2000); // 2 segundos
 }
 
-document.getElementById("id_deleteCk_equipamento").addEventListener("click", function () {
+function id_deleteCk_equipamento(){
 
+    console.log("teste");
+    
     let checkboxes = document.querySelectorAll(".equipamento-checkbox:checked");
     if (checkboxes.length === 0) {
 
@@ -58,9 +60,25 @@ document.getElementById("id_deleteCk_equipamento").addEventListener("click", fun
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+                
+                setTimeout(() => {
 
-            } else {
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
+
+                } else {
 
                 divPai.innerHTML = ''
                 
@@ -82,8 +100,7 @@ document.getElementById("id_deleteCk_equipamento").addEventListener("click", fun
             }
         });
     }
-
-});
+}
 
 
 
