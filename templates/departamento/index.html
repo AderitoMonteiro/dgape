@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     {% load static %} 
 
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="{% static 'Departamento/css/style.css' %}">
+		  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		  <link rel="stylesheet" href="{% static 'Departamento/css/style.css' %}">
 
 
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
@@ -22,13 +22,16 @@
       <link rel="stylesheet" href="{% static 'Departamento/inventario/style.css' %}">
       <script src="{%static 'Departamento/inventario/jscript.js'%}"></script>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-      
+  
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
       <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+      
+      <script src="{%static '/Mobiliario/mobiliario.js'%}" ></script>
+      <script src="{%static '/Equipamento/equipamento.js'%}" ></script>
+      
 
     {% block extra_styles %}{% endblock %}
 
@@ -106,7 +109,10 @@
     
     <script src="{%static 'jscript/jscript.js'%}"></script>
 
-          <script>
+    <script>
+      setTimeout(() => {
+
+
             document.addEventListener("DOMContentLoaded", function() {
               flatpickr("#data_entrada", {
                 dateFormat: "Y-m-d",
@@ -120,12 +126,17 @@
                 locale: "pt"
               });
             });
-          </script>
+            
+
+
+          }, 1000); // 2 segundos
+    </script>
 
            <script id="script"></script>
         
            <script src="{%static 'template/templates_form.js'%}"></script>
-
+           <script src="{%static '/template/checkbox_equipamento.js'%}" ></script>
+           <script src="{%static '/template/checkbox_mobiliario.js'%}" ></script>
     
     {% block extra_jscript %}
     {% endblock %}

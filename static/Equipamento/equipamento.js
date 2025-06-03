@@ -1,7 +1,4 @@
-function getCSRFToken() {
-    return document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-}
-
+try {
 function slowReload() {
     setTimeout(() => {
         location.reload();
@@ -37,7 +34,7 @@ function id_deleteCk_equipamento(){
         const data = {
             "id": equipamento_ids,
             "id_user":user_id,
-            "X-CSRFToken": getCSRFToken()
+            "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
         };
         // Configuração da requisição
         jqOld.ajax({
@@ -230,7 +227,7 @@ function get_equipamento_eleitoral(button){
          "equipamento_id": equipamento_id,
          "conselho_edit": conselho,
          "sala_id": sala_id,
-         "X-CSRFToken": getCSRFToken()
+         "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
      };
  
      // Configuração da requisição
@@ -253,7 +250,22 @@ function get_equipamento_eleitoral(button){
                  divalert.setAttribute( "role","alert");
                  divalert.innerHTML = data.message;
                  divPai.appendChild(divalert);
-                 slowReload()
+                 setTimeout(() => {
+
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
  
              } else {
  
@@ -295,7 +307,7 @@ function get_equipamento_eleitoral(button){
         "obs_edit": obs_edit,
         "user_create": id_user,
         "equipamento_id": equipamento_id,
-        "X-CSRFToken": getCSRFToken()
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
 
     // Configuração da requisição
@@ -318,7 +330,22 @@ function get_equipamento_eleitoral(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+                setTimeout(() => {
+
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -358,7 +385,7 @@ function get_equipamento_eleitoral(button){
      const data = {
          "equipamento_id": equipamento_id,
          "user_update": id_users,
-         "X-CSRFToken": getCSRFToken()
+         "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
      };
  
      // Configuração da requisição
@@ -381,7 +408,22 @@ function get_equipamento_eleitoral(button){
                  divalert.setAttribute( "role","alert");
                  divalert.innerHTML = data.message;
                  divPai.appendChild(divalert);
-                 slowReload()
+                 setTimeout(() => {
+
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
  
              } else {
  
@@ -421,7 +463,7 @@ function get_equipamento_eleitoral(button){
     const data = {
         "equipamento_id": equipamento_id,
         "user_update": id_users,
-        "X-CSRFToken": getCSRFToken()
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
 
     // Configuração da requisição
@@ -444,7 +486,22 @@ function get_equipamento_eleitoral(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+                setTimeout(() => {
+
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -505,7 +562,7 @@ function add_equipamanto() {
         "sala_id":sala_id,
         "tipo_item":tipo_item,
         "provinencia":provinencia,
-        "X-CSRFToken": getCSRFToken()
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
 
     // Configuração da requisição
@@ -528,7 +585,22 @@ function add_equipamanto() {
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+                setTimeout(() => {
+
+                    fetch('../equipamento_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -578,7 +650,7 @@ function add_equipamanto_eleitoral() {
         "serial_number": serial_number,
         "mac_address": mac_address,
         "user_create": id_user,
-        "X-CSRFToken": getCSRFToken()
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
 
     // Configuração da requisição
@@ -782,3 +854,8 @@ input.addEventListener('input', function () {
         noMatchMessage.style.display = 'none';
     }
 });
+
+
+} catch (e) {
+    console.error("Erro ao executar função:", e);
+}
