@@ -72,7 +72,7 @@ function equipamento_form() {
 
         }else{
 
-          const script = document.createElement("script");
+          var script = document.createElement("script");
           script.setAttribute('id','equipamento_js')
           script.src = `/static/Equipamento/equipamento.js`;
           script.setAttribute("data-dinamico", "true");
@@ -106,15 +106,18 @@ function equipamento_form() {
       fetch('../mobiliario_index/')
           .then(res => res.text())
           .then(html => {
-            console.log('ali');
+           
+            document.getElementById("container_xl").innerHTML = '';
             document.getElementById("container_xl").innerHTML = html;
           });
 
-         const script = document.createElement("script");
-         script.setAttribute('id','mobiliario_js')
-         script.src = `/static/mobiliario/mobiliario.js`;
-         script.setAttribute("data-dinamico", "true");
-         document.body.appendChild(script);
+          var script = document.createElement("script");
+          script.setAttribute('id','mobiliario_js')
+          script.src = `/static/mobiliario/mobiliario.js`+'?_t=' + Date.now();
+          script.setAttribute("data-dinamico", "true");
+          document.body.appendChild(script);
+
+        
       }
 
   

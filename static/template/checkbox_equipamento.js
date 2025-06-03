@@ -1,5 +1,5 @@
-const cabecalho = document.getElementById('selectAll');
-const linhas = document.querySelectorAll('.equipamento-checkbox');
+var cabecalho = document.getElementById('selectAll');
+var linhas = document.querySelectorAll('.equipamento-checkbox');
 
 cabecalho.addEventListener('change', function () {
   
