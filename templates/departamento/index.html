@@ -32,7 +32,7 @@
       <script src="{%static '/Mobiliario/mobiliario.js'%}" ></script>
       <script src="{%static '/Equipamento/equipamento.js'%}" ></script>
       
-
+      
     {% block extra_styles %}{% endblock %}
 
     {% csrf_token %}
@@ -111,32 +111,26 @@
 
     <script>
       setTimeout(() => {
-
-
-            document.addEventListener("DOMContentLoaded", function() {
-              flatpickr("#data_entrada", {
+ 
+      flatpickr("#data_entrada", {
                 dateFormat: "Y-m-d",
                 locale: "pt"
-              });
-            });
+      });
+           
           
-            document.addEventListener("DOMContentLoaded", function() {
-              flatpickr("#data_entrada_edit", {
+      flatpickr("#data_entrada_edit", {
                 dateFormat: "Y-m-d",
                 locale: "pt"
-              });
-            });
-            
-
-
-          }, 1000); // 2 segundos
+      });
+           
+      }, 1000); // 3 segundos
     </script>
 
-           <script id="script"></script>
+    <script id="script"></script>
         
-           <script src="{%static 'template/templates_form.js'%}"></script>
-           <script src="{%static '/template/checkbox_equipamento.js'%}" ></script>
-           <script src="{%static '/template/checkbox_mobiliario.js'%}" ></script>
+    <script src="{%static 'template/templates_form.js'%}"></script>
+    <script src="{%static '/template/checkbox_equipamento.js'%}" ></script>
+    <script src="{%static '/template/checkbox_mobiliario.js'%}" ></script>
     
     {% block extra_jscript %}
     {% endblock %}

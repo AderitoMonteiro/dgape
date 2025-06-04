@@ -74,6 +74,7 @@ function equipamento_form() {
         .then(html => {
           document.getElementById("container_xl").innerHTML = html;
           checkbox_equipamento();
+          date_entrada();
         });
     }
 
@@ -147,6 +148,16 @@ function checkbox_mobiliario(){
 }, 1000); // 2 segundos
 
 }
+
+function date_entrada(){
+
+  setTimeout(() => {
+    flatpickr("#data_entrada", {
+        dateFormat: "Y-m-d",
+        locale: "pt"
+        });
+      }, 2000); // 2 segundos
+  }
 
 
   
