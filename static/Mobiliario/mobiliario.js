@@ -65,7 +65,22 @@ function id_deleteCkmobiliario() {
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+               setTimeout(() => {
+
+                    fetch('../mobiliario_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -123,7 +138,7 @@ function add_mobiliario() {
 
     // Configuração da requisição
     jqOld.ajax({
-        url: 'add/',
+        url: '../mobiliario_index/add/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -140,16 +155,24 @@ function add_mobiliario() {
                 divalert.setAttribute("class","alert alert-success");
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
-                divPai.appendChild(divalert);
-                fetch('../mobiliario_index/')
-                .then(res => res.text())
-                .then(html => {
-                
-                    document.getElementById("container_xl").innerHTML = '';
-                    document.getElementById("container_xl").innerHTML = html;
-                    checkbox_mobiliario();
+                divPai.appendChild(divalert)
 
-          });
+                setTimeout(() => {
+
+                    fetch('../mobiliario_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -349,7 +372,7 @@ function get_mobiliario(button){
 
     // Configuração da requisição
     jqOld.ajax({
-        url: 'edit/',
+        url: '../mobiliario_index/edit/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -367,7 +390,23 @@ function get_mobiliario(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+
+                setTimeout(() => {
+
+                    fetch('../mobiliario_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -479,7 +518,7 @@ function delete_mobiliario() {
 
     // Configuração da requisição
     jqOld.ajax({
-        url: 'delete/',
+        url: '../mobiliario_index/delete/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -497,7 +536,22 @@ function delete_mobiliario() {
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+               setTimeout(() => {
+
+                    fetch('../mobiliario_index/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -687,45 +741,7 @@ function toggleDropdown_edit() {
  /** script.js **/
 
 
-        let input = document.getElementById('searchInput');
-        let table = document.getElementById('mobiliario_table');
-        let rows = table.getElementsByTagName('tr');
-        let noMatchMessage = document.getElementById('noMatch');
-        
-        input.addEventListener('input', function () {
-            let filter = input
-                .value
-                .toLowerCase();
-            let matchFound = false;
-        
-            for (let i = 1; i < rows.length; i++) {
-                let row = rows[i];
-                let cells = row
-                    .getElementsByTagName('td');
-                let found = false;
-        
-                for (let j = 0; j < cells.length; j++) {
-                    let cell = cells[j];
-                    if (cell.textContent.toLowerCase().indexOf(filter) > -1) {
-                        found = true;
-                        matchFound = true;
-                        break;
-                    }
-                }
-        
-                if (found) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        
-            if (!matchFound) {
-                noMatchMessage.style.display = 'block';
-            } else {
-                noMatchMessage.style.display = 'none';
-            }
- });
+
 } catch (e) {
     console.error("Erro ao executar função:", e);
   }

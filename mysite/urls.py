@@ -22,6 +22,5 @@ urlpatterns = [
     path('inventario/', include('departamentos.urls')),
     path('dgape/', include('departamentos.urls')),
     path('gestao_mobiliario/', include('departamentos.urls')),
-    path('gestao_kit_eleitoral/', include('kit_eleitoral.urls')),
     path('diretor/', include('diretor.urls')),
 ]

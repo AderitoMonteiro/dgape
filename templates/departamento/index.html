@@ -31,6 +31,7 @@
       
       <script src="{%static '/Mobiliario/mobiliario.js'%}" ></script>
       <script src="{%static '/Equipamento/equipamento.js'%}" ></script>
+      <script src="{%static 'Kit/kit.js'%}"></script>
       
       
     {% block extra_styles %}{% endblock %}
@@ -132,6 +133,38 @@
     <script src="{%static '/template/checkbox_equipamento.js'%}" ></script>
     <script src="{%static '/template/checkbox_mobiliario.js'%}" ></script>
     
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#data_aquisicao", {
+          dateFormat: "Y-m-d",
+          locale: "pt"
+        });
+      });
+    
+      document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#data_saida", {
+          dateFormat: "Y-m-d",
+          locale: "pt"
+        });
+      
+      });
+    
+      document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#data_saida_edit", {
+          dateFormat: "Y-m-d",
+          locale: "pt"
+        });
+      
+      });
+    
+      document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#data_aquisicao_edit", {
+          dateFormat: "Y-m-d",
+          locale: "pt"
+        });
+      
+      });
+    </script>
     {% block extra_jscript %}
     {% endblock %}
   </body>

@@ -3,7 +3,7 @@ from django.urls import path
 from .views import get_all_patrimonio,exportar_kit_excel,gestao_impressora,delete_mobiliario_checkbox,delete_equipamento,editar_equipamento,get_equipamento,add_equipamento,gestao_equipamento,delete_kit_checkbox,delete_kit,editar_kit,get_kit,add_kit,gestao_kit_eleitoral
 app_name = "kit_eleitoral"
 urlpatterns = [
-   path('index/', gestao_kit_eleitoral, name='gestao_kit_eleitoral'),
+   path('gestao_kit_eleitoral/', gestao_kit_eleitoral, name='gestao_kit_eleitoral'),
    path('equipamento/', gestao_equipamento, name='gestao_equipamento'),
    path('impressora/', gestao_impressora, name='gestao_equipamento'),
    path('add_equipamento/', add_equipamento, name='add_equipamento'),

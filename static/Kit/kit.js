@@ -1,3 +1,4 @@
+try {
 function getCSRFToken() {
     return document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 }
@@ -50,7 +51,7 @@ function add_kit() {
 
     // Configuração da requisição
     jqOld.ajax({
-        url: '../add/',
+        url: 'add_kit/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -297,7 +298,7 @@ function get_kit_delete(button){
 
 }
 
-document.getElementById("id_deleteCk").addEventListener("click", function () {
+function id_deleteCk() {
 
     let checkboxes = document.querySelectorAll(".kit-checkbox:checked");
     if (checkboxes.length === 0) {
@@ -328,7 +329,7 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
         };
         // Configuração da requisição
         jqOld.ajax({
-            url: "../checkbox/",
+            url: "checkbox_kit/",
             type: 'POST',
             data: data,
             success: function (data) {
@@ -347,7 +348,23 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+
+                setTimeout(() => {
+
+                    fetch('../gestao_kit_eleitoral/', {
+                        headers: {
+                          'Cache-Control': 'no-cache',
+                          'Pragma': 'no-cache'
+                        }
+                      })
+                      .then(res => res.text())
+                      .then(html => {
+                        document.getElementById("container_xl").innerHTML = html;
+                      });
+
+                      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+              
+                }, 2000); 
 
             } else {
 
@@ -372,7 +389,7 @@ document.getElementById("id_deleteCk").addEventListener("click", function () {
         });
     }
 
-});
+}
 
 // filtragem drop conselho start
 function toggleDropdown() {
@@ -1083,3 +1100,7 @@ let input = document.getElementById('searchInput');
          noMatchMessage.style.display = 'none';
      }
  });
+
+} catch (e) {
+  console.error("Erro ao executar função:", e);
+}

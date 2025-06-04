@@ -1,3 +1,5 @@
+try{
+
 function index() {
 
   fetch('../equipamento_index/')
@@ -6,7 +8,8 @@ function index() {
          
         document.getElementById("container_xl").innerHTML = html;
         checkbox_equipamento();
-        
+        date_entrada();
+        filter_table_equipamento();
         /*const scriptExistente = document.querySelector(`script[data-dinamico]`);
 
         if (scriptExistente) {
@@ -73,8 +76,8 @@ function equipamento_form() {
         .then(res => res.text())
         .then(html => {
           document.getElementById("container_xl").innerHTML = html;
-          checkbox_equipamento();
-          date_entrada();
+           checkbox_equipamento();
+           date_entrada();
         });
     }
 
@@ -88,10 +91,26 @@ function mobiliario_form() {
             document.getElementById("container_xl").innerHTML = '';
             document.getElementById("container_xl").innerHTML = html;
             checkbox_mobiliario();
+            date_entrada();
+            filter_table_mobiliario();
 
           });
 
       }
+
+ function kit_form(){
+
+    fetch('../gestao_kit_eleitoral/')
+          .then(res => res.text())
+          .then(html => {
+
+            document.getElementById("container_xl").innerHTML = html;
+            data_saida();
+            checkbox_kit()
+          });
+
+
+ }
 
 
 function checkbox_equipamento(){
@@ -117,7 +136,7 @@ function checkbox_equipamento(){
         });
       });
 
-  }, 2000); // 2 segundos
+  }, 1000); // 2 segundos
 }
 
 
@@ -156,8 +175,140 @@ function date_entrada(){
         dateFormat: "Y-m-d",
         locale: "pt"
         });
-      }, 2000); // 2 segundos
+      }, 1000); // 2 segundos
   }
 
+function filter_table_equipamento() {
+  
+  setTimeout(() => {
+    /** script.js **/
+               let input = document.getElementById('searchInput');
+               let table = document.getElementById('equipamento_table');
+               let rows = table.getElementsByTagName('tr');
+               let noMatchMessage = document.getElementById('noMatch');
+   
+               input.addEventListener('input', function () {
+                   let filter = input
+                       .value
+                       .toLowerCase();
+                   let matchFound = false;
+   
+                   for (let i = 1; i < rows.length; i++) {
+                       let row = rows[i];
+                       let cells = row
+                           .getElementsByTagName('td');
+                       let found = false;
+   
+                       for (let j = 0; j < cells.length; j++) {
+                           let cell = cells[j];
+                           if (cell.textContent.toLowerCase().indexOf(filter) > -1) {
+                               found = true;
+                               matchFound = true;
+                               break;
+                           }
+                       }
+   
+                       if (found) {
+                           row.style.display = '';
+                       } else {
+                           row.style.display = 'none';
+                       }
+                   }
+   
+                   if (!matchFound) {
+                       noMatchMessage.style.display = 'block';
+                   } else {
+                       noMatchMessage.style.display = 'none';
+                   }
+               });
+   }, 1000); // 2 segundos
+}
 
+
+function filter_table_mobiliario(){
+
+                setTimeout(() => {
+                  let input = document.getElementById('searchInput');
+                  let table = document.getElementById('mobiliario_table');
+                  let rows = table.getElementsByTagName('tr');
+                  let noMatchMessage = document.getElementById('noMatch');
+                  
+                  input.addEventListener('input', function () {
+                      let filter = input
+                          .value
+                          .toLowerCase();
+                      let matchFound = false;
+                  
+                      for (let i = 1; i < rows.length; i++) { 
+                          let row = rows[i];
+                          let cells = row
+                              .getElementsByTagName('td');
+                          let found = false;
+                  
+                          for (let j = 0; j < cells.length; j++) {
+                              let cell = cells[j];
+                              if (cell.textContent.toLowerCase().indexOf(filter) > -1) {
+                                  found = true;
+                                  matchFound = true;
+                                  break;
+                              }
+                          }
+                  
+                          if (found) {
+                              row.style.display = '';
+                          } else {
+                              row.style.display = 'none';
+                          }
+                      }
+                  
+                      if (!matchFound) {
+                          noMatchMessage.style.display = 'block';
+                      } else {
+                          noMatchMessage.style.display = 'none';
+                      }
+              });   }, 1000); // 2 segundos
+}
+
+function data_saida(){
+
+  setTimeout(() => {
+
+          flatpickr("#data_saida", {
+            dateFormat: "Y-m-d",
+            locale: "pt"
+          });
+        
+    
+      }, 2000); // 2 segundos
+}
+
+function checkbox_kit(){
+
+  setTimeout(() => {
+    var cabecalho = document.getElementById('selectAll');
+    var linhas = document.querySelectorAll('.kit-checkbox');
+
+
+    cabecalho.addEventListener('change', function () {
+      
+      linhas.forEach(cb => cb.checked = this.checked);
+    });
+
+    linhas.forEach(cb => {
+      cb.addEventListener('change', function () {
+        if (!this.checked) {
+          cabecalho.checked = false;
+        } else {
+          const todosMarcados = Array.from(linhas).every(cb => cb.checked);
+          cabecalho.checked = todosMarcados;
+        }
+      });
+    });
+
+}, 1000); // 2 segundos
+}
+
+} catch (e) {
+  console.error("Erro ao executar função:", e);
+}
   
