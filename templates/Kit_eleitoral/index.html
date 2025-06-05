@@ -8,7 +8,7 @@
 						<h2 style="color: #fff;">GESTÃO DE <b>KIT ELEITORAL</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a onclick="window.location.href='/gestao_kit_eleitoral/index/exportar_kit_excel/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
+						<a onclick="window.location.href='/dgape/index/exportar_kit_excel/'" class="btn btn-success" style="background-color: #ffc107 !important;" data-toggle="modal"><i class="fa fa-file-excel-o"></i><span>Excel</span></a>						
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar novo kit</span></a>
 						<a href="#deleteEmployeeModalcheekbox" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Apagar</span></a>						
 					</div>
@@ -105,7 +105,7 @@
 					
 					<div class="form-group">
 						    <label><strong>Conselho</strong><span style="color: red;">*</span></label>
-							<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
+							<input id="conselho" class="form-control" type="text" onclick="toggleDropdown_kit()"></input>
 							<div id="dropdownMenu" class="dropdown-content">
 							  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
 							    {% for conselho_list in conselho %}

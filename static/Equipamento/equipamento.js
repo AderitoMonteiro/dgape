@@ -703,7 +703,7 @@ function add_equipamanto_eleitoral() {
 }
 
 // filtragem drop conselho start
-function toggleDropdown() {
+function toggleDropdown_equipamento() {
     const dropdown = document.getElementById("dropdownMenu");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInput").value = "";

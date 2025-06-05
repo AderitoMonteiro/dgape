@@ -124,7 +124,7 @@ function get_kit(button){
      };
  
      jqOld.ajax({
-         url: '../get/kit_editar/',
+         url: 'get/kit_editar/',
          type: 'POST',
          data: data,
          success: function (data) {
@@ -268,7 +268,7 @@ function get_kit_delete(button){
 
     // Configuração da requisição
     jqOld.ajax({
-        url: '../delete/',
+        url: 'delete_kit/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -286,8 +286,24 @@ function get_kit_delete(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
-                slowReload()
+                
+                setTimeout(() => {
 
+                  fetch('../gestao_kit_eleitoral/', {
+                      headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                      }
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                      document.getElementById("container_xl").innerHTML = '';
+                      document.getElementById("container_xl").innerHTML = html;
+                    });
+
+                    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            
+              }, 2000); 
             } else {
 
                 divPai.innerHTML = ''
@@ -409,7 +425,7 @@ function id_deleteCk() {
 }
 
 // filtragem drop conselho start
-function toggleDropdown() {
+function toggleDropdown_kit() {
 
     document.getElementById("dropdownMenumala").style.display = "none";
     document.getElementById("dropdownMenuportatel").style.display = "none";

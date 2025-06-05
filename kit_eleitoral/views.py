@@ -477,7 +477,6 @@ def exportar_kit_excel(request):
 
                     colunas = [col[0] for col in cursor.description] 
                     resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-                    print(resultados)
 
                   # Cabeçalhos
                     folha.append(['id','CRES', 'Mala','Portatel','Impressora','Scanner Impresão Digital','Capitura Assinatura','Camera Fotografica','Tripe','Cabo','Banquinho','Guia Entrega','Data Saida','Obs'])
