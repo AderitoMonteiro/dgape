@@ -13,7 +13,6 @@ urlpatterns = [
    path('get/equipamento_editar/', get_equipamento, name='get_equipamento'),
    path('add/', add_kit, name='add_kit'),
    path('get/kit_editar/', get_kit, name='get_kit'),
-   path('index/get_all_patrimonio/', get_all_patrimonio, name='get_mala'),
    path('edit/', editar_kit, name='editar_kit'),
    path('delete/', delete_kit, name='delete_kit'),
    path('checkbox/', delete_kit_checkbox, name='delete_kit_checkbox'),

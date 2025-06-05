@@ -87,7 +87,6 @@ def add_kit(request):
                      obs = request.POST.get("obs")
                      tripe = request.POST.get("tripe")
                      cabo = request.POST.get("cabo")
-                     provinencia = request.POST.get("provinencia")
                      banquinho = request.POST.get("banquinho")
                      user_create = request.POST.get("user_create")
 
@@ -107,7 +106,6 @@ def add_kit(request):
                                                                 banquinho_id=banquinho,
                                                                 cabo_id=cabo,
                                                                 status=1,
-                                                                provinencia=provinencia,
                                                                 data_saida = data_saida,
                                                                 user_create=user_create,
                                                                 obs=obs,
