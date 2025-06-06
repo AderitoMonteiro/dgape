@@ -135,8 +135,7 @@ function get_equipamento(button){
                 document.getElementById("saladiv_edit").style.display = 'block';
                 document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
              }
-
-
+          /*
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("data_entrada_edit").disabled=true;
              document.getElementById("marca_edit").disabled=true;
@@ -144,7 +143,7 @@ function get_equipamento(button){
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("mac_address_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
-             document.getElementById("provinencia_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;*/
  
           },
          error: function (xhr, status, error) {

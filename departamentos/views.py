@@ -185,7 +185,7 @@ def gestao_equipamento(request):
                             departamentos_equipamento
                             left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
                             left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
-                            where departamentos_equipamento.status=1
+                            where departamentos_equipamento.status=1 order by departamentos_equipamento.id desc
 
                     '''
                       with connection.cursor() as cursor:
@@ -635,7 +635,7 @@ def gestao_mobiliario(request):
                     FROM departamentos_mobiliario dm
                     left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
                     left join departamentos_sala as ds on dm.sala=ds.id
-                    WHERE dm.STATUS=1
+                    WHERE dm.STATUS=1 order by dm.id desc
                 '''
     with connection.cursor() as cursor:
           cursor.execute(query)

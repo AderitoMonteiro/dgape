@@ -25,14 +25,24 @@
                 <a onclick="window.location.href='/inventario/mobiliario/index'">&nbsp;&nbsp;&nbsp;Mobiliario</a>
             </li> 
           </ul>-->
-          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Lançamento Patrimonial</a>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Gestão Patrimonial</a>
           <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="kit_form()">&nbsp;&nbsp;&nbsp;Registar KIT</a>
+              </li>
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">Lançamento Inventario</a>
+          <ul class="list-unstyled collapse">
+              <li>
+                <a onclick="index()">&nbsp;&nbsp;&nbsp;Acessorio</a>
+              </li>
               <li>
                 <a onclick="index()">&nbsp;&nbsp;&nbsp;Equipamentos</a>
               </li>
               <li>
                  <a onclick="mobiliario_form()">&nbsp;&nbsp;&nbsp;Mobiliario</a>
               </li>
+              
           </ul>
         </ul>
       </li>
@@ -60,7 +70,7 @@
           </ul>
           </ul>
       </li>-->
-      <li>
+      <!--<li>
         <a href="#" data-toggle="collapse" aria-expanded="false" onclick="toggleSubmenugestaopatrimonal(event)" class="dropdown-toggle">GESTÃO KIT</a>
 
         <ul class="list-unstyled collapse">
@@ -71,9 +81,9 @@
             <li>
               <a onclick="window.location.href='/gestao_kit_eleitoral/equipamento'">&nbsp;&nbsp;&nbsp;Lançamento de Itens</a>
             </li>
-          -->
+        
         </ul>
-      </li>
+      </li>  -->
       {% endif %}
      <!-- 
       <li>

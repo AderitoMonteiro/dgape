@@ -170,6 +170,34 @@ function checkbox_mobiliario(){
 
 }
 
+function checkbox_kit(){
+
+  setTimeout(() => {
+
+    var cabecalho = document.getElementById('selectAll');
+    var linhas = document.querySelectorAll('.kit-checkbox');
+    
+    
+            cabecalho.addEventListener('change', function () {
+            
+            linhas.forEach(cb => cb.checked = this.checked);
+            });
+    
+            linhas.forEach(cb => {
+            cb.addEventListener('change', function () {
+                if (!this.checked) {
+                cabecalho.checked = false;
+                } else {
+                const todosMarcados = Array.from(linhas).every(cb => cb.checked);
+                cabecalho.checked = todosMarcados;
+                }
+            });
+    });
+    
+}, 1000); // 2 segundos
+
+}
+
 function date_entrada(){
 
   setTimeout(() => {
@@ -284,31 +312,7 @@ function data_saida(){
       }, 2000); // 2 segundos
 }
 
-function checkbox_kit(){
 
-  setTimeout(() => {
-    var cabecalho = document.getElementById('selectAll');
-    var linhas = document.querySelectorAll('.kit-checkbox');
-
-
-    cabecalho.addEventListener('change', function () {
-      
-      linhas.forEach(cb => cb.checked = this.checked);
-    });
-
-    linhas.forEach(cb => {
-      cb.addEventListener('change', function () {
-        if (!this.checked) {
-          cabecalho.checked = false;
-        } else {
-          const todosMarcados = Array.from(linhas).every(cb => cb.checked);
-          cabecalho.checked = todosMarcados;
-        }
-      });
-    });
-
-}, 1000); // 2 segundos
-}
 
 function filter_table_kit(){
 
