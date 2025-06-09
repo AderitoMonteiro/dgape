@@ -117,6 +117,7 @@ function add_mobiliario() {
     const sala = document.getElementById('sala_id').value;
     const tipo = document.getElementById('tipo_item').value;
     const obs = document.getElementById('obs').value;
+    const modelo = document.getElementById('id_modelo').value;
     const provinencia = document.getElementById('provinencia').value;
     const carateristica = document.getElementById('carateristica').value;
     const id_user = document.getElementById('id_user').value;
@@ -133,6 +134,7 @@ function add_mobiliario() {
         "carateristica":carateristica,
         "user_create": id_user,
         "provinencia": provinencia,
+        "modelo": modelo,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -298,6 +300,16 @@ function get_mobiliario(button){
 
                 document.getElementById("saladiv_edit").style.display = 'block';
                 document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+
+             }
+
+             if(data.resultado[0].tipo =="Mesa" ||data.resultado[0].tipo =="Cadeira"){
+
+                document.getElementById('div_modelo_edit').setAttribute('style',"display: block;");
+                document.getElementById('div_serial_edit').setAttribute('style',"display: block;");
+
+                document.getElementById('id_modelo_edit').value=data.resultado[0].modelo;
+                document.getElementById('serial_number_edit').value=data.resultado[0].serial_number;
 
              }
             

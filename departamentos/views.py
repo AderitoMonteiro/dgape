@@ -671,14 +671,15 @@ def add_mobiliario(request):
                     carateristica= request.POST.get("carateristica")
                     tipo= request.POST.get("tipo")
                     conselho= request.POST.get("conselho")
+                    modelo= request.POST.get("modelo")
                     obs= request.POST.get("obs")
                     user_create= request.POST.get("user_create")
 
                     if conselho!="23":
-                                    if descricao !="" and data_entrada !="":
+                                    if descricao !="" and data_entrada !="" and provinencia!="" and conselho !="" and tipo !="" and carateristica !="":
                                       
-                                          validate=mobiliario.objects.filter(descricao=descricao).count()
-                                          if validate==0:
+                                         # validate=mobiliario.objects.filter(descricao=descricao).count()
+                                         # if validate==0:
 
                                                     mobiliario.objects.create(
                                                                                 descricao=descricao,
@@ -687,6 +688,7 @@ def add_mobiliario(request):
                                                                                 conselho=conselho,
                                                                                 carateristica=carateristica,
                                                                                 provinencia=provinencia,
+                                                                                modelo=modelo,
                                                                                 tipo=tipo,
                                                                                 obs=obs,
                                                                                 user_create=user_create
@@ -695,21 +697,21 @@ def add_mobiliario(request):
                                                     status= 'success'
                                                     return JsonResponse({'status':status, 'message': message })
 
-                                          else:
+                                         # else:
                                           
-                                            message='Erro, este mobiliario já foi registado!!'
-                                            status= 'error'
-                                            return JsonResponse({'status':status, 'message': message })
+                                         #    message='Erro, este mobiliario já foi registado!!'
+                                         #   status= 'error'
+                                         #   return JsonResponse({'status':status, 'message': message })
                                     else:
                                       message='Erro, tem que preencher todos os campos obrigatorios!!'
                                       status= 'error'
                                       return JsonResponse({'status':status, 'message': message })
                     else:
 
-                                if descricao !="" and data_entrada !="" and sala !="":
+                                if descricao !="" and data_entrada !="" and sala !="" and provinencia!="" and conselho !="" and tipo !="" and carateristica !="":
                                                 
-                                                    validate=mobiliario.objects.filter(descricao=descricao).count()
-                                                    if validate==0:
+                                                   # validate=mobiliario.objects.filter(descricao=descricao).count()
+                                                   #if validate==0:
 
                                                               mobiliario.objects.create(
                                                                                           descricao=descricao,
@@ -718,6 +720,7 @@ def add_mobiliario(request):
                                                                                           conselho=conselho,
                                                                                           carateristica=carateristica,
                                                                                           provinencia=provinencia,
+                                                                                          modelo=modelo,
                                                                                           sala=sala,
                                                                                           tipo=tipo,
                                                                                           obs=obs,
@@ -727,11 +730,11 @@ def add_mobiliario(request):
                                                               status= 'success'
                                                               return JsonResponse({'status':status, 'message': message })
 
-                                                    else:
+                                                    #else:
                                                     
-                                                      message='Erro, este mobiliario já foi registado!!'
-                                                      status= 'error'
-                                                      return JsonResponse({'status':status, 'message': message })
+                                                    # message='Erro, este mobiliario já foi registado!!'
+                                                    # status= 'error'
+                                                    # return JsonResponse({'status':status, 'message': message })
                                 else:
                                  message='Erro, tem que preencher todos os campos obrigatorio'
                                  status= 'error'
@@ -806,7 +809,8 @@ def get_mobiliario(request):
                                       kec.descricao as conselho,
                                       kec.id as conselho_id,
                                       IFNULL(ds.descricao,'') as sala,
-                                      ds.id as sala_id
+                                      ds.id as sala_id,
+                                      dm.modelo
                                       FROM departamentos_mobiliario dm
                                       left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
                                       left join departamentos_sala as ds on dm.sala=ds.id

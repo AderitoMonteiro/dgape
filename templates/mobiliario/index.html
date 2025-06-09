@@ -1,6 +1,6 @@
 
 
-	<div class="table-responsive">
+<div class="table-responsive">
 		<div class="table-wrapper" style="WIDTH: 120%!important;">
 			<div class="table-title">
 				<div class="row">
@@ -86,8 +86,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>        
-</div>
+</div>        
 <!-- Edit Modal HTML -->
 <div id="addEmployeeModal" class="modal fade" >
 	<div id="alerta" style="margin: 0 auto; width: 40%; display: none;  margin-top: 10px;">
@@ -127,6 +126,33 @@
 							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					  </div>
 				    </div>
+					<div class="form-group">
+						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
+						<select class="form-control" id="tipo_item">
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="Mala">Mala</option>
+							 <option value="Mesa">Mesa</option>
+							 <option value="Cadeira">Cadeira</option>
+							 <option value="Tripe">Tripé</option>
+							 <option value="Banquinho">Banquinho</option>		
+					   </select>
+					</div>
+					<div class="form-group" id="div_modelo" style="display: none;">
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label>
+						<input type="text" id="id_modelo" class="form-control" required>
+					</div>
+					<div class="form-group" id="div_serial" style="display: none;">
+						<label><strong>Serial Number</strong></span></label>
+						<input type="text" id="serial_number" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="carateristica" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Obs/Estado</strong></label>
+						<textarea id="obs" name="obs" rows="4" class="form-control"></textarea>
+					</div>	
 					<div id="saladiv" class="form-group" style="display: none;">
 						<label for="opcao"><strong>Sala</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="sala_id" required>
@@ -139,30 +165,6 @@
 
 							{% endfor %}
 						</select>
-					</div>	
-					<div class="form-group">
-						<label><strong>Serial Number</strong></label>
-						<input type="text" id="serial_number" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
-						<select class="form-control" id="tipo_item">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 <option value="Mala">Mala</option>
-							 <option value="Mesa">Mesa</option>
-							 <option value="Cadeira">Cadeira</option>
-							 <option value="Tripe">Tripé</option>
-							 <option value="Banquinho">Banquinho</option>
-							 <option value="Acessórios eletrônicos">Acessórios eletrônicos</option>
-					   </select>
-					</div>
-					<div class="form-group">
-						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="carateristica" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label><strong>Obs/Estado</strong></label>
-						<textarea id="obs" name="obs" rows="4" class="form-control"></textarea>
 					</div>	
 				</div>
 				<div class="modal-footer">
@@ -225,10 +227,7 @@
 							{% endfor %}
 						</select>
 					</div>	
-					<div class="form-group">
-						<label><strong>Serial Number</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="serial_number_edit" class="form-control" required>
-					</div>
+					
 					<div class="form-group">
 						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
 						<select class="form-control" id="tipo_item_edit">
@@ -238,9 +237,18 @@
 							 <option value="Cadeira">Cadeira</option>
 							 <option value="Tripe">Tripé</option>
 							 <option value="Banquinho">Banquinho</option>
-							 <option value="Acessórios eletrônicos">Acessórios eletrônicos</option>
+							
 					   </select>
 					</div>
+					<div class="form-group" id="div_modelo_edit" style="display: none;">
+						<label><strong>Modelo</strong><span style="color: red;">*</span></label>
+						<input type="text" id="id_modelo_edit" class="form-control" required>
+					</div>
+					<div class="form-group" id="div_serial_edit" style="display: none;">
+						<label><strong>Serial Number</strong></span></label>
+						<input type="text" id="serial_number_edit" class="form-control" required>
+					</div>
+
 					<div class="form-group">
 						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="carateristica_edit" class="form-control" required>

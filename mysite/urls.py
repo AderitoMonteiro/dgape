@@ -21,6 +21,5 @@ urlpatterns = [
     path('auth/', include('auth.urls')),
     path('inventario/', include('departamentos.urls')),
     path('dgape/', include('departamentos.urls')),
-    path('gestao_mobiliario/', include('departamentos.urls')),
     path('diretor/', include('diretor.urls')),
 ]

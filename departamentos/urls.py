@@ -1,6 +1,9 @@
 from django.urls import path
+from acessorio.views import delete_acessorio,gestao_acessorio,add_acessorio,delete_acessorio_checkbox
 from kit_eleitoral.views import editar_kit,exportar_kit_excel,delete_kit,get_kit,get_all_patrimonio,gestao_kit_eleitoral,add_kit,delete_kit_checkbox
 from .views import index,exportar_Mobiliario_excel,exportar_inventario_equipamento_eleitoral_excel,exportar_inventario_mobiliario_eleitoral_excel,edit_inventario_equipamente_eleitoral,delete_mobiliario_inventario_eleitoral_checkbox,delete_mobiliario_eleitoral_inventario,edit_mobiliario_inventario_eleitoral,get_mobiliario_eleitoral_inventario,add_inventario_mobiliario_eleitoral,inventario_mobiliario_eleitoral_home,delete_equipamento_inventario_eleitoral_checkbox,delete_equipamento_eleitoral_inventario,get_equipamento_eleitoral_inventario,add_inventario_equipamento_eleitoral,inventario_equipamento_eleitoral_home, delete_mobiliario_eleitoral_checkbox,delete_mobiliario_eleitoral,editar_mobiliario_eleitoral,get_mobiliario_eleitoral,add_mobiliario_eleitoral,gestao_mobiliario_eleitoral,delete_equipamento_eleitoral_checkbox,delete_equipamento_eleitoral,editar_equipamento_eleitoral,get_equipamento_eleitoral,add_equipamento_eleitoral,gestao_equipamento_eleitoral,exportar_inventario_mobiliario_excel,exportar_equipamento_excel,delete_mobiliario_inventario_checkbox,delete_mobiliario_inventario,edit_mobiliario_equipamento,get_mobiliario_inventario,add_inventario_mobiliario,inventario_mobiliario_home,inventario_equipamento_home,gestao_equipamento,add_equipamento,get_equipamento,editar_equipamento,delete_equipamento,delete_equipamento_checkbox,gestao_mobiliario,add_mobiliario,get_mobiliario,editar_mobiliario,delete_mobiliario,delete_mobiliario_checkbox,add_inventario_equipamento,get_equipamento_inventario,edit_inventario_equipamento,delete_equipamento_inventario,delete_equipamento_inventario_checkbox
+
+
 app_name = "departamento"
 urlpatterns = [
 
@@ -16,6 +19,10 @@ urlpatterns = [
    path('index/edit_kit/', editar_kit, name='editar_kit'),
    path('index/exportar_kit_excel/', exportar_kit_excel, name='exportar_kit_excel'),
    path('index/checkbox_kit/', delete_kit_checkbox, name='delete_kit_checkbox'),
+   path('index/checkbox_acessorio/', delete_acessorio_checkbox, name='delete_acessorio_checkbox'),
+   path('index/acessorio/delete/', delete_acessorio, name='delete_acessorio'),
+   path('gestao_acessorio/', gestao_acessorio, name='gestao_acessorio'),
+   path('index/add_acessorio/', add_acessorio, name='add_acessorio'),
    path('mobiliario/index/', inventario_mobiliario_home, name='departamento'),
    path('mobiliario_eleitoral/index/', inventario_mobiliario_eleitoral_home, name='departamento'),
    path('mobiliario/index/add/', add_inventario_mobiliario, name='add_inventario_mobiliario'),
