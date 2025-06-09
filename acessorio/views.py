@@ -148,3 +148,39 @@ def delete_acessorio(request):
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+@csrf_exempt
+def get_acessorio(request):
+
+    if request.method == "POST":
+      try:
+                      acessorio_id = request.POST.get("acessorio_id")
+
+                      query = '''
+                                  SELECT 
+                                  dm.id,
+                                  dm.descricao,
+                                  dm.data_entrada,
+                                  dm.obs,
+                                  dm.tipo,
+                                  dm.provinencia,
+                                  dm.provinencia,
+                                  dm.carateristica,
+                                  kec.descricao as conselho,
+                                  IFNULL(ds.descricao,'') as sala,
+                                  ds.id as sala_id
+                                  FROM acessorio_acessorios dm
+                                  left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                                  left join departamentos_sala as ds on dm.sala=ds.id
+                                  WHERE dm.id=%s
+                                  '''
+                      with connection.cursor() as cursor:
+                            cursor.execute(query,[acessorio_id])
+                            colunas = [col[0] for col in cursor.description] 
+                            acessorio = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                     
+                      return JsonResponse({'resultado': acessorio})
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

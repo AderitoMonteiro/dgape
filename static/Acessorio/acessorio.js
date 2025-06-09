@@ -269,3 +269,61 @@ function get_acessorio_delete(button){
     document.getElementById('acessorio_delete').value=acessorio_id;
  
  }
+
+
+function get_acessorio(button){
+
+    let acessorio_id=button.getAttribute("data-id");
+ 
+    const data = {
+     "acessorio_id":acessorio_id
+     };
+ 
+     jqOld.ajax({
+         url: '../get/acessorio_editar/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+ 
+             
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("serial_number_edit").value= data.resultado[0].serial_number;
+             document.getElementById("obs_edit").value=data.resultado[0].obs;
+             document.getElementById("acessorio_id").value=acessorio_id;
+             document.getElementById("conselho_edit").value=data.resultado[0].conselho;
+             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
+             document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+
+             if(data.resultado[0].conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+
+             }
+
+             if(data.resultado[0].tipo =="Mesa" ||data.resultado[0].tipo =="Cadeira"){
+
+                document.getElementById('div_modelo_edit').setAttribute('style',"display: block;");
+                document.getElementById('div_serial_edit').setAttribute('style',"display: block;");
+
+                document.getElementById('id_modelo_edit').value=data.resultado[0].modelo;
+                document.getElementById('serial_number_edit').value=data.resultado[0].serial_number;
+
+             }
+            
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("tipo_item_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("carateristica_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
