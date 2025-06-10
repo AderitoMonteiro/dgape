@@ -90,6 +90,7 @@ function acessorio_form() {
       .then(html => {
         document.getElementById("container_xl").innerHTML = html;
         date_entrada();
+        date_entrada_edit()
         filter_table_acessorio();
         checkbox_acessorio();
       });
@@ -124,7 +125,6 @@ function mobiliario_form() {
             data_saida();
             checkbox_kit();
             filter_table_kit();
-            data_saida();
           });
 
 
@@ -223,6 +223,16 @@ function date_entrada(){
         });
       }, 1000); // 2 segundos
   }
+
+  function date_entrada_edit(){
+
+    setTimeout(() => {
+      flatpickr("#data_entrada_edit", {
+          dateFormat: "Y-m-d",
+          locale: "pt"
+          });
+        }, 1000); // 2 segundos
+    }
 
 function filter_table_equipamento() {
   

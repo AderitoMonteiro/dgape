@@ -303,23 +303,14 @@ function get_acessorio(button){
                 document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
 
              }
-
-             if(data.resultado[0].tipo =="Mesa" ||data.resultado[0].tipo =="Cadeira"){
-
-                document.getElementById('div_modelo_edit').setAttribute('style',"display: block;");
-                document.getElementById('div_serial_edit').setAttribute('style',"display: block;");
-
-                document.getElementById('id_modelo_edit').value=data.resultado[0].modelo;
-                document.getElementById('serial_number_edit').value=data.resultado[0].serial_number;
-
-             }
-            
+   
+             /*
              document.getElementById("data_entrada_edit").disabled=true;
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("carateristica_edit").disabled=true;
-             document.getElementById("provinencia_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;*/
           },
          error: function (xhr, status, error) {
  
@@ -327,3 +318,98 @@ function get_acessorio(button){
          } 
      });
  }
+
+ function edit_acessorio() {
+
+    
+    const descricao = document.getElementById('descricao_edit').value;
+    const data_entrada_edit = document.getElementById('data_entrada_edit').value;
+    const provinencia_edit = document.getElementById('provinencia_edit').value;
+    const tipo_edit = document.getElementById('tipo_item_edit').value;
+    const obs = document.getElementById('obs_edit').value;
+    const conselho_edit = document.getElementById('conselho_edit').getAttribute("data-id");
+    const sala_id = document.getElementById('saladiv_edit-select').value;
+    const id_user = document.getElementById('id_user_edit').value;
+    const carateristica = document.getElementById('carateristica_edit').value;
+    const acessorio_id = document.getElementById('acessorio_id').value;
+
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "conselho_edit":conselho_edit,
+        "sala_id":sala_id,
+        "obs": obs,
+        "user_update": id_user,
+        "acessorio_id": acessorio_id,
+        "data_entrada":data_entrada_edit,
+        "provinencia":provinencia_edit,
+        "carateristica":carateristica,
+        "tipo":tipo_edit,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    jqOld.ajax({
+        url: 'acessorio/edit/',
+        type: 'POST',
+        data: data,
+        success: function (data) {
+
+            let divPai = document.getElementById("alerta_edit");
+            let divalert = document.createElement("div");
+
+
+            if (data.status == 'success') {
+                
+                divPai.innerHTML = ''
+
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center;font-size: 15px;");
+                divalert.setAttribute("class","alert alert-success");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+
+                setTimeout(() => {
+
+                        fetch('../gestao_acessorio/', {
+                            headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                            }
+                        })
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById("container_xl").innerHTML = html;
+                        });
+
+                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                
+                    }, 2000);
+
+            } else {
+
+                divPai.innerHTML = ''
+                
+                divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                divalert.setAttribute("class","alert alert-danger");
+                divalert.setAttribute( "style","text-align;");
+                divalert.setAttribute( "role","alert");
+                divalert.innerHTML = data.message;
+                divPai.appendChild(divalert);
+
+                setTimeout(() => {
+                    divPai.setAttribute("style", "display: none!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                }, 9000);
+            }
+
+
+           
+
+        },
+        error: function (xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
