@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.core.serializers import serialize
 from django.db.models import Q
 import openpyxl
+from django.db.models import Subquery
 
 
 
@@ -52,7 +53,7 @@ def gestao_kit_eleitoral(request):
                                 left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                 left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                                 left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                                left JOIN departamentos_equipamento as ml on KE.malas=ml.id
+                                left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                 where KE.status=1
                             '''
                 with connection.cursor() as cursor:
@@ -413,13 +414,24 @@ def get_all_patrimonio(request):
    if request.method == "POST":
       try:
                       conselho_id = request.POST.get("conselho_id")
-                      mobiliario_list= mobiliario.objects.filter(tipo="Mala",status=1)
-                      tripe_list= mobiliario.objects.filter(tipo="Tripe",status=1)
-                      equipamento_p= equipamento_departamento.objects.filter(tipo="Portatel",status=1)
-                      equipamento_i= equipamento_departamento.objects.filter(tipo="Impressora",status=1)
-                      scaner_impresao_digital= equipamento_departamento.objects.filter(tipo="Scaner Impresão Digital",status=1)
-                      capitura_assinatura= equipamento_departamento.objects.filter(tipo="Capitura Assinatura",status=1)
-                      camara_fotografica= equipamento_departamento.objects.filter(tipo="Camara Fotografica",status=1)
+
+                      mala_kit_lansado = kit_eleit.objects.values('malas').filter(status=1)
+                      tripe_list_lansado = kit_eleit.objects.values('tripe_id').filter(status=1)
+                      equipamento_p_lansado = kit_eleit.objects.values('portatel_id').filter(status=1)
+                      equipamento_i_lansado = kit_eleit.objects.values('impresora_id').filter(status=1)
+                      scaner_impresao_digital_lansado = kit_eleit.objects.values('Scaner_impresao_digital').filter(status=1)
+                      capitura_assinatura_lansado = kit_eleit.objects.values('capitura_assinatura').filter(status=1)
+                      camara_fotografica_lansado = kit_eleit.objects.values('camera_fotografia').filter(status=1)
+
+                     
+                      mobiliario_list= mobiliario.objects.exclude(id__in=Subquery(mala_kit_lansado)).filter(tipo="Mala",status=1)
+                      tripe_list= mobiliario.objects.exclude(id__in=Subquery(tripe_list_lansado)).filter(tipo="Tripe",status=1)
+                      equipamento_p = equipamento_departamento.objects.exclude(id__in=Subquery(equipamento_p_lansado)).filter(tipo="Portatel",status=1)
+                      equipamento_i = equipamento_departamento.objects.exclude(id__in=Subquery(equipamento_i_lansado)).filter(tipo="Impressora",status=1)
+                      scaner_impresao_digital= equipamento_departamento.objects.exclude(id__in=Subquery(scaner_impresao_digital_lansado)).filter(tipo="Scaner Impresão Digital",status=1)
+                      capitura_assinatura= equipamento_departamento.objects.exclude(id__in=Subquery(capitura_assinatura_lansado)).filter(tipo="Capitura Assinatura",status=1)
+                      camara_fotografica= equipamento_departamento.objects.exclude(id__in=Subquery(camara_fotografica_lansado)).filter(tipo="Camara Fotografica",status=1)
+
                       Acessorios_eletronicos= mobiliario.objects.filter(tipo="Acessórios eletrônicos",status=1)
                       banquinho= mobiliario.objects.filter(tipo="Banquinho",status=1)
 
