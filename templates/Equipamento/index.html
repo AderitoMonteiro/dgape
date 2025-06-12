@@ -78,14 +78,13 @@
 				<ul class="pagination">
 
 					{% if equipamento.has_previous %}
-					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ equipamento.previous_page_number }}" class="page-link">Anterior</a></li>
+					<li class="page-item"><a onclick="Paginacao_equipamento('1')" class="page-link">Primeira</a></li>
+					<li class="page-item"><a  onclick="Paginacao_equipamento({{equipamento.previous_page_number}})" class="page-link">Anterior</a></li>
 					{% endif %}
 
 					{% if equipamento.has_next %}
-						<li class="page-item"><a href="?page={{ equipamento.next_page_number }}" class="page-link">Próxima</a></li>
+						<li class="page-item"><a onclick="Paginacao_equipamento({{equipamento.next_page_number}})" class="page-link">Próxima</a></li>
 					{% endif %}
-					
 					
 				</ul>
 			</div>

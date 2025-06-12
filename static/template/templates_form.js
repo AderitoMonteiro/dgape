@@ -504,6 +504,70 @@ function checkbox_acessorio(){
 }
 
 
+function Paginacao_equipamento(pagina) {
+  fetch(`../equipamento_index/?page=${pagina}`, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(response => response.text())
+    .then(html => {
+
+        document.getElementById("container_xl").innerHTML = html;
+        checkbox_equipamento();
+        date_entrada();
+        filter_table_equipamento();
+        toggleDropdown_equipamento_update();
+    });
+}
+
+
+function Paginacao_mobiliario(pagina) {
+  fetch(`../mobiliario_index/?page=${pagina}`, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(response => response.text())
+    .then(html => {
+
+      document.getElementById("container_xl").innerHTML = '';
+      document.getElementById("container_xl").innerHTML = html;
+      checkbox_mobiliario();
+      date_entrada();
+      filter_table_mobiliario();
+      enable_div();
+      preencher_serial_nunber();
+
+    });
+}
+
+function Paginacao_acessorio(pagina) {
+  fetch(`../gestao_acessorio/?page=${pagina}`, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(response => response.text())
+    .then(html => {
+
+      document.getElementById("container_xl").innerHTML = html;
+      date_entrada();
+      date_entrada_edit()
+      filter_table_acessorio();
+      checkbox_acessorio();
+    });
+}
+
+function Paginacao_kit(pagina) {
+  fetch(`../gestao_kit_eleitoral/?page=${pagina}`, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(response => response.text())
+    .then(html => {
+
+      document.getElementById("container_xl").innerHTML = html;
+      data_saida();
+      checkbox_kit();
+      filter_table_kit();
+
+    });
+}
+
 
 } catch (e) {
   console.error("Erro ao executar função:", e);

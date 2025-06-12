@@ -40,8 +40,11 @@ def gestao_acessorio(request):
           acessorios_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
           paginator = Paginator(acessorios_list, 7)
-          page_number = request.GET.get("page")  
+          page_number = request.GET.get("page",1)  
           paginator_acessorios = paginator.get_page(page_number)
+
+          if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                   return render(request, 'Acessorio/index.html',{"acessorio":paginator_acessorios,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 
     return render(request, 'Acessorio/index.html',{"acessorio":paginator_acessorios,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 

@@ -73,15 +73,14 @@
 				<div class="hint-text"> <span>Página {{ mobiliario.number }} de {{ mobiliario.paginator.num_pages }}</span></div>
 				<ul class="pagination">
 
-					{% if mobiliario.has_previous %}
-					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
-					<li class="page-item"><a href="?page={{ mobiliario.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% if kit_eleitoral.has_previous %}
+					<li class="page-item"><a onclick="Paginacao_mobiliario('1')" class="page-link">Primeira</a></li>
+					<li class="page-item"><a  onclick="Paginacao_mobiliario({{kit_eleitoral.previous_page_number}})" class="page-link">Anterior</a></li>
 					{% endif %}
 
-					{% if mobiliario.has_next %}
-						<li class="page-item"><a href="?page={{ mobiliario.next_page_number }}" class="page-link">Próxima</a></li>
+					{% if kit_eleitoral.has_next %}
+						<li class="page-item"><a onclick="Paginacao_mobiliario({{kit_eleitoral.next_page_number}})" class="page-link">Próxima</a></li>
 					{% endif %}
-					
 					
 				</ul>
 			</div>

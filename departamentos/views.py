@@ -11,11 +11,6 @@ from django.db import connection
 import openpyxl
 
 
-
-
-
-
-
 def inventario_equipamento_home(request):
 
     equipamento_list = equipamento.objects.all().filter(status=1)
@@ -194,8 +189,11 @@ def gestao_equipamento(request):
                           colunas = [col[0] for col in cursor.description] 
                           equipamento_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
                           paginator = Paginator(equipamento_list, 7)
-                          page_number = request.GET.get("page")  
+                          page_number = request.GET.get("page",1)  
                           paginator_equipamento = paginator.get_page(page_number)
+
+                          if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                             return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento,"conselho":conselho_lis,"sala":sala_lis,"componente":componente})
                   
                       return render(request, 'Equipamento/index.html',{"equipamento":paginator_equipamento,"conselho":conselho_lis,"sala":sala_lis,"componente":componente})
 
@@ -643,8 +641,11 @@ def gestao_mobiliario(request):
           mobiliario_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
           paginator = Paginator(mobiliario_list, 7)
-          page_number = request.GET.get("page")  
+          page_number = request.GET.get("page",1)  
           paginator_mobiliario = paginator.get_page(page_number)
+
+          if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 
     return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 

@@ -62,8 +62,11 @@ def gestao_kit_eleitoral(request):
                  colunas = [col[0] for col in cursor.description] 
                  resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
                  paginator = Paginator(resultados, 5)
-                 page_number = request.GET.get("page")  
+                 page_number = request.GET.get("page",1)  
                  paginator_kit_list = paginator.get_page(page_number)
+
+                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                            return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
              
 
                 return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
