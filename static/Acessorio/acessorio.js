@@ -8,7 +8,8 @@ function add_acessorio() {
     const carateristica = document.getElementById('carateristica').value;
     const id_user = document.getElementById('id_user').value;
     const sala_id = document.getElementById('sala_id').value;
-    const tipo_item = document.getElementById('tipo_item').value;
+    const quantidade = document.getElementById('quantidade').value;
+    const serial_number = document.getElementById('serial_number').value;
     const conselho = document.getElementById('conselho').getAttribute("data-id");
 
 
@@ -22,8 +23,9 @@ function add_acessorio() {
         "user_create": id_user,
         "conselho":conselho,
         "sala_id":sala_id,
-        "tipo_item":tipo_item,
+        "quantidade":quantidade,
         "provinencia":provinencia,
+        "serial_number":serial_number,
         "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
 

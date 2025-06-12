@@ -50,7 +50,7 @@
 						<td>{{acessorio_list.provinencia}}</td>
 						<td>{{acessorio_list.conselho}}</td>
 						<td>{{acessorio_list.sala}}</td>
-						<td>{{acessorio_list.tipo}}</td>
+						<td>{{acessorio_list.quantidade}}</td>
 						<td>{{acessorio_list.carateristica}}</td>
 						<td>{{acessorio_list.obs}}</td>
 						<td>
@@ -123,15 +123,12 @@
 					  </div>
 				    </div>
 					<div class="form-group">
-						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
-						<select class="form-control" id="tipo_item">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 <option value="Ficha tipo c">Ficha tipo c</option>	
-					   </select>
+						<label><strong>Quantidade</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="quantidade" class="form-control" required>
 					</div>
-					<div class="form-group" id="div_modelo" style="display: none;">
-						<label><strong>Modelo</strong><span style="color: red;">*</span></label>
-						<input type="text" id="id_modelo" class="form-control" required>
+					<div class="form-group">
+						<label><strong>Serial Number</strong></label>
+						<input type="text" id="serial_number" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label><strong>Característica</strong><span style="color: red;">*</span></label></label>
@@ -141,6 +138,7 @@
 						<label><strong>Obs/Estado</strong></label>
 						<textarea id="obs" name="obs" rows="4" class="form-control"></textarea>
 					</div>	
+					
 					<div id="saladiv" class="form-group" style="display: none;">
 						<label for="opcao"><strong>Sala</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="sala_id" required>
@@ -217,11 +215,8 @@
 					</div>	
 					
 					<div class="form-group">
-						<label><strong>Tipo</strong><span style="color: red;">*</span></label></label>
-						<select class="form-control" id="tipo_item_edit">
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 <option value="Ficha tipo c">Ficha tipo c</option>	
-					   </select>
+						<label><strong>Quantidade</strong><span style="color: red;">*</span></label></label>
+						<input type="text" id="quantidade_edit" class="form-control" required>
 					</div>
 					<div class="form-group" id="div_modelo_edit" style="display: none;">
 						<label><strong>Modelo</strong><span style="color: red;">*</span></label>

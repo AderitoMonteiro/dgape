@@ -23,7 +23,7 @@ def gestao_acessorio(request):
                     dm.descricao,
                     dm.data_entrada,
                     dm.obs,
-                    dm.tipo,
+                    dm.quantidade,
                     dm.provinencia,
                     dm.provinencia,
                     dm.carateristica,
@@ -57,9 +57,10 @@ def add_acessorio(request):
                     descricao= request.POST.get("descricao")
                     data_entrada= request.POST.get("data_entrada")
                     obs= request.POST.get("obs")
-                    provinencia= request.POST.get("provinencia")
-                    carateristica= request.POST.get("carateristica")
-                    tipo_item= request.POST.get("tipo_item")
+                    provinencia = request.POST.get("provinencia")
+                    carateristica = request.POST.get("carateristica")
+                    quantidade = request.POST.get("quantidade")
+                    serial_number = request.POST.get("serial_number")
                     sala_id= request.POST.get("sala_id")
                     conselho= request.POST.get("conselho")
                     user_create= request.POST.get("user_create")
@@ -74,9 +75,10 @@ def add_acessorio(request):
                                     data_entrada=data_entrada,
                                     obs=obs,
                                     provinencia=provinencia,
+                                    serial_number=serial_number,
                                     carateristica=carateristica,
                                     conselho=conselho,
-                                    tipo=tipo_item,
+                                    quantidade=quantidade,
                                     user_create=user_create
                                                                                                   )
                                 message='Acessorio registado com sucesso!!'
@@ -96,7 +98,8 @@ def add_acessorio(request):
                                                                                                               obs=obs,
                                                                                                               conselho=conselho,
                                                                                                               carateristica=carateristica,
-                                                                                                              tipo=tipo_item,
+                                                                                                              quantidade=quantidade,
+                                                                                                              serial_number=serial_number,
                                                                                                               provinencia=provinencia,
                                                                                                               sala=sala_id,
                                                                                                               user_create=user_create
