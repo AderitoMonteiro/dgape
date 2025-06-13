@@ -294,7 +294,7 @@ function get_acessorio(button){
              document.getElementById("obs_edit").value=data.resultado[0].obs;
              document.getElementById("acessorio_id").value=acessorio_id;
              document.getElementById("conselho_edit").value=data.resultado[0].conselho;
-             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("quantidade_edit").value=data.resultado[0].quantidade;
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
              document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
              document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
@@ -327,7 +327,8 @@ function get_acessorio(button){
     const descricao = document.getElementById('descricao_edit').value;
     const data_entrada_edit = document.getElementById('data_entrada_edit').value;
     const provinencia_edit = document.getElementById('provinencia_edit').value;
-    const tipo_edit = document.getElementById('tipo_item_edit').value;
+    const quantidade = document.getElementById('quantidade_edit').value;
+    const serial_number = document.getElementById('serial_number_edit').value;
     const obs = document.getElementById('obs_edit').value;
     const conselho_edit = document.getElementById('conselho_edit').getAttribute("data-id");
     const sala_id = document.getElementById('saladiv_edit-select').value;
@@ -347,7 +348,8 @@ function get_acessorio(button){
         "data_entrada":data_entrada_edit,
         "provinencia":provinencia_edit,
         "carateristica":carateristica,
-        "tipo":tipo_edit,
+        "quantidade":quantidade,
+        "serial_number":serial_number,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -415,3 +417,46 @@ function get_acessorio(button){
     });
 
 }
+
+// filtragem drop conselho start
+function toggleDropdown_acessorio() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    document.getElementById("dropdownInput").value = "";
+    filterDropdown_acessorio(); // show all items when opening
+    document.getElementById("dropdownInput").focus();
+  }
+
+  function filterDropdown_acessorio() {
+    const input = document.getElementById("dropdownInput").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem_acessorio(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho").value = selectedValue;
+    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu").style.display = "none";
+    const div = document.getElementById('saladiv');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+        document.getElementById("sala_id").value = 6;
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+     // document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });

@@ -26,9 +26,10 @@
 						<th>Nome</th>
 						<th>Data Entrada</th>
 						<th>Provinencia</th>
+						<th>Serial Number</th>
 						<th>Conselho</th>
 						<th>Sala</th>
-						<th>Tipo</th>
+						<th>Quantidade</th>
 						<th>Carateristica</th>
 						<th>OBS</th>
 						<th>Acões</th>
@@ -48,6 +49,7 @@
 						<td>{{acessorio_list.descricao}}</td>
 						<td>{{acessorio_list.data_entrada}}</td>
 						<td>{{acessorio_list.provinencia}}</td>
+						<td>{{acessorio_list.serial_number}}</td>
 						<td>{{acessorio_list.conselho}}</td>
 						<td>{{acessorio_list.sala}}</td>
 						<td>{{acessorio_list.quantidade}}</td>
@@ -113,11 +115,11 @@
 					</div>
 					<div class="form-group">
 						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
-						<input id="conselho" class="form-control" type="text" onclick="toggleDropdown()"></input>
+						<input id="conselho" class="form-control" type="text" onclick="toggleDropdown_acessorio()"></input>
 						<div id="dropdownMenu" class="dropdown-content">
-						  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
+						  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown_acessorio()">
 							{% for conselho_list in conselho %}
-							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem_acessorio(this)">{{conselho_list.descricao}}</div>
 							{% endfor %}
 							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					  </div>
@@ -217,6 +219,10 @@
 					<div class="form-group">
 						<label><strong>Quantidade</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="quantidade_edit" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label><strong>Serial Number</strong></label>
+						<input type="text" id="serial_number_edit" class="form-control" required>
 					</div>
 					<div class="form-group" id="div_modelo_edit" style="display: none;">
 						<label><strong>Modelo</strong><span style="color: red;">*</span></label>

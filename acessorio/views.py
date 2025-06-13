@@ -27,6 +27,7 @@ def gestao_acessorio(request):
                     dm.provinencia,
                     dm.provinencia,
                     dm.carateristica,
+                    dm.serial_number,
                     kec.descricao as conselho,
                     IFNULL(ds.descricao,'') as sala
                     FROM acessorio_acessorios dm
@@ -67,7 +68,7 @@ def add_acessorio(request):
 
                             
                     if conselho!="23":
-                        if descricao !="" and data_entrada !="" and conselho!=""and tipo_item!="":
+                        if descricao !="" and data_entrada !="" and conselho!=""and quantidade!="":
 
                                 acessorios.objects.create(
 
@@ -90,7 +91,7 @@ def add_acessorio(request):
                             status= 'error'
                             return JsonResponse({'status':status, 'message': message })
                     else:
-                                if descricao !="" and data_entrada !="" and conselho!="" and sala_id!="" and tipo_item!="":
+                                if descricao !="" and data_entrada !="" and conselho!="" and sala_id!="" and quantidade!="":
 
                                                                                   acessorios.objects.create(
                                                                                                               descricao=descricao,
@@ -172,14 +173,15 @@ def get_acessorio(request):
                                   dm.descricao,
                                   dm.data_entrada,
                                   dm.obs,
-                                  dm.tipo,
+                                  dm.quantidade,
                                   dm.provinencia,
                                   dm.provinencia,
                                   dm.carateristica,
+                                  dm.serial_number,
                                   kec.descricao as conselho,
                                   kec.id as conselho_id,
                                   IFNULL(ds.descricao,'') as sala,
-                                  ds.id as sala_id
+                                  IFNULL(ds.id,'') as sala_id
                                   FROM acessorio_acessorios dm
                                   left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
                                   left join departamentos_sala as ds on dm.sala=ds.id
@@ -205,8 +207,9 @@ def editar_acessorio(request):
                     descricao= request.POST.get("descricao")
                     data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
-                    tipo= request.POST.get("tipo")
+                    quantidade= request.POST.get("quantidade")
                     conselh= request.POST.get("conselho_edit")
+                    serial_number= request.POST.get("serial_number")
                     sala_id= request.POST.get("sala_id")
                     carateristica= request.POST.get("carateristica")
                     obs= request.POST.get("obs")
@@ -214,12 +217,13 @@ def editar_acessorio(request):
 
                     if conselh!="23":
 
-                                if conselh!="" and descricao !="" and data_entrada !="" and provinencia !="" and tipo !="" and conselh !="" and obs !="":
+                                if serial_number !="" and conselh!="" and descricao !="" and data_entrada !="" and provinencia !="" and quantidade !="" and conselh !="" and obs !="":
                                         acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
                                         acessorio_ob.descricao=descricao
                                         acessorio_ob.data_entrada=data_entrada
                                         acessorio_ob.provinencia=provinencia
-                                        acessorio_ob.tipo=tipo
+                                        acessorio_ob.quantidade=quantidade
+                                        acessorio_ob.serial_number=serial_number
                                         acessorio_ob.obs=obs
                                         acessorio_ob.carateristica=carateristica
                                         acessorio_ob.sala=0
@@ -239,13 +243,14 @@ def editar_acessorio(request):
 
 
                     else:
-                               if conselh!="" and sala_id!="" and descricao !="" and data_entrada !="" and provinencia !="" and tipo !="" and conselh !="" and obs !="":
+                               if serial_number !="" and conselh!="" and sala_id!="" and descricao !="" and data_entrada !="" and provinencia !="" and quantidade !="" and conselh !="" and obs !="":
                                 
                                     acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
                                     acessorio_ob.descricao=descricao
                                     acessorio_ob.data_entrada=data_entrada
                                     acessorio_ob.provinencia=provinencia
-                                    acessorio_ob.tipo=tipo
+                                    acessorio_ob.quantidade=quantidade
+                                    acessorio_ob.serial_number=serial_number
                                     acessorio_ob.obs=obs
                                     acessorio_ob.carateristica=carateristica
                                     acessorio_ob.sala=sala_id

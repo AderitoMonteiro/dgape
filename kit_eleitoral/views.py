@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento,kit_eleit,conselho
 from departamentos.models import mobiliario, equipamento as equipamento_departamento
+from acessorio.models import acessorios
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
@@ -425,6 +426,7 @@ def get_all_patrimonio(request):
                       scaner_impresao_digital_lansado = kit_eleit.objects.values('Scaner_impresao_digital').filter(status=1)
                       capitura_assinatura_lansado = kit_eleit.objects.values('capitura_assinatura').filter(status=1)
                       camara_fotografica_lansado = kit_eleit.objects.values('camera_fotografia').filter(status=1)
+                      acessorio_lansado = kit_eleit.objects.values('cabo_id').filter(status=1)
 
                      
                       mobiliario_list= mobiliario.objects.exclude(id__in=Subquery(mala_kit_lansado)).filter(tipo="Mala",status=1)
@@ -435,7 +437,7 @@ def get_all_patrimonio(request):
                       capitura_assinatura= equipamento_departamento.objects.exclude(id__in=Subquery(capitura_assinatura_lansado)).filter(tipo="Capitura Assinatura",status=1)
                       camara_fotografica= equipamento_departamento.objects.exclude(id__in=Subquery(camara_fotografica_lansado)).filter(tipo="Camara Fotografica",status=1)
 
-                      Acessorios_eletronicos= mobiliario.objects.filter(tipo="Acessórios eletrônicos",status=1)
+                      Acessorios_eletronicos= acessorios.objects.exclude(id__in=Subquery(acessorio_lansado)).filter(status=1)
                       banquinho= mobiliario.objects.filter(tipo="Banquinho",status=1)
 
 
