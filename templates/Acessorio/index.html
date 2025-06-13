@@ -29,7 +29,6 @@
 						<th>Serial Number</th>
 						<th>Conselho</th>
 						<th>Sala</th>
-						<th>Quantidade</th>
 						<th>Carateristica</th>
 						<th>OBS</th>
 						<th>Acões</th>
@@ -52,7 +51,6 @@
 						<td>{{acessorio_list.serial_number}}</td>
 						<td>{{acessorio_list.conselho}}</td>
 						<td>{{acessorio_list.sala}}</td>
-						<td>{{acessorio_list.quantidade}}</td>
 						<td>{{acessorio_list.carateristica}}</td>
 						<td>{{acessorio_list.obs}}</td>
 						<td>
@@ -124,10 +122,6 @@
 							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					  </div>
 				    </div>
-					<div class="form-group">
-						<label><strong>Quantidade</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="quantidade" class="form-control" required>
-					</div>
 					<div class="form-group">
 						<label><strong>Serial Number</strong></label>
 						<input type="text" id="serial_number" class="form-control" required>
@@ -216,10 +210,6 @@
 						</select>
 					</div>	
 					
-					<div class="form-group">
-						<label><strong>Quantidade</strong><span style="color: red;">*</span></label></label>
-						<input type="text" id="quantidade_edit" class="form-control" required>
-					</div>
 					<div class="form-group">
 						<label><strong>Serial Number</strong></label>
 						<input type="text" id="serial_number_edit" class="form-control" required>

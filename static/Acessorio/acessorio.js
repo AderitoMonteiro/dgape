@@ -1,3 +1,4 @@
+try {
 function add_acessorio() {
 
     
@@ -8,7 +9,6 @@ function add_acessorio() {
     const carateristica = document.getElementById('carateristica').value;
     const id_user = document.getElementById('id_user').value;
     const sala_id = document.getElementById('sala_id').value;
-    const quantidade = document.getElementById('quantidade').value;
     const serial_number = document.getElementById('serial_number').value;
     const conselho = document.getElementById('conselho').getAttribute("data-id");
 
@@ -23,7 +23,6 @@ function add_acessorio() {
         "user_create": id_user,
         "conselho":conselho,
         "sala_id":sala_id,
-        "quantidade":quantidade,
         "provinencia":provinencia,
         "serial_number":serial_number,
         "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
@@ -294,7 +293,6 @@ function get_acessorio(button){
              document.getElementById("obs_edit").value=data.resultado[0].obs;
              document.getElementById("acessorio_id").value=acessorio_id;
              document.getElementById("conselho_edit").value=data.resultado[0].conselho;
-             document.getElementById("quantidade_edit").value=data.resultado[0].quantidade;
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
              document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
              document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
@@ -419,44 +417,9 @@ function get_acessorio(button){
 }
 
 // filtragem drop conselho start
-function toggleDropdown_acessorio() {
-    const dropdown = document.getElementById("dropdownMenu");
-    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    document.getElementById("dropdownInput").value = "";
-    filterDropdown_acessorio(); // show all items when opening
-    document.getElementById("dropdownInput").focus();
-  }
 
-  function filterDropdown_acessorio() {
-    const input = document.getElementById("dropdownInput").value.toLowerCase();
-    const items = document.querySelectorAll(".dropdown-item");
 
-    items.forEach(item => {
-      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
-    });
-  }
 
-  function selectItem_acessorio(el) {
-    const selectedValue = el.textContent;
-    document.getElementById("conselho").value = selectedValue;
-    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
-    document.getElementById("dropdownMenu").style.display = "none";
-    const div = document.getElementById('saladiv');
-
-    if(selectedValue=='DGAPE')
-    {
-        div.style.display = 'block';
-        document.getElementById("sala_id").value = 6;
-    }else{
-        div.style.display = 'none';
-    }
-  }
-
-  // Close dropdown when clicking outside
-  document.addEventListener("click", function (e) {
-     const dropdown = document.querySelector(".modal-body");
-
-    if (!dropdown.contains(e.target)) {
-     // document.getElementById("dropdownMenu").style.display = "none";
-    }
-  });
+  } catch (e) {
+    console.error("Erro ao executar função:", e);
+}

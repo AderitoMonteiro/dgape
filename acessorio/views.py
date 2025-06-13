@@ -23,7 +23,6 @@ def gestao_acessorio(request):
                     dm.descricao,
                     dm.data_entrada,
                     dm.obs,
-                    dm.quantidade,
                     dm.provinencia,
                     dm.provinencia,
                     dm.carateristica,
@@ -60,7 +59,6 @@ def add_acessorio(request):
                     obs= request.POST.get("obs")
                     provinencia = request.POST.get("provinencia")
                     carateristica = request.POST.get("carateristica")
-                    quantidade = request.POST.get("quantidade")
                     serial_number = request.POST.get("serial_number")
                     sala_id= request.POST.get("sala_id")
                     conselho= request.POST.get("conselho")
@@ -68,7 +66,7 @@ def add_acessorio(request):
 
                             
                     if conselho!="23":
-                        if descricao !="" and data_entrada !="" and conselho!=""and quantidade!="":
+                        if descricao !="" and data_entrada !="" and conselho!="":
 
                                 acessorios.objects.create(
 
@@ -79,7 +77,6 @@ def add_acessorio(request):
                                     serial_number=serial_number,
                                     carateristica=carateristica,
                                     conselho=conselho,
-                                    quantidade=quantidade,
                                     user_create=user_create
                                                                                                   )
                                 message='Acessorio registado com sucesso!!'
@@ -91,7 +88,7 @@ def add_acessorio(request):
                             status= 'error'
                             return JsonResponse({'status':status, 'message': message })
                     else:
-                                if descricao !="" and data_entrada !="" and conselho!="" and sala_id!="" and quantidade!="":
+                                if descricao !="" and data_entrada !="" and conselho!="" and sala_id!="" :
 
                                                                                   acessorios.objects.create(
                                                                                                               descricao=descricao,
@@ -99,7 +96,6 @@ def add_acessorio(request):
                                                                                                               obs=obs,
                                                                                                               conselho=conselho,
                                                                                                               carateristica=carateristica,
-                                                                                                              quantidade=quantidade,
                                                                                                               serial_number=serial_number,
                                                                                                               provinencia=provinencia,
                                                                                                               sala=sala_id,
@@ -173,7 +169,6 @@ def get_acessorio(request):
                                   dm.descricao,
                                   dm.data_entrada,
                                   dm.obs,
-                                  dm.quantidade,
                                   dm.provinencia,
                                   dm.provinencia,
                                   dm.carateristica,
@@ -207,7 +202,6 @@ def editar_acessorio(request):
                     descricao= request.POST.get("descricao")
                     data_entrada= request.POST.get("data_entrada")
                     provinencia= request.POST.get("provinencia")
-                    quantidade= request.POST.get("quantidade")
                     conselh= request.POST.get("conselho_edit")
                     serial_number= request.POST.get("serial_number")
                     sala_id= request.POST.get("sala_id")
@@ -222,7 +216,6 @@ def editar_acessorio(request):
                                         acessorio_ob.descricao=descricao
                                         acessorio_ob.data_entrada=data_entrada
                                         acessorio_ob.provinencia=provinencia
-                                        acessorio_ob.quantidade=quantidade
                                         acessorio_ob.serial_number=serial_number
                                         acessorio_ob.obs=obs
                                         acessorio_ob.carateristica=carateristica
@@ -249,7 +242,6 @@ def editar_acessorio(request):
                                     acessorio_ob.descricao=descricao
                                     acessorio_ob.data_entrada=data_entrada
                                     acessorio_ob.provinencia=provinencia
-                                    acessorio_ob.quantidade=quantidade
                                     acessorio_ob.serial_number=serial_number
                                     acessorio_ob.obs=obs
                                     acessorio_ob.carateristica=carateristica

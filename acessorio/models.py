@@ -8,7 +8,6 @@ class acessorios(models.Model):
     provinencia = models.CharField(max_length=100,null=True)
     carateristica = models.CharField(max_length=100,null=True) 
     status = models.IntegerField(default=1)
-    quantidade = models.IntegerField(default=0)
     serial_number = models.CharField(max_length=100,default=True)
     conselho = models.IntegerField(default=0)
     sala =  models.IntegerField(default=0)

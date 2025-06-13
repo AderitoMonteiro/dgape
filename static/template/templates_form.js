@@ -93,6 +93,7 @@ function acessorio_form() {
         date_entrada_edit()
         filter_table_acessorio();
         checkbox_acessorio();
+        toggleDropdown_acessorio();
       });
 }
 
@@ -568,6 +569,53 @@ function Paginacao_kit(pagina) {
     });
 }
 
+function toggleDropdown_acessorio() {
+
+    setTimeout(() => {
+
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      document.getElementById("dropdownInput").value = "";
+      filterDropdown_acessorio(); // show all items when opening
+      document.getElementById("dropdownInput").focus();
+
+    }, 1000); // 2 segundos
+  }
+
+  
+  function filterDropdown_acessorio() {
+    const input = document.getElementById("dropdownInput").value.toLowerCase();
+    const items = document.querySelectorAll(".dropdown-item");
+
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+    });
+  }
+
+  function selectItem_acessorio(el) {
+    const selectedValue = el.textContent;
+    document.getElementById("conselho").value = selectedValue;
+    document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));
+    document.getElementById("dropdownMenu").style.display = "none";
+    const div = document.getElementById('saladiv');
+
+    if(selectedValue=='DGAPE')
+    {
+        div.style.display = 'block';
+        document.getElementById("sala_id").value = 6;
+    }else{
+        div.style.display = 'none';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+     const dropdown = document.querySelector(".modal-body");
+
+    if (!dropdown.contains(e.target)) {
+   //   document.getElementById("dropdownMenu").style.display = "none";
+    }
+  });
 
 } catch (e) {
   console.error("Erro ao executar função:", e);
