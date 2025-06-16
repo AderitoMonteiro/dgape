@@ -82,10 +82,10 @@ function equipamento_form() {
         });
 }
 
-function acessorio_form() {
+function acessorio_form(modulo) {
   
    
-  fetch('../gestao_acessorio/')
+  fetch('../gestao_acessorio/?modulo='+modulo)
       .then(res => res.text())
       .then(html => {
         document.getElementById("container_xl").innerHTML = html;

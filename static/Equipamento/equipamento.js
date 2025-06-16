@@ -781,6 +781,7 @@ function toggleDropdown_edit() {
     if(selectedValue=='DGAPE')
     {
         div.style.display = 'block';
+        
     }else{
         div.style.display = 'none';
     }

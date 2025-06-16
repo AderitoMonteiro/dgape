@@ -14,10 +14,33 @@ import openpyxl
 
 def gestao_acessorio(request):
    
-    conselho_list = conselho.objects.all().filter(status=1)
-    sala_list = sala.objects.all().filter(status=1)
-    componente ='acessorio'
-    query = '''
+    sidebar=request.GET.get('modulo')
+
+    if sidebar=='gestao':
+     
+          query = '''
+                        SELECT 
+                        dm.id,
+                        dm.descricao,
+                        dm.data_entrada,
+                        dm.obs,
+                        dm.provinencia,
+                        dm.provinencia,
+                        dm.carateristica,
+                        dm.serial_number,
+                        kec.descricao as conselho,
+                        IFNULL(ds.descricao,'') as sala,
+                        'get_acessorio_gestao(this)' as sidebar,
+                        'sidebar_gestao' as sidebar_descricao
+                        FROM acessorio_acessorios dm
+                        left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                        left join departamentos_sala as ds on dm.sala=ds.id
+                        WHERE dm.STATUS=1 order by dm.id desc
+                    '''
+       
+    else:
+
+         query = '''
                     SELECT 
                     dm.id,
                     dm.descricao,
@@ -28,12 +51,20 @@ def gestao_acessorio(request):
                     dm.carateristica,
                     dm.serial_number,
                     kec.descricao as conselho,
-                    IFNULL(ds.descricao,'') as sala
+                    IFNULL(ds.descricao,'') as sala,
+                    'get_acessorio(this)' as sidebar,
+                    'sidebar_lancamento' as sidebar_descricao
                     FROM acessorio_acessorios dm
                     left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
                     left join departamentos_sala as ds on dm.sala=ds.id
                     WHERE dm.STATUS=1 order by dm.id desc
                 '''
+
+    
+    conselho_list = conselho.objects.all().filter(status=1)
+    sala_list = sala.objects.all().filter(status=1)
+    componente ='acessorio'
+  
     with connection.cursor() as cursor:
           cursor.execute(query)
           colunas = [col[0] for col in cursor.description] 
@@ -211,7 +242,8 @@ def editar_acessorio(request):
 
                     if conselh!="23":
 
-                                if serial_number !="" and conselh!="" and descricao !="" and data_entrada !="" and provinencia !="" and quantidade !="" and conselh !="" and obs !="":
+                                if serial_number !="" and conselh!="" and descricao !="" and data_entrada !="" and provinencia !="" and conselh !="" and carateristica !="":
+
                                         acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
                                         acessorio_ob.descricao=descricao
                                         acessorio_ob.data_entrada=data_entrada
@@ -236,7 +268,7 @@ def editar_acessorio(request):
 
 
                     else:
-                               if serial_number !="" and conselh!="" and sala_id!="" and descricao !="" and data_entrada !="" and provinencia !="" and quantidade !="" and conselh !="" and obs !="":
+                               if serial_number !="" and conselh!="" and sala_id!="" and descricao !="" and data_entrada !="" and provinencia !="" and conselh !="" and carateristica !="":
                                 
                                     acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
                                     acessorio_ob.descricao=descricao
@@ -266,7 +298,64 @@ def editar_acessorio(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
+@csrf_exempt
+def editar_acessorio_gestao(request): 
+  
+  if request.method == "POST":
+            try:    
+                    acessorio_id = request.POST.get("acessorio_id")
+                    conselh= request.POST.get("conselho_edit")
+                    sala_id= request.POST.get("sala_id")
+                    obs= request.POST.get("obs")
+                    user_update= request.POST.get("user_update")
 
+                    if conselh!="23":
+
+                                if conselh !="":
+
+                                        acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
+                                        acessorio_ob.obs=obs
+                                        acessorio_ob.sala=0
+                                        acessorio_ob.conselho=conselh
+                                        acessorio_ob.user_update=user_update
+                                        acessorio_ob.dateupdate=datetime.now()
+                                        acessorio_ob.save()
+                                                                      
+                                        message='Acessorio alterado com sucesso!!'
+                                        status= 'success'
+                                        return JsonResponse({'status':status, 'message': message })
+                                else:
+                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                        status= 'error'
+                                        return JsonResponse({'status':status, 'message': message })
+
+
+
+                    else:
+                               if   sala_id!="" and conselh !="" and obs !="":
+                                
+                                    acessorio_ob=get_object_or_404(acessorios,id=acessorio_id)
+                                    acessorio_ob.obs=obs
+                                    acessorio_ob.sala=sala_id
+                                    acessorio_ob.conselho=conselh
+                                    acessorio_ob.user_update=user_update
+                                    acessorio_ob.dateupdate=datetime.now()
+                                    acessorio_ob.save()
+                                                                  
+                                    message='Acessorio alterado com sucesso!!'
+                                    status= 'success'
+                                    return JsonResponse({'status':status, 'message': message })
+                               else:
+                                    message='Erro, tem que preencher todos os campos obrigatorios!!'
+                                    status= 'error'
+                                    return JsonResponse({'status':status, 'message': message })
+                        
+
+                  
+         
+
+            except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 def exportar_acessorio_excel(request):
     # Criar workbook e folha
     workbook = openpyxl.Workbook()

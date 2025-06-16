@@ -275,6 +275,7 @@ function get_acessorio_delete(button){
 function get_acessorio(button){
 
     let acessorio_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
  
     const data = {
      "acessorio_id":acessorio_id
@@ -292,6 +293,7 @@ function get_acessorio(button){
              document.getElementById("serial_number_edit").value= data.resultado[0].serial_number;
              document.getElementById("obs_edit").value=data.resultado[0].obs;
              document.getElementById("acessorio_id").value=acessorio_id;
+             document.getElementById("sidebar_id").value=sidebar_menu;
              document.getElementById("conselho_edit").value=data.resultado[0].conselho;
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
              document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
@@ -319,20 +321,100 @@ function get_acessorio(button){
      });
  }
 
+ function get_acessorio_gestao(button){
+
+    let acessorio_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
+ 
+    const data = {
+     "acessorio_id":acessorio_id
+     };
+ 
+     jqOld.ajax({
+         url: '../get/acessorio_editar/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+ 
+             
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("serial_number_edit").value= data.resultado[0].serial_number;
+             document.getElementById("obs_edit").value=data.resultado[0].obs;
+             document.getElementById("acessorio_id").value=acessorio_id;
+             document.getElementById("sidebar_id").value=sidebar_menu;
+             document.getElementById("conselho_edit").value=data.resultado[0].conselho;
+             document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
+             document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+
+             if(data.resultado[0].conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+
+             }
+   
+             
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("carateristica_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
+
  function edit_acessorio() {
 
     
     const descricao = document.getElementById('descricao_edit').value;
     const data_entrada_edit = document.getElementById('data_entrada_edit').value;
     const provinencia_edit = document.getElementById('provinencia_edit').value;
-    const quantidade = document.getElementById('quantidade_edit').value;
     const serial_number = document.getElementById('serial_number_edit').value;
     const obs = document.getElementById('obs_edit').value;
+    const sidebar_id = document.getElementById('sidebar_id').value;
     const conselho_edit = document.getElementById('conselho_edit').getAttribute("data-id");
     const sala_id = document.getElementById('saladiv_edit-select').value;
     const id_user = document.getElementById('id_user_edit').value;
     const carateristica = document.getElementById('carateristica_edit').value;
     const acessorio_id = document.getElementById('acessorio_id').value;
+    let divPai = document.getElementById("alerta_edit");
+    let divalert = document.createElement("div");
+
+    if(sidebar_id=='sidebar_gestao'){
+
+        if(conselho_edit=='23'){
+
+                if(sala_id==""){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+                }
+
+        }else if(conselho_edit!=""){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+        }
+
+    }
 
 
     // Dados para enviar
@@ -346,7 +428,6 @@ function get_acessorio(button){
         "data_entrada":data_entrada_edit,
         "provinencia":provinencia_edit,
         "carateristica":carateristica,
-        "quantidade":quantidade,
         "serial_number":serial_number,
         "X-CSRFToken": getCSRFToken()
     };
@@ -358,11 +439,10 @@ function get_acessorio(button){
         data: data,
         success: function (data) {
 
-            let divPai = document.getElementById("alerta_edit");
-            let divalert = document.createElement("div");
+            
 
 
-            if (data.status == 'success') {
+            if (data.status == 'success') {\
                 
                 divPai.innerHTML = ''
 
@@ -372,22 +452,27 @@ function get_acessorio(button){
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
 
-                setTimeout(() => {
+                if(sidebar_id=='gestao'){
 
-                        fetch('../gestao_acessorio/', {
-                            headers: {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache'
-                            }
-                        })
-                        .then(res => res.text())
-                        .then(html => {
-                            document.getElementById("container_xl").innerHTML = html;
-                        });
+                    setTimeout(() => {
 
-                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                
-                    }, 2000);
+                            fetch('../gestao_acessorio?modulo=gestao', {
+                                headers: {
+                                'Cache-Control': 'no-cache',
+                                'Pragma': 'no-cache'
+                                }
+                            })
+                            .then(res => res.text())
+                            .then(html => {
+                                document.getElementById("container_xl").innerHTML = html;
+                            });
+
+                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                    
+                        }, 2000);
+                }
+
+                    
 
             } else {
 
