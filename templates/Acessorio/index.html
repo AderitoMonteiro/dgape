@@ -68,7 +68,7 @@
 			</table>
 			<div class="clearfix">
 				<div class="hint-text"> <span>Página {{ acessorio.number }} de {{ acessorio.paginator.num_pages }}</span></div>
-				<ul class="pagination">
+				 <ul class="pagination">
 
 					{% if acessorio.has_previous %}
 					<li class="page-item"><a onclick="Paginacao_acessorio('1')" class="page-link">Primeira</a></li>
@@ -79,7 +79,7 @@
 						<li class="page-item"><a onclick="Paginacao_acessorio({{acessorio.next_page_number}})" class="page-link">Próxima</a></li>
 					{% endif %}
 					
-				</ul>
+				 </ul>
 			</div>
 		</div>
 </div>        

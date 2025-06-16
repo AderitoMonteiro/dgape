@@ -312,13 +312,13 @@ function get_mobiliario(button){
                 document.getElementById('serial_number_edit').value=data.resultado[0].serial_number;
 
              }
-            
+            /*
              document.getElementById("data_entrada_edit").disabled=true;
              document.getElementById("descricao_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("serial_number_edit").disabled=true;
              document.getElementById("carateristica_edit").disabled=true;
-             document.getElementById("provinencia_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;*/
           },
          error: function (xhr, status, error) {
  

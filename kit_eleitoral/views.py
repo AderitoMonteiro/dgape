@@ -25,11 +25,12 @@ def gestao_kit_eleitoral(request):
             scaner  = equipamento_departamento.objects.all().filter(tipo="Scaner Impresão Digital",status=1)
             camera  = equipamento_departamento.objects.all().filter(tipo="Camara Fotografica",status=1) 
             assinatura  = equipamento_departamento.objects.all().filter(tipo="Capitura Assinatura",status=1) 
-            cabo  = mobiliario.objects.all().filter(tipo="Acessórios eletrônicos",status=1)   
+            cabo  = acessorios.objects.all().filter(status=1)   
             banquinho  = mobiliario.objects.all().filter(tipo="Banquinho",status=1)   
                
 
             try:
+              
                 query = '''     SELECT 
                                 KE.id as id, 
                                 KE.cres_id as cres_id, 
@@ -172,7 +173,7 @@ def get_kit(request):
                                 left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
                                 left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                 left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
-                                left JOIN departamentos_mobiliario as cb on KE.cabo_id=cb.id
+                                left JOIN acessorio_acessorios as cb on KE.cabo_id=cb.id
                                 left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id
                                 where KE.id=%s
                             '''
