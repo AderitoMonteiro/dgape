@@ -161,28 +161,57 @@ def gestao_equipamento(request):
                       sala_lis = sala.objects.all().filter(status=1)  
                       equipamento_list = equipamento.objects.all().filter(status=1)
                       componente ='equipamento'
+                      sidebar=request.GET.get('modulo')
 
-                      query = '''
-                            SELECT 
-                            departamentos_equipamento.id,
-                            departamentos_equipamento.descricao,
-                            mac_address,
-                            data_entrada,
-                            provinencia,
-                            marca,
-                            modelo,
-                            obs,
-                            serial_number,
-                            tipo,
-                            IFNULL(departamentos_sala.descricao,'') as sala,
-                            kit_eleitoral_conselho.descricao as conselho
-                            FROM 
-                            departamentos_equipamento
-                            left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
-                            left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
-                            where departamentos_equipamento.status=1 order by departamentos_equipamento.id desc
+                      if sidebar=='gestao':
 
-                    '''
+                          query = '''
+                                SELECT 
+                                departamentos_equipamento.id,
+                                departamentos_equipamento.descricao,
+                                mac_address,
+                                data_entrada,
+                                provinencia,
+                                marca,
+                                modelo,
+                                obs,
+                                serial_number,
+                                tipo,
+                                IFNULL(departamentos_sala.descricao,'') as sala,
+                                kit_eleitoral_conselho.descricao as conselho,
+                                'get_equipamento_gestao(this)' as sidebar,
+                                'sidebar_gestao' as sidebar_descricao
+                                FROM 
+                                departamentos_equipamento
+                                left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
+                                left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                                where departamentos_equipamento.status=1 order by departamentos_equipamento.id desc
+                                '''
+                      else:
+                          
+                          query = '''
+                                SELECT 
+                                departamentos_equipamento.id,
+                                departamentos_equipamento.descricao,
+                                mac_address,
+                                data_entrada,
+                                provinencia,
+                                marca,
+                                modelo,
+                                obs,
+                                serial_number,
+                                tipo,
+                                IFNULL(departamentos_sala.descricao,'') as sala,
+                                kit_eleitoral_conselho.descricao as conselho,
+                                'get_equipamento(button)' as sidebar,
+                                'sidebar_lancamento' as sidebar_descricao
+                                FROM 
+                                departamentos_equipamento
+                                left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
+                                left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                                where departamentos_equipamento.status=1 order by departamentos_equipamento.id desc
+                                '''
+
                       with connection.cursor() as cursor:
                           cursor.execute(query)
 

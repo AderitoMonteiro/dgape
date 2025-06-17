@@ -390,7 +390,7 @@ function get_acessorio(button){
 
         if(conselho_edit=='23'){
 
-                if(sala_id==""){
+                if(!sala_id){
 
                     divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
                     divalert.setAttribute("class","alert alert-danger");
@@ -402,7 +402,7 @@ function get_acessorio(button){
                     return;
                 }
 
-        }else if(conselho_edit!=""){
+        }else if(!conselho_edit){
 
                     divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
                     divalert.setAttribute("class","alert alert-danger");
@@ -439,10 +439,8 @@ function get_acessorio(button){
         data: data,
         success: function (data) {
 
-            
-
-
-            if (data.status == 'success') {\
+        
+            if (data.status == 'success') {
                 
                 divPai.innerHTML = ''
 
@@ -451,17 +449,19 @@ function get_acessorio(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
+                var modulo;
 
-                if(sidebar_id=='gestao'){
+                if(sidebar_id=='sidebar_gestao'){
 
+                    modulo='gestao';
+
+                }else{
+
+                    modulo='lancamento';
+                }
                     setTimeout(() => {
 
-                            fetch('../gestao_acessorio?modulo=gestao', {
-                                headers: {
-                                'Cache-Control': 'no-cache',
-                                'Pragma': 'no-cache'
-                                }
-                            })
+                            fetch('../gestao_acessorio/?modulo='+modulo)
                             .then(res => res.text())
                             .then(html => {
                                 document.getElementById("container_xl").innerHTML = html;
@@ -470,7 +470,7 @@ function get_acessorio(button){
                             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
                     
                         }, 2000);
-                }
+                
 
                     
 

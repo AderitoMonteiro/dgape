@@ -1,8 +1,8 @@
 try{
 
-function index() {
+function index(modulo) {
 
-  fetch('../equipamento_index/')
+  fetch('../equipamento_index/?modulo='+modulo)
       .then(res => res.text())
       .then(html => {
          

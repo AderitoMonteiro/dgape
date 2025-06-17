@@ -104,6 +104,7 @@ function id_deleteCk_equipamento(){
 function get_equipamento(button){
 
     let equipamento_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
  
     const data = {
      "equipamento_id":equipamento_id
@@ -126,6 +127,7 @@ function get_equipamento(button){
              document.getElementById("conselho_edit").value=data.resultado[0].descricao_conselho;
              document.getElementById("conselho_edit").setAttribute("data-id", data.resultado[0].conselho_id)
              document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("sidebar_id").value=sidebar_menu;
              document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
 
              document.getElementById("equipamento_id").value=equipamento_id;
@@ -144,6 +146,61 @@ function get_equipamento(button){
              document.getElementById("mac_address_edit").disabled=true;
              document.getElementById("tipo_item_edit").disabled=true;
              document.getElementById("provinencia_edit").disabled=true;*/
+ 
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
+
+
+ function get_equipamento_gestao(button){
+
+    let equipamento_id=button.getAttribute("data-id");
+     let sidebar_menu=button.getAttribute("data-sidebar-descricao");
+ 
+    const data = {
+     "equipamento_id":equipamento_id
+     };
+ 
+     jqOld.ajax({
+         url: '../get/equipamento_editar/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+ 
+             
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("obs_edit").value= data.resultado[0].obs;
+             document.getElementById("marca_edit").value=data.resultado[0].marca;
+             document.getElementById("modelo_edit").value=data.resultado[0].modelo;
+             document.getElementById("serial_number_edit").value=data.resultado[0].serial_number;
+             document.getElementById("mac_address_edit").value=data.resultado[0].mac_address;
+             document.getElementById("conselho_edit").value=data.resultado[0].descricao_conselho;
+             document.getElementById("conselho_edit").setAttribute("data-id", data.resultado[0].conselho_id)
+             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("sidebar_id").value=sidebar_menu;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+
+             document.getElementById("equipamento_id").value=equipamento_id;
+
+             if(data.resultado[0].descricao_conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+             }
+          
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("marca_edit").disabled=true;
+             document.getElementById("modelo_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("mac_address_edit").disabled=true;
+             document.getElementById("tipo_item_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
  
           },
          error: function (xhr, status, error) {
@@ -215,9 +272,39 @@ function get_equipamento_eleitoral(button){
      const equipamento_id = document.getElementById('equipamento_id').value;
      const conselho = document.getElementById('conselho_edit').getAttribute("data-id");
      const sala_id = document.getElementById('saladiv_edit-select').value;
-
+     const sidebar_id = document.getElementById('sidebar_id').value;
+     let divPai = document.getElementById("alerta_edit");
+     let divalert = document.createElement("div");
      
- 
+    if(sidebar_id=='sidebar_gestao'){
+
+        if(conselho=='23'){
+
+                if(!sala_id){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+                }
+
+        }else if(!conselho){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+        }
+
+    }
  
      // Dados para enviar
      const data = {
@@ -236,10 +323,6 @@ function get_equipamento_eleitoral(button){
          data: data,
          success: function (data) {
  
-             let divPai = document.getElementById("alerta_edit");
-             let divalert = document.createElement("div");
- 
- 
              if (data.status == 'success') {
                  
                  divPai.innerHTML = ''
@@ -249,14 +332,20 @@ function get_equipamento_eleitoral(button){
                  divalert.setAttribute( "role","alert");
                  divalert.innerHTML = data.message;
                  divPai.appendChild(divalert);
+                 var modulo;
+
+                 if(sidebar_id=='sidebar_gestao'){
+
+                    modulo='gestao';
+
+                    }else{
+
+                        modulo='lancamento';
+                    }
+
                  setTimeout(() => {
 
-                    fetch('../equipamento_index/', {
-                        headers: {
-                          'Cache-Control': 'no-cache',
-                          'Pragma': 'no-cache'
-                        }
-                      })
+                    fetch('../equipamento_index/?modulo='+modulo)
                       .then(res => res.text())
                       .then(html => {
                         document.getElementById("container_xl").innerHTML = html;
