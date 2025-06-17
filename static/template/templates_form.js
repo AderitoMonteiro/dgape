@@ -98,9 +98,9 @@ function acessorio_form(modulo) {
 }
 
 
-function mobiliario_form() {
+function mobiliario_form(modulo) {
 
-      fetch('../mobiliario_index/')
+      fetch('../mobiliario_index/?modulo='+modulo)
           .then(res => res.text())
           .then(html => {
            
@@ -116,9 +116,9 @@ function mobiliario_form() {
 
       }
 
- function kit_form(){
+ function kit_form(modulo){
 
-    fetch('../gestao_kit_eleitoral/')
+    fetch('../gestao_kit_eleitoral/?modulo='+modulo)
           .then(res => res.text())
           .then(html => {
 

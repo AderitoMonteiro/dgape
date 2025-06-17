@@ -211,6 +211,7 @@ def gestao_equipamento(request):
                                 left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
                                 where departamentos_equipamento.status=1 order by departamentos_equipamento.id desc
                                 '''
+                                
 
                       with connection.cursor() as cursor:
                           cursor.execute(query)
@@ -645,25 +646,53 @@ def gestao_mobiliario(request):
     conselho_list = conselho.objects.all().filter(status=1)
     sala_list = sala.objects.all().filter(status=1)
     componente ='equipamento'
+    sidebar=request.GET.get('modulo')
 
-    query = '''
-                    SELECT 
-                    dm.id,
-                    dm.descricao,
-                    dm.data_entrada,
-                    dm.serial_number,
-                    dm.obs,
-                    dm.tipo,
-                    dm.provinencia,
-                    dm.provinencia,
-                    dm.carateristica,
-                    kec.descricao as conselho,
-                    IFNULL(ds.descricao,'') as sala
-                    FROM departamentos_mobiliario dm
-                    left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
-                    left join departamentos_sala as ds on dm.sala=ds.id
-                    WHERE dm.STATUS=1 order by dm.id desc
-                '''
+    if sidebar=='gestao':
+
+                        query = '''
+                                        SELECT 
+                                        dm.id,
+                                        dm.descricao,
+                                        dm.data_entrada,
+                                        dm.serial_number,
+                                        dm.obs,
+                                        dm.tipo,
+                                        dm.provinencia,
+                                        dm.provinencia,
+                                        dm.carateristica,
+                                        kec.descricao as conselho,
+                                        IFNULL(ds.descricao,'') as sala,
+                                        'get_mobiliario_gestao(this)' as sidebar,
+                                        'sidebar_gestao' as sidebar_descricao
+                                        FROM departamentos_mobiliario dm
+                                        left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                                        left join departamentos_sala as ds on dm.sala=ds.id
+                                        WHERE dm.STATUS=1 order by dm.id desc
+                                    '''
+    else:
+
+                          query = '''
+                                         SELECT 
+                                         dm.id,
+                                         dm.descricao,
+                                         dm.data_entrada,
+                                         dm.serial_number,
+                                         dm.obs,
+                                         dm.tipo,
+                                         dm.provinencia,
+                                         dm.provinencia,
+                                         dm.carateristica,
+                                         kec.descricao as conselho,
+                                         IFNULL(ds.descricao,'') as sala,
+                                         'get_mobiliario(this)' as sidebar,
+                                         'sidebar_lancamento' as sidebar_descricao
+                                         FROM departamentos_mobiliario dm
+                                         left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                                         left join departamentos_sala as ds on dm.sala=ds.id
+                                         WHERE dm.STATUS=1 order by dm.id desc
+                                                        '''
+
     with connection.cursor() as cursor:
           cursor.execute(query)
           colunas = [col[0] for col in cursor.description] 

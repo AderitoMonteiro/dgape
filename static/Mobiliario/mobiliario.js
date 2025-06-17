@@ -273,6 +273,7 @@ function add_mobiliario_eleitoral() {
 function get_mobiliario(button){
 
     let mobiliario_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
  
     const data = {
      "mobiliario_id":mobiliario_id
@@ -295,6 +296,7 @@ function get_mobiliario(button){
              document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
              document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
              document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+             document.getElementById("sidebar_id").value=sidebar_menu;
 
              if(data.resultado[0].conselho=="DGAPE"){
 
@@ -327,6 +329,65 @@ function get_mobiliario(button){
      });
  }
 
+ function get_mobiliario_gestao(button){
+
+    let mobiliario_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
+ 
+    const data = {
+     "mobiliario_id":mobiliario_id
+     };
+ 
+     jqOld.ajax({
+         url: '../get/mobiliario_editar/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+ 
+             
+             document.getElementById("descricao_edit").value= data.resultado[0].descricao;
+             document.getElementById("data_entrada_edit").value= data.resultado[0].data_entrada;
+             document.getElementById("serial_number_edit").value= data.resultado[0].serial_number;
+             document.getElementById("obs_edit").value=data.resultado[0].obs;
+             document.getElementById("mobiliario_id").value=mobiliario_id;
+             document.getElementById("conselho_edit").value=data.resultado[0].conselho;
+             document.getElementById("tipo_item_edit").value=data.resultado[0].tipo;
+             document.getElementById("conselho_edit").setAttribute('data-id',data.resultado[0].conselho_id)
+             document.getElementById("carateristica_edit").value=data.resultado[0].carateristica;
+             document.getElementById("provinencia_edit").value=data.resultado[0].provinencia;
+            document.getElementById("sidebar_id").value=sidebar_menu;
+
+             if(data.resultado[0].conselho=="DGAPE"){
+
+                document.getElementById("saladiv_edit").style.display = 'block';
+                document.getElementById("saladiv_edit-select").value= data.resultado[0].sala_id;
+
+             }
+
+             if(data.resultado[0].tipo =="Mesa" ||data.resultado[0].tipo =="Cadeira"){
+
+                document.getElementById('div_modelo_edit').setAttribute('style',"display: block;");
+                document.getElementById('div_serial_edit').setAttribute('style',"display: block;");
+
+                document.getElementById('id_modelo_edit').value=data.resultado[0].modelo;
+                document.getElementById('serial_number_edit').value=data.resultado[0].serial_number;
+
+             }
+          
+             document.getElementById("data_entrada_edit").disabled=true;
+             document.getElementById("descricao_edit").disabled=true;
+             document.getElementById("tipo_item_edit").disabled=true;
+             document.getElementById("serial_number_edit").disabled=true;
+             document.getElementById("carateristica_edit").disabled=true;
+             document.getElementById("provinencia_edit").disabled=true;
+             document.getElementById("id_modelo_edit").disabled=true;
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
  function get_mobiliario_eleitoral(button){
 
     let mobiliario_id=button.getAttribute("data-id");
@@ -369,6 +430,39 @@ function get_mobiliario(button){
     const sala_id = document.getElementById('saladiv_edit-select').value;
     const id_user = document.getElementById('id_user_edit').value;
     const mobiliario_id = document.getElementById('mobiliario_id').value;
+    const sidebar_id = document.getElementById('sidebar_id').value;
+    let divPai = document.getElementById("alerta_edit");
+    let divalert = document.createElement("div");
+
+     if(sidebar_id=='sidebar_gestao'){
+
+        if(conselho=='23'){
+
+                if(!sala_id){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+                }
+
+        }else if(!conselho){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+        }
+
+    }
 
 
     // Dados para enviar
@@ -389,8 +483,7 @@ function get_mobiliario(button){
         data: data,
         success: function (data) {
 
-            let divPai = document.getElementById("alerta_edit");
-            let divalert = document.createElement("div");
+           
 
 
             if (data.status == 'success') {
@@ -402,15 +495,20 @@ function get_mobiliario(button){
                 divalert.setAttribute( "role","alert");
                 divalert.innerHTML = data.message;
                 divPai.appendChild(divalert);
+                var modulo;
+
+                if(sidebar_id=='sidebar_gestao'){
+
+                    modulo='gestao';
+
+                    }else{
+
+                        modulo='lancamento';
+                    }
 
                 setTimeout(() => {
 
-                    fetch('../mobiliario_index/', {
-                        headers: {
-                          'Cache-Control': 'no-cache',
-                          'Pragma': 'no-cache'
-                        }
-                      })
+                    fetch('../mobiliario_index/?modulo='+modulo)
                       .then(res => res.text())
                       .then(html => {
                         document.getElementById("container_xl").innerHTML = html;

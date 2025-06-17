@@ -58,7 +58,7 @@
 						<td>{{paginator_kit_list.guia_entrega}}</td>
 						<td>{{paginator_kit_list.data_saida}}</td>
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-id="{{ paginator_kit_list.id }}" onclick="get_kit(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#editEmployeeModal" class="edit" data-sidebar-descricao="{{ paginator_kit_list.sidebar_descricao }}" data-id="{{ paginator_kit_list.id }}" onclick="{{paginator_kit_list.sidebar}}" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a href="#deleteEmployeeModal" class="delete" data-id="{{ paginator_kit_list.id }}" onclick="get_kit_delete(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>

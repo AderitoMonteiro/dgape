@@ -27,51 +27,87 @@ def gestao_kit_eleitoral(request):
             assinatura  = equipamento_departamento.objects.all().filter(tipo="Capitura Assinatura",status=1) 
             cabo  = acessorios.objects.all().filter(status=1)   
             banquinho  = mobiliario.objects.all().filter(tipo="Banquinho",status=1)   
-               
+            sidebar=request.GET.get('modulo')
 
+          
             try:
-              
-                query = '''     SELECT 
-                                KE.id as id, 
-                                KE.cres_id as cres_id, 
-                                KE.status as status, 
-                                KE.malas as malas, 
-                                ml.descricao as malas_descricao,
-                                scaner.descricao as scaner_impresao_digital,
-                                KE.impresora_id as impresora, 
-                                KE.guia_entrega as guia_entrega,
-                                KE.data_saida as data_saida,
-                                kec.descricao as descricao,
-                                eq.descricao as equipamento,
-                                imp.descricao as impressora,
-                                eq.serial_number as serial_number_portatel,
-                                imp.serial_number as serial_number_impressora,
-                                ass.descricao as capitura_assinatura,
-                                cm.descricao as camara_fotografica
-                                FROM kit_eleitoral_kit_eleit as KE
-                                left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
-                                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
-                                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
-                                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                                left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
-                                where KE.status=1
-                            '''
-                with connection.cursor() as cursor:
-                 cursor.execute(query)
+                    
+                      if sidebar=='gestao':   
+
+                            query = '''     SELECT 
+                                            KE.id as id, 
+                                            KE.cres_id as cres_id, 
+                                            KE.status as status, 
+                                            KE.malas as malas, 
+                                            ml.descricao as malas_descricao,
+                                            scaner.descricao as scaner_impresao_digital,
+                                            KE.impresora_id as impresora, 
+                                            KE.guia_entrega as guia_entrega,
+                                            KE.data_saida as data_saida,
+                                            kec.descricao as descricao,
+                                            eq.descricao as equipamento,
+                                            imp.descricao as impressora,
+                                            eq.serial_number as serial_number_portatel,
+                                            imp.serial_number as serial_number_impressora,
+                                            ass.descricao as capitura_assinatura,
+                                            cm.descricao as camara_fotografica,
+                                            'get_mobiliario_gestao(this)' as sidebar,
+                                            'sidebar_gestao' as sidebar_descricao
+                                            FROM kit_eleitoral_kit_eleit as KE
+                                            left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                                            left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
+                                            left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
+                                            left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                            left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                            left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                            left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
+                                            where KE.status=1
+                                        '''
+                      else:
+
+                          query = '''     SELECT 
+                                          KE.id as id, 
+                                          KE.cres_id as cres_id, 
+                                          KE.status as status, 
+                                          KE.malas as malas, 
+                                          ml.descricao as malas_descricao,
+                                          scaner.descricao as scaner_impresao_digital,
+                                          KE.impresora_id as impresora, 
+                                          KE.guia_entrega as guia_entrega,
+                                          KE.data_saida as data_saida,
+                                          kec.descricao as descricao,
+                                          eq.descricao as equipamento,
+                                          imp.descricao as impressora,
+                                          eq.serial_number as serial_number_portatel,
+                                          imp.serial_number as serial_number_impressora,
+                                          ass.descricao as capitura_assinatura,
+                                          cm.descricao as camara_fotografica
+                                          FROM kit_eleitoral_kit_eleit as KE
+                                          left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
+                                          left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
+                                          left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
+                                          left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                          left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                          left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                          left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
+                                          where KE.status=1
+                                          '''
+
                 
-                 colunas = [col[0] for col in cursor.description] 
-                 resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-                 paginator = Paginator(resultados, 5)
-                 page_number = request.GET.get("page",1)  
-                 paginator_kit_list = paginator.get_page(page_number)
+                      with connection.cursor() as cursor:
+                                cursor.execute(query)
+                                        
+                                colunas = [col[0] for col in cursor.description] 
+                                resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                                paginator = Paginator(resultados, 5)
+                                page_number = request.GET.get("page",1)  
+                                paginator_kit_list = paginator.get_page(page_number)
 
-                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                            return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
-             
+                                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                                        return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
+                        
 
-                return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
+                      return render(request, 'Kit_eleitoral/index.html',{"conselho":conselho_lis,"kit_eleitoral":paginator_kit_list,"portatel":portatel,"impressora":impressora,"mala":mala,"scaner":scaner,"camera":camera,"assinatura":assinatura,"tripe":tripe,"Cabo":cabo,"Banquinho":banquinho})
 
             except Exception as e:
                   return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
