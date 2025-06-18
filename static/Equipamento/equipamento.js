@@ -797,11 +797,11 @@ function toggleDropdown_equipamento() {
     const dropdown = document.getElementById("dropdownMenu");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     document.getElementById("dropdownInput").value = "";
-    filterDropdown(); // show all items when opening
+    filterDropdown_equipamento(); // show all items when opening
     document.getElementById("dropdownInput").focus();
   }
 
-  function filterDropdown() {
+  function filterDropdown_equipamento() {
     const input = document.getElementById("dropdownInput").value.toLowerCase();
     const items = document.querySelectorAll(".dropdown-item");
 
@@ -810,7 +810,7 @@ function toggleDropdown_equipamento() {
     });
   }
 
-  function selectItem(el) {
+  function selectItem_equipamento(el) {
     const selectedValue = el.textContent;
     document.getElementById("conselho").value = selectedValue;
     document.getElementById("conselho").setAttribute("data-id", el.getAttribute("data-id"));

@@ -57,11 +57,11 @@ def gestao_kit_eleitoral(request):
                                             'sidebar_gestao' as sidebar_descricao
                                             FROM kit_eleitoral_kit_eleit as KE
                                             left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                            left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
-                                            left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
-                                            left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                            left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
-                                            left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                            left JOIN equipamentos_equipamento as eq on KE.portatel_id=eq.id
+                                            left JOIN equipamentos_equipamento as imp on KE.impresora_id=imp.id
+                                            left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                            left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                            left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
                                             left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                             where KE.status=1
                                         '''
@@ -88,11 +88,11 @@ def gestao_kit_eleitoral(request):
                                           'sidebar' as sidebar_descricao
                                           FROM kit_eleitoral_kit_eleit as KE
                                           left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                          left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
-                                          left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
-                                          left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                          left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
-                                          left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                          left JOIN equipamentos_equipamento as eq on KE.portatel_id=eq.id
+                                          left JOIN equipamentos_equipamento as imp on KE.impresora_id=imp.id
+                                          left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                          left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                          left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
                                           left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                           where KE.status=1
                                           '''
@@ -206,11 +206,11 @@ def get_kit(request):
                                 KE.obs
                                 FROM kit_eleitoral_kit_eleit as KE
                                 left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
-                                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
-                                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
-                                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                                left JOIN equipamentos_equipamento as eq on KE.portatel_id=eq.id
+                                left JOIN equipamentos_equipamento as imp on KE.impresora_id=imp.id
+                                left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                                left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                                left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
                                 left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
                                 left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
                                 left JOIN acessorio_acessorios as cb on KE.cabo_id=cb.id
@@ -519,12 +519,12 @@ def exportar_kit_excel(request):
                 bq.descricao as banquinho
                 FROM kit_eleitoral_kit_eleit as KE
                 left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
-                left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
-                left JOIN departamentos_equipamento as imp on KE.impresora_id=imp.id
-                left JOIN departamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
-                left JOIN departamentos_equipamento as ass on KE.capitura_assinatura=ass.id
-                left JOIN departamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                left JOIN departamentos_equipamento as ml on KE.malas=ml.id
+                left JOIN equipamentos_equipamento as eq on KE.portatel_id=eq.id
+                left JOIN equipamentos_equipamento as imp on KE.impresora_id=imp.id
+                left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
+                left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
+                left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
+                left JOIN equipamentos_equipamento as ml on KE.malas=ml.id
                 left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
                 left JOIN departamentos_mobiliario as acessorio on KE.cabo_id=acessorio.id
                 left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id

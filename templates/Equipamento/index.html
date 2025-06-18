@@ -119,9 +119,9 @@
 						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
 						<input id="conselho" class="form-control" type="text" onclick="toggleDropdown_equipamento()"></input>
 						<div id="dropdownMenu" class="dropdown-content">
-						  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown()">
+						  <input type="text" id="dropdownInput" placeholder="Type to filter..." onkeyup="filterDropdown_equipamento()">
 							{% for conselho_list in conselho %}
-							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
+							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem_equipamento(this)">{{conselho_list.descricao}}</div>
 							{% endfor %}
 					  </div>
 				    </div>

@@ -771,7 +771,7 @@ function toggleDropdown_kit() {
      const dropdown = document.querySelector(".form-group");
 
     if (!dropdown.contains(e.target)) {
-      document.getElementById("dropdownMenu").style.display = "none";
+   //   document.getElementById("dropdownMenu").style.display = "none";
     }
   });
 
@@ -865,9 +865,7 @@ function toggleDropdown_kit() {
       document.addEventListener("click", function (e) {
          const dropdown = document.querySelector(".form-group");
 
-        if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
-        }
+        
       });
     
       
@@ -914,9 +912,7 @@ function toggleDropdown_kit() {
       document.addEventListener("click", function (e) {
          const dropdown = document.querySelector(".form-group");
 
-        if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
-        }
+        
       });
     
       // close filtragem drop impressora start
@@ -962,9 +958,7 @@ function toggleDropdown_kit() {
       document.addEventListener("click", function (e) {
          const dropdown = document.querySelector(".form-group");
 
-        if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
-        }
+        
       });
       // close filtragem drop scanner start
       // filtragem drop scanner start
@@ -1006,9 +1000,7 @@ function toggleDropdown_kit() {
       document.addEventListener("click", function (e) {
          const dropdown = document.querySelector(".form-group");
 
-        if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
-        }
+        
       });
       // close filtragem drop scanner start
 
@@ -1042,9 +1034,7 @@ function toggleDropdown_kit() {
       document.addEventListener("click", function (e) {
          const dropdown = document.querySelector(".form-group");
 
-        if (!dropdown.contains(e.target)) {
-          document.getElementById("dropdownMenu").style.display = "none";
-        }
+        
       });
       // close filtragem drop scanner start
 
