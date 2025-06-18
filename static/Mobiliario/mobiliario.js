@@ -512,6 +512,7 @@ function get_mobiliario(button){
                       .then(res => res.text())
                       .then(html => {
                         document.getElementById("container_xl").innerHTML = html;
+                       filter_table_mobiliario();
                       });
 
                       document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

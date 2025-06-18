@@ -50,12 +50,7 @@ function add_acessorio() {
                 divPai.appendChild(divalert);
                 setTimeout(() => {
 
-                    fetch('../gestao_acessorio/', {
-                        headers: {
-                          'Cache-Control': 'no-cache',
-                          'Pragma': 'no-cache'
-                        }
-                      })
+                    fetch('../gestao_acessorio/')
                       .then(res => res.text())
                       .then(html => {
                         document.getElementById("container_xl").innerHTML = html;
@@ -392,6 +387,7 @@ function get_acessorio(button){
 
                 if(!sala_id){
 
+
                     divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
                     divalert.setAttribute("class","alert alert-danger");
                     divalert.setAttribute( "style","text-align;");
@@ -451,6 +447,7 @@ function get_acessorio(button){
                 divPai.appendChild(divalert);
                 var modulo;
 
+
                 if(sidebar_id=='sidebar_gestao'){
 
                     modulo='gestao';
@@ -465,6 +462,7 @@ function get_acessorio(button){
                             .then(res => res.text())
                             .then(html => {
                                 document.getElementById("container_xl").innerHTML = html;
+                                filter_table_acessorio();
                             });
 
                             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

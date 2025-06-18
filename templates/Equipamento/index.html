@@ -1,4 +1,4 @@
-	<div class="table-responsive">
+<div class="table-responsive">
 		<div class="table-wrapper" style="WIDTH: 120%!important;">
 			<div class="table-title">
 				<div class="row">
@@ -88,7 +88,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>        
+</div>        
 <!-- Edit Modal HTML -->
 
 
@@ -114,7 +114,6 @@
 					<div class="form-group">
 						<label><strong>Provinencia</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="provinencia" class="form-control">
-						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
 					<div class="form-group">
 						<label><strong>Conselho</strong><span style="color: red;">*</span></label>
@@ -124,14 +123,12 @@
 							{% for conselho_list in conselho %}
 							  <div  data-id="{{ conselho_list.id }}" class="dropdown-item" onclick="selectItem(this)">{{conselho_list.descricao}}</div>
 							{% endfor %}
-							<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					  </div>
 				    </div>
 					
 					<div class="form-group">
 						<label><strong>Descrição</strong><span style="color: red;">*</span></label></label>
 						<input type="text" id="descricao" class="form-control" required>
-						<input type="hidden" id="id_user" class="form-control" value="{{ request.user.id }}">
 					</div>
 					<div class="form-group">
 						<label><strong>Marca</strong><span style="color: red;">*</span></label></label>

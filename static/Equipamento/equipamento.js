@@ -349,6 +349,7 @@ function get_equipamento_eleitoral(button){
                       .then(res => res.text())
                       .then(html => {
                         document.getElementById("container_xl").innerHTML = html;
+                        filter_table_equipamento();
                       });
 
                       document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

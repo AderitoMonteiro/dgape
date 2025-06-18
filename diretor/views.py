@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from departamentos.models import inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,equipamento,mobiliario,inventario_equipamento
+from departamentos.models import inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,mobiliario,inventario_equipamento
 from kit_eleitoral.models import conselho, equipamento as equipamento_kit,kit_eleit
+from equipamentos.models import equipamento
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator

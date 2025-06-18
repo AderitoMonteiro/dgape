@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'departamentos.apps.DepartamentosConfig',
+    'equipamentos.apps.EquipamentosConfig',
     'kit_eleitoral.apps.KitEleitoralConfig',
     'acessorio.apps.AcessorioConfig',
     'diretor.apps.DiretorConfig',

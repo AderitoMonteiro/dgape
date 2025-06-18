@@ -118,7 +118,8 @@ function add_kit() {
 function get_kit(button){
 
     let kit_id=button.getAttribute("data-id");
- 
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
+
     const data = {
      "kit_id": kit_id
      };
@@ -148,7 +149,64 @@ function get_kit(button){
             document.getElementById("tripe_edit").value= result.resultado[0].tripe_id;
             document.getElementById("cabo_edit").value= result.resultado[0].cabo_id;
             document.getElementById("banquinho_edit").value= result.resultado[0].banquinho_id;
+              document.getElementById("sidebar_id").value=sidebar_menu;
 
+
+            document.getElementById("conselho_edit").disabled = true;
+            document.getElementById("portatel_edit").disabled = true;
+            document.getElementById("impressora_edit").disabled = true;
+            document.getElementById("Scaner_impresao_digital_edit").disabled = true;
+            document.getElementById("capitura_assinatura_edit").disabled = true;
+            document.getElementById("impressora_edit").disabled = true;
+            document.getElementById("cama_fotografia_edit").disabled = true;
+            document.getElementById("guia_entrega_edit").disabled = true;
+            document.getElementById("data_saida_edit").disabled = true;
+            document.getElementById("tripe_edit").disabled = true;
+            document.getElementById("cabo_edit").disabled = true;
+            document.getElementById("banquinho_edit").disabled = true;
+
+          },
+         error: function (xhr, status, error) {
+ 
+             alert('Erro: ' + xhr.responseJSON.message);
+         } 
+     });
+ }
+
+ function get_kit_gestao(button){
+
+    let kit_id=button.getAttribute("data-id");
+    let sidebar_menu=button.getAttribute("data-sidebar-descricao");
+    const data = {
+     "kit_id": kit_id
+     };
+ 
+     jqOld.ajax({
+         url: 'get/kit_editar/',
+         type: 'POST',
+         data: data,
+         success: function (data) {
+ 
+            const jsonString = JSON.stringify(data);  
+            const result = JSON.parse(jsonString);               
+             
+            document.getElementById("conselho_edit").value= result.resultado[0].cres_id;
+            document.getElementById("malas_edit").value= result.resultado[0].malas_descricao;
+            document.getElementById("malas_edit").setAttribute("data-id",  result.resultado[0].malas);
+            document.getElementById("portatel_edit").value= result.resultado[0].portatel_id;
+            document.getElementById("impressora_edit").value= result.resultado[0].id_impressora;
+            document.getElementById("Scaner_impresao_digital_edit").value= result.resultado[0].scaner_impresao_digital_id;
+            document.getElementById("capitura_assinatura_edit").value= result.resultado[0].capitura_assinatura_id;
+            document.getElementById("impressora_edit").value= result.resultado[0].impresora_id;
+            document.getElementById("cama_fotografia_edit").value= result.resultado[0].camara_fotografica_id;
+            document.getElementById("guia_entrega_edit").value= result.resultado[0].guia_entrega;
+            document.getElementById("data_saida_edit").value= result.resultado[0].data_saida;
+            document.getElementById("kit_el_id").value= result.resultado[0].id;
+            document.getElementById("obs_edit").value= result.resultado[0].obs;
+            document.getElementById("tripe_edit").value= result.resultado[0].tripe_id;
+            document.getElementById("cabo_edit").value= result.resultado[0].cabo_id;
+            document.getElementById("banquinho_edit").value= result.resultado[0].banquinho_id;
+            document.getElementById("sidebar_id").value=sidebar_menu;
 
             document.getElementById("conselho_edit").disabled = true;
             document.getElementById("portatel_edit").disabled = true;
@@ -188,8 +246,38 @@ function get_kit(button){
     const id_user = document.getElementById('id_user_edit').value;
     const kit_el_id = document.getElementById('kit_el_id').value;
     const obs_edit = document.getElementById('obs_edit').value;
+    const sidebar_id = document.getElementById('sidebar_id').value;
 
+    /*
+    if(sidebar_id=='sidebar_gestao'){
 
+        if(conselho=='23'){
+
+                if(!sala_id){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+                }
+
+        }else if(!conselho){
+
+                    divPai.setAttribute("style", "display: block!important;margin: 0 auto; width: 40%;  margin-top: 10px;  text-align: center; font-size: 15px;");
+                    divalert.setAttribute("class","alert alert-danger");
+                    divalert.setAttribute( "style","text-align;");
+                    divalert.setAttribute( "role","alert");
+                    divalert.innerHTML = 'Erro, tem que preencher todos os campos obrigatorios!!';
+                    divPai.appendChild(divalert);
+
+                    return;
+        }
+
+    }*/
     // Dados para enviar
     const data = {
         "user_update": id_user,
@@ -223,16 +311,12 @@ function get_kit(button){
                 
                 setTimeout(() => {
 
-                  fetch('../gestao_kit_eleitoral/', {
-                      headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                      }
-                    })
+                  fetch('../gestao_kit_eleitoral/')
                     .then(res => res.text())
                     .then(html => {
                       document.getElementById("container_xl").innerHTML = '';
                       document.getElementById("container_xl").innerHTML = html;
+                      filter_table_kit();
                     });
 
                     document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento,kit_eleit,conselho
-from departamentos.models import mobiliario, equipamento as equipamento_departamento
+from departamentos.models import mobiliario 
+from equipamentos.models import equipamento as equipamento_departamento
 from acessorio.models import acessorios
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
@@ -34,6 +35,7 @@ def gestao_kit_eleitoral(request):
                     
                       if sidebar=='gestao':   
 
+
                             query = '''     SELECT 
                                             KE.id as id, 
                                             KE.cres_id as cres_id, 
@@ -51,7 +53,7 @@ def gestao_kit_eleitoral(request):
                                             imp.serial_number as serial_number_impressora,
                                             ass.descricao as capitura_assinatura,
                                             cm.descricao as camara_fotografica,
-                                            'get_mobiliario_gestao(this)' as sidebar,
+                                            'get_kit_gestao(this)' as sidebar,
                                             'sidebar_gestao' as sidebar_descricao
                                             FROM kit_eleitoral_kit_eleit as KE
                                             left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
@@ -81,7 +83,9 @@ def gestao_kit_eleitoral(request):
                                           eq.serial_number as serial_number_portatel,
                                           imp.serial_number as serial_number_impressora,
                                           ass.descricao as capitura_assinatura,
-                                          cm.descricao as camara_fotografica
+                                          cm.descricao as camara_fotografica,
+                                          'get_kit(this)' as sidebar,
+                                          'sidebar' as sidebar_descricao
                                           FROM kit_eleitoral_kit_eleit as KE
                                           left JOIN kit_eleitoral_conselho as kec on ke.cres_id=kec.id
                                           left JOIN departamentos_equipamento as eq on KE.portatel_id=eq.id
