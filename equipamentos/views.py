@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento
-from departamentos.models import sala,mobiliario
-
+from departamentos.models import sala
+from mobiliarios.models import mobiliario
 from kit_eleitoral.models import conselho
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -232,8 +232,8 @@ def get_equipamento(request):
                       equipamento_id = request.POST.get("equipamento_id")
 
                       query = ''' select 
-                                  departamentos_equipamento.id,
-                                  departamentos_equipamento.descricao,
+                                  equipamentos_equipamento.id,
+                                  equipamentos_equipamento.descricao,
                                   mac_address,
                                   data_entrada,
                                   marca,
@@ -247,10 +247,10 @@ def get_equipamento(request):
                                   kit_eleitoral_conselho.descricao as descricao_conselho,
                                   kit_eleitoral_conselho.id as conselho_id
                                   from 
-                                  departamentos_equipamento
-                                  left join departamentos_sala on departamentos_equipamento.sala=departamentos_sala.id
-                                  left join kit_eleitoral_conselho on departamentos_equipamento.conselho=kit_eleitoral_conselho.id
-                                  where departamentos_equipamento.id=%s'''
+                                  equipamentos_equipamento
+                                  left join departamentos_sala on equipamentos_equipamento.sala=departamentos_sala.id
+                                  left join kit_eleitoral_conselho on equipamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                                  where equipamentos_equipamento.id=%s'''
                       with connection.cursor() as cursor:
                           cursor.execute(query,[equipamento_id])
                           
@@ -346,3 +346,22 @@ def delete_equipamento(request):
 
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def delete_equipamento_checkbox(request):
+  
+  if request.method == "POST":
+            try:
+                   id_eq= request.POST.get("id")
+                   id_user= request.POST.get("id_user")
+
+                   if id_eq:
+                         id_eqs = id_eq.split(",") 
+                         equipamento.objects.filter(id__in=id_eqs).update(status=0,user_update=id_user,dateupdate=datetime.now())
+                                                                  
+                   message='Equipamento eliminado com sucesso!!'
+                   status= 'success'
+                   return JsonResponse({'status':status, 'message': message })
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+         

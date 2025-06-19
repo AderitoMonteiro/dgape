@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import sala,inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,mobiliario,inventario_equipamento
+from .models import sala,inventario_mobiliario_eleitoral,inventario_equipamento_eleitoral, mobiliario_eleitoral,equipamento_eleitoral,inventario_mobiliario,inventario_equipamento
 from kit_eleitoral.models import conselho
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -275,25 +275,9 @@ def delete_equipamento_eleitoral(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
-def delete_equipamento_checkbox(request):
-  
-  if request.method == "POST":
-            try:
-                   id_eq= request.POST.get("id")
-                   id_user= request.POST.get("id_user")
 
-                   if id_eq:
-                         id_eqs = id_eq.split(",") 
-                         equipamento.objects.filter(id__in=id_eqs).update(status=0,user_update=id_user,dateupdate=datetime.now())
-                                                                  
-                   message='Equipamento eliminado com sucesso!!'
-                   status= 'success'
-                   return JsonResponse({'status':status, 'message': message })
-         
 
-            except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+            
   
 @csrf_exempt
 def delete_equipamento_eleitoral_checkbox(request):
@@ -315,71 +299,7 @@ def delete_equipamento_eleitoral_checkbox(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-def gestao_mobiliario(request):
-   
-    conselho_list = conselho.objects.all().filter(status=1)
-    sala_list = sala.objects.all().filter(status=1)
-    componente ='equipamento'
-    sidebar=request.GET.get('modulo')
 
-    if sidebar=='gestao':
-
-                        query = '''
-                                        SELECT 
-                                        dm.id,
-                                        dm.descricao,
-                                        dm.data_entrada,
-                                        dm.serial_number,
-                                        dm.obs,
-                                        dm.tipo,
-                                        dm.provinencia,
-                                        dm.provinencia,
-                                        dm.carateristica,
-                                        kec.descricao as conselho,
-                                        IFNULL(ds.descricao,'') as sala,
-                                        'get_mobiliario_gestao(this)' as sidebar,
-                                        'sidebar_gestao' as sidebar_descricao
-                                        FROM departamentos_mobiliario dm
-                                        left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
-                                        left join departamentos_sala as ds on dm.sala=ds.id
-                                        WHERE dm.STATUS=1 order by dm.id desc
-                                    '''
-    else:
-
-                          query = '''
-                                         SELECT 
-                                         dm.id,
-                                         dm.descricao,
-                                         dm.data_entrada,
-                                         dm.serial_number,
-                                         dm.obs,
-                                         dm.tipo,
-                                         dm.provinencia,
-                                         dm.provinencia,
-                                         dm.carateristica,
-                                         kec.descricao as conselho,
-                                         IFNULL(ds.descricao,'') as sala,
-                                         'get_mobiliario(this)' as sidebar,
-                                         'sidebar_lancamento' as sidebar_descricao
-                                         FROM departamentos_mobiliario dm
-                                         left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
-                                         left join departamentos_sala as ds on dm.sala=ds.id
-                                         WHERE dm.STATUS=1 order by dm.id desc
-                                                        '''
-
-    with connection.cursor() as cursor:
-          cursor.execute(query)
-          colunas = [col[0] for col in cursor.description] 
-          mobiliario_list = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-
-          paginator = Paginator(mobiliario_list, 7)
-          page_number = request.GET.get("page",1)  
-          paginator_mobiliario = paginator.get_page(page_number)
-
-          if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list,"componente":componente})
-
-    return render(request, 'mobiliario/index.html',{"mobiliario":paginator_mobiliario,"conselho":conselho_list,"sala":sala_list,"componente":componente})
 
 def gestao_mobiliario_eleitoral(request):
    
@@ -390,94 +310,6 @@ def gestao_mobiliario_eleitoral(request):
 
     return render(request, 'Mobiliario_eleitoral/index.html',{"mobiliario":paginator_mobiliario})
 
-@csrf_exempt
-def add_mobiliario(request):
-  
-  if request.method == "POST":
-            try:
-                    descricao= request.POST.get("descricao")
-                    data_entrada= request.POST.get("data_entrada_edit")
-                    data_entrada= request.POST.get("data_entrada")
-                    serial_number= request.POST.get("serial_number")
-                    sala= request.POST.get("sala")
-                    provinencia= request.POST.get("provinencia")
-                    carateristica= request.POST.get("carateristica")
-                    tipo= request.POST.get("tipo")
-                    conselho= request.POST.get("conselho")
-                    modelo= request.POST.get("modelo")
-                    obs= request.POST.get("obs")
-                    user_create= request.POST.get("user_create")
-
-                    if conselho!="23":
-                                    if descricao !="" and data_entrada !="" and provinencia!="" and conselho !="" and tipo !="" and carateristica !="":
-                                      
-                                         # validate=mobiliario.objects.filter(descricao=descricao).count()
-                                         # if validate==0:
-
-                                                    mobiliario.objects.create(
-                                                                                descricao=descricao,
-                                                                                data_entrada=data_entrada,
-                                                                                serial_number=serial_number,
-                                                                                conselho=conselho,
-                                                                                carateristica=carateristica,
-                                                                                provinencia=provinencia,
-                                                                                modelo=modelo,
-                                                                                tipo=tipo,
-                                                                                obs=obs,
-                                                                                user_create=user_create
-                                                                                  )
-                                                    message='Mobiliario registado com sucesso!!'
-                                                    status= 'success'
-                                                    return JsonResponse({'status':status, 'message': message })
-
-                                         # else:
-                                          
-                                         #    message='Erro, este mobiliario já foi registado!!'
-                                         #   status= 'error'
-                                         #   return JsonResponse({'status':status, 'message': message })
-                                    else:
-                                      message='Erro, tem que preencher todos os campos obrigatorios!!'
-                                      status= 'error'
-                                      return JsonResponse({'status':status, 'message': message })
-                    else:
-
-                                if descricao !="" and data_entrada !="" and sala !="" and provinencia!="" and conselho !="" and tipo !="" and carateristica !="":
-                                                
-                                                   # validate=mobiliario.objects.filter(descricao=descricao).count()
-                                                   #if validate==0:
-
-                                                              mobiliario.objects.create(
-                                                                                          descricao=descricao,
-                                                                                          data_entrada=data_entrada,
-                                                                                          serial_number=serial_number,
-                                                                                          conselho=conselho,
-                                                                                          carateristica=carateristica,
-                                                                                          provinencia=provinencia,
-                                                                                          modelo=modelo,
-                                                                                          sala=sala,
-                                                                                          tipo=tipo,
-                                                                                          obs=obs,
-                                                                                          user_create=user_create
-                                                                                            )
-                                                              message='Mobiliario registado com sucesso!!'
-                                                              status= 'success'
-                                                              return JsonResponse({'status':status, 'message': message })
-
-                                                    #else:
-                                                    
-                                                    # message='Erro, este mobiliario já foi registado!!'
-                                                    # status= 'error'
-                                                    # return JsonResponse({'status':status, 'message': message })
-                                else:
-                                 message='Erro, tem que preencher todos os campos obrigatorio'
-                                 status= 'error'
-                                 return JsonResponse({'status':status, 'message': message })
-
-
-                    
-
-            except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
 def add_mobiliario_eleitoral(request):
@@ -522,42 +354,6 @@ def add_mobiliario_eleitoral(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
-def get_mobiliario(request):
-
-    if request.method == "POST":
-      try:
-                      mobiliario_id = request.POST.get("mobiliario_id")
-
-                      query = '''
-                                      SELECT 
-                                      dm.id,
-                                      dm.descricao,
-                                      dm.data_entrada,
-                                      dm.serial_number,
-                                      dm.obs,
-                                      dm.tipo,
-                                      dm.provinencia,
-                                      carateristica,
-                                      kec.descricao as conselho,
-                                      kec.id as conselho_id,
-                                      IFNULL(ds.descricao,'') as sala,
-                                      ds.id as sala_id,
-                                      dm.modelo
-                                      FROM departamentos_mobiliario dm
-                                      left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
-                                      left join departamentos_sala as ds on dm.sala=ds.id
-                                      WHERE dm.STATUS=1 and dm.id=%s
-                                  '''
-                      with connection.cursor() as cursor:
-                            cursor.execute(query,[mobiliario_id])
-                            colunas = [col[0] for col in cursor.description] 
-                            mobiliar = [dict(zip(colunas, row)) for row in cursor.fetchall()]
-                     
-                      return JsonResponse({'resultado': mobiliar})
-
-      except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
 def get_mobiliario_eleitoral(request):
@@ -572,66 +368,7 @@ def get_mobiliario_eleitoral(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
-def editar_mobiliario(request): 
-  
-  if request.method == "POST":
-            try:
-                    mobiliario_id = request.POST.get("mobiliario_id")
-                    descricao= request.POST.get("descricao")
-                    conselh= request.POST.get("conselho_edit")
-                    sala_id= request.POST.get("sala_id")
-                    obs= request.POST.get("obs")
-                    user_update= request.POST.get("user_update")
 
-                    if conselh!="23":
-
-                                if conselh!="":
-                                        mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
-                                        mobiliario_ob.descricao=descricao
-                                        mobiliario_ob.obs=obs
-                                        mobiliario_ob.sala=0
-                                        mobiliario_ob.conselho=conselh
-                                        mobiliario_ob.user_update=user_update
-                                        mobiliario_ob.dateupdate=datetime.now()
-                                        mobiliario_ob.save()
-                                                                      
-                                        message='Mobiliario alterado com sucesso!!'
-                                        status= 'success'
-                                        return JsonResponse({'status':status, 'message': message })
-                                else:
-                                        message='Erro, tem que preencher todos os campos obrigatorios!!'
-                                        status= 'error'
-                                        return JsonResponse({'status':status, 'message': message })
-
-
-
-                    else:
-                               if conselh!="" and sala_id!="":
-                                
-                                    mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
-                                    mobiliario_ob.descricao=descricao
-                                    mobiliario_ob.obs=obs
-                                    mobiliario_ob.sala=sala_id
-                                    mobiliario_ob.conselho=conselh
-                                    mobiliario_ob.user_update=user_update
-                                    mobiliario_ob.dateupdate=datetime.now()
-                                    mobiliario_ob.save()
-                                                                  
-                                    message='Mobiliario alterado com sucesso!!'
-                                    status= 'success'
-                                    return JsonResponse({'status':status, 'message': message })
-                               else:
-                                    message='Erro, tem que preencher todos os campos obrigatorios!!'
-                                    status= 'error'
-                                    return JsonResponse({'status':status, 'message': message })
-                        
-
-                  
-         
-
-            except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
 def editar_mobiliario_eleitoral(request):
@@ -658,27 +395,7 @@ def editar_mobiliario_eleitoral(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
-def delete_mobiliario(request):
-  
-  if request.method == "POST":
-            try:
-                    mobiliario_id = request.POST.get("mobiliario_id")
-                    user_update= request.POST.get("user_update")
 
-                    mobiliario_ob=get_object_or_404(mobiliario,id=mobiliario_id)
-                    mobiliario_ob.status=0
-                    mobiliario_ob.user_update=user_update
-                    mobiliario_ob.dateupdate=datetime.now()
-                    mobiliario_ob.save()
-                                                                  
-                    message='Mobiliario eliminado com sucesso!!'
-                    status= 'success'
-                    return JsonResponse({'status':status, 'message': message })
-         
-
-            except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
 def delete_mobiliario_eleitoral(request):
@@ -702,23 +419,7 @@ def delete_mobiliario_eleitoral(request):
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
-def delete_mobiliario_checkbox(request):
-  
-  if request.method == "POST":
-            try:
-                   id_mb= request.POST.get("id")
-                   id_user= request.POST.get("id_user")
 
-                   if id_mb:
-                         id_mbs = id_mb.split(",") 
-                         mobiliario.objects.filter(id__in=id_mbs).update(status=0,user_update=id_user,dateupdate=datetime.now())
-                                                                  
-                   message='Mobiliario eliminado com sucesso!!'
-                   status= 'success'
-                   return JsonResponse({'status':status, 'message': message })
-            except Exception as e:
-             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
 def delete_mobiliario_eleitoral_checkbox(request):

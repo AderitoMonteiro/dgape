@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from .models import equipamento,kit_eleit,conselho
-from departamentos.models import mobiliario 
 from equipamentos.models import equipamento as equipamento_departamento
+from mobiliarios.models import  mobiliario
 from acessorio.models import acessorios
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
@@ -62,7 +62,7 @@ def gestao_kit_eleitoral(request):
                                             left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                             left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                                             left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                                            left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
+                                            left JOIN mobiliarios_mobiliario as ml on KE.malas=ml.id
                                             where KE.status=1
                                         '''
                       else:
@@ -93,7 +93,7 @@ def gestao_kit_eleitoral(request):
                                           left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                           left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                                           left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                                          left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
+                                          left JOIN mobiliarios_mobiliario as ml on KE.malas=ml.id
                                           where KE.status=1
                                           '''
 
@@ -211,10 +211,10 @@ def get_kit(request):
                                 left JOIN equipamentos_equipamento as scaner on KE.Scaner_impresao_digital=scaner.id
                                 left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                                 left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
-                                left JOIN departamentos_mobiliario as ml on KE.malas=ml.id
-                                left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
+                                left JOIN mobiliarios_mobiliario as ml on KE.malas=ml.id
+                                left JOIN mobiliarios_mobiliario as tp on KE.tripe_id=tp.id
                                 left JOIN acessorio_acessorios as cb on KE.cabo_id=cb.id
-                                left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id
+                                left JOIN mobiliarios_mobiliario as bq on KE.banquinho_id=bq.id
                                 where KE.id=%s
                             '''
                   with connection.cursor() as cursor:
@@ -525,9 +525,9 @@ def exportar_kit_excel(request):
                 left JOIN equipamentos_equipamento as ass on KE.capitura_assinatura=ass.id
                 left JOIN equipamentos_equipamento as cm on KE.camera_fotografia=cm.id
                 left JOIN equipamentos_equipamento as ml on KE.malas=ml.id
-                left JOIN departamentos_mobiliario as tp on KE.tripe_id=tp.id
-                left JOIN departamentos_mobiliario as acessorio on KE.cabo_id=acessorio.id
-                left JOIN departamentos_mobiliario as bq on KE.banquinho_id=bq.id
+                left JOIN mobiliarios_mobiliario as tp on KE.tripe_id=tp.id
+                left JOIN mobiliarios_mobiliario as acessorio on KE.cabo_id=acessorio.id
+                left JOIN mobiliarios_mobiliario as bq on KE.banquinho_id=bq.id
                 where KE.status=1
               '''
     with connection.cursor() as cursor:

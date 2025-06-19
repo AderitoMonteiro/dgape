@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'departamentos.apps.DepartamentosConfig',
     'equipamentos.apps.EquipamentosConfig',
+    'mobiliarios.apps.MobiliariosConfig',
     'kit_eleitoral.apps.KitEleitoralConfig',
     'acessorio.apps.AcessorioConfig',
     'diretor.apps.DiretorConfig',
