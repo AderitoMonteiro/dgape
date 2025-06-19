@@ -364,4 +364,54 @@ def delete_equipamento_checkbox(request):
                    return JsonResponse({'status':status, 'message': message })
             except Exception as e:
                 return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+def exportar_equipamento_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Equipamento'
+
+    query = '''
+                SELECT 
+                equipamentos_equipamento.id,
+                equipamentos_equipamento.descricao,
+                mac_address,
+                data_entrada,
+                provinencia,
+                marca,
+                modelo,
+                obs,
+                serial_number,
+                tipo,
+                IFNULL(departamentos_sala.descricao,'') as sala,
+                kit_eleitoral_conselho.descricao as conselho
+                FROM 
+                equipamentos_equipamento
+                left join departamentos_sala on equipamentos_equipamento.sala=departamentos_sala.id
+                left join kit_eleitoral_conselho on equipamentos_equipamento.conselho=kit_eleitoral_conselho.id
+                where equipamentos_equipamento.status=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Equipamento','provinencia','Localização','Sala','Modelo','Serial Number','Mac Addres','Marca','Tipo Item','Obs'])
+                    folha.font = Font(bold=True)
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['provinencia'],equipamento['conselho'],equipamento['sala'],equipamento['modelo'],equipamento['serial_number'],equipamento['mac_address'],equipamento['marca'],equipamento['tipo'],equipamento['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Equipamento_Excel.xlsx'
+                    workbook.save(response)
+
+    return response
          

@@ -368,7 +368,6 @@ def exportar_acessorio_excel(request):
                 dm.descricao,
                 dm.data_entrada,
                 dm.obs,
-                dm.tipo,
                 dm.provinencia,
                 dm.carateristica,
                 kec.descricao as conselho,
@@ -378,6 +377,7 @@ def exportar_acessorio_excel(request):
                 FROM acessorio_acessorios dm
                 left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
                 left join departamentos_sala as ds on dm.sala=ds.id
+                WHERE dm.status=1
               '''
     with connection.cursor() as cursor:
                     cursor.execute(query)
@@ -386,11 +386,11 @@ def exportar_acessorio_excel(request):
                     resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
                   # Cabeçalhos
-                    folha.append(['id','Descricao', 'Data Entrada','Tipo','Provinencia','Carateristica','Conselho','sala','Obs'])
+                    folha.append(['id','Descricao', 'Data Entrada','Provinencia','Carateristica','Conselho','sala','Obs'])
 
                     # Dados
                     for kit in resultados:
-                        folha.append([kit['id'], kit['descricao'], kit['data_entrada'],kit['tipo'],kit['provinencia'],kit['carateristica'],kit['sala'],kit['obs']])
+                        folha.append([kit['id'], kit['descricao'], kit['data_entrada'],kit['provinencia'],kit['carateristica'],kit['sala'],kit['obs']])
                     # Preparar resposta HTTP
                     response = HttpResponse(
                         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

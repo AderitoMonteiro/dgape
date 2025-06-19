@@ -304,3 +304,50 @@ def delete_mobiliario_checkbox(request):
                    return JsonResponse({'status':status, 'message': message })
             except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+def exportar_Mobiliario_excel(request):
+    # Criar workbook e folha
+    workbook = openpyxl.Workbook()
+    folha = workbook.active
+    folha.title = 'Mobiliario'
+
+    query = '''
+                SELECT 
+                dm.id,
+                dm.descricao,
+                dm.data_entrada,
+                dm.serial_number,
+                dm.obs,
+                dm.tipo,
+                dm.provinencia,
+                dm.provinencia,
+                dm.carateristica,
+                kec.descricao as conselho,
+                IFNULL(ds.descricao,'') as sala
+                FROM mobiliarios_mobiliario dm
+                left join kit_eleitoral_conselho as kec on dm.conselho=kec.id
+                left join departamentos_sala as ds on dm.sala=ds.id
+                WHERE dm.STATUS=1
+              '''
+    with connection.cursor() as cursor:
+                    cursor.execute(query)
+
+                    colunas = [col[0] for col in cursor.description] 
+                    resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+                    print(resultados)
+
+                  # Cabeçalhos
+                    folha.append(['id','Data Entrada', 'Mobiliario','provinencia','Localização','Sala','Serial Number','carateristica','Tipo Item','Obs'])
+
+                    # Dados
+                    for equipamento in resultados:
+                        folha.append([equipamento['id'], equipamento['data_entrada'], equipamento['descricao'],equipamento['provinencia'],equipamento['conselho'],equipamento['sala'],equipamento['serial_number'],equipamento['carateristica'],equipamento['tipo'],equipamento['obs']])
+                    # Preparar resposta HTTP
+                    response = HttpResponse(
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=Mobiliario_Excel.xlsx'
+                    workbook.save(response)
+
+    return response
